@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Velocity Pro | Executive Lead Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-container": "#1d3989",
+                        "on-surface-variant": "#444651",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#00164e",
+                        "surface-container-low": "#f2f4f6",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#b6c4ff",
+                        "on-tertiary-container": "#9dadc6",
+                        "on-primary-fixed-variant": "#005236",
+                        "primary-fixed": "#6ffbbe",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#314156",
+                        "on-primary-container": "#27c38a",
+                        "surface-dim": "#d8dadc",
+                        "on-surface": "#191c1e",
+                        "secondary-fixed": "#dce1ff",
+                        "secondary-container": "#8fa7fe",
+                        "inverse-surface": "#2d3133",
+                        "on-background": "#191c1e",
+                        "surface": "#f7f9fb",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "inverse-primary": "#4edea3",
+                        "surface-variant": "#e0e3e5",
+                        "on-primary-fixed": "#002113",
+                        "background": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#4edea3",
+                        "secondary": "#1E3A8A", /* Executive Navy from Prompt */
+                        "primary": "#10B981",   /* Action Green from Prompt */
+                        "tertiary-fixed": "#d3e4fe",
+                        "on-tertiary-fixed": "#0b1c30"
+                    },
+                    fontFamily: {
+                        "montserrat": ["Montserrat", "sans-serif"],
+                        "inter": ["Inter", "sans-serif"],
+                        "headline": ["Montserrat"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .audit-rail {
+            border-left: 2px solid #10B981;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .text-editorial-display {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+    </style>
+</head>
+<body class="bg-surface font-inter text-on-surface antialiased">
+<!-- Side Navigation Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 flex flex-col bg-slate-100 border-r border-slate-200 z-50">
+<div class="flex flex-col h-full py-6">
+<!-- Brand Logo Area -->
+<div class="px-6 mb-10">
+<h1 class="text-lg font-black text-secondary tracking-tighter font-montserrat uppercase">Velocity CRM</h1>
+<p class="text-[0.6875rem] font-extrabold uppercase tracking-widest text-slate-500">Enterprise Edition</p>
+</div>
+<!-- Main Navigation -->
+<nav class="flex-1 space-y-1 px-3">
+<a class="flex items-center px-3 py-3 bg-white text-secondary font-bold shadow-sm border-l-4 border-primary transition-all translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-montserrat text-sm">Dashboard</span>
+</a>
+<a class="flex items-center px-3 py-3 text-slate-600 hover:text-secondary hover:bg-slate-200/50 transition-all font-medium" href="#">
+<span class="material-symbols-outlined mr-3">account_tree</span>
+<span class="font-montserrat text-sm">Sales Pipeline</span>
+</a>
+<a class="flex items-center px-3 py-3 text-slate-600 hover:text-secondary hover:bg-slate-200/50 transition-all font-medium" href="#">
+<span class="material-symbols-outlined mr-3">chat</span>
+<span class="font-montserrat text-sm">Messaging</span>
+</a>
+<a class="flex items-center px-3 py-3 text-slate-600 hover:text-secondary hover:bg-slate-200/50 transition-all font-medium" href="#">
+<span class="material-symbols-outlined mr-3">group</span>
+<span class="font-montserrat text-sm">Lead Directory</span>
+</a>
+</nav>
+<!-- CTA -->
+<div class="px-4 mb-8">
+<button class="w-full bg-primary text-white font-bold py-3 rounded-md flex items-center justify-center space-x-2 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+<span class="font-montserrat text-xs uppercase tracking-wider">Add New Lead</span>
+</button>
+</div>
+<!-- Footer Nav -->
+<div class="px-3 border-t border-slate-200 pt-6 space-y-1">
+<a class="flex items-center px-3 py-2 text-slate-600 hover:text-secondary hover:bg-slate-200/50 transition-all font-medium text-sm" href="#">
+<span class="material-symbols-outlined mr-3">help</span>
+<span class="font-montserrat">Support</span>
+</a>
+<a class="flex items-center px-3 py-2 text-slate-600 hover:text-secondary hover:bg-slate-200/50 transition-all font-medium text-sm" href="#">
+<span class="material-symbols-outlined mr-3">logout</span>
+<span class="font-montserrat">Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="w-full h-16 bg-slate-50 border-b border-slate-200 flex justify-between items-center px-10 sticky top-0 z-40">
+<div class="flex items-center space-x-4">
+<h2 class="text-xl font-bold text-secondary tracking-tighter font-montserrat">Velocity Pro</h2>
+</div>
+<div class="flex items-center space-x-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-secondary cursor-pointer transition-colors">notifications</span>
+<div class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<span class="material-symbols-outlined text-slate-500 hover:text-secondary cursor-pointer transition-colors">settings</span>
+<div class="flex items-center space-x-3 pl-4 border-l border-slate-200">
+<div class="text-right">
+<p class="text-xs font-bold text-secondary font-montserrat">Alexander Vane</p>
+<p class="text-[10px] text-slate-500 uppercase font-black tracking-tighter">Director of Growth</p>
+</div>
+<img alt="User Profile Avatar" class="w-10 h-10 rounded-lg object-cover border-2 border-white shadow-sm" data-alt="professional headshot of a corporate executive with a confident expression and clean grooming in a bright office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAdffBI2bezsH58MJDrabSs0Em97cl0xsxTdxex2KjE-ha6iWTw512k5X6l8_wpwXHmWVzUsCWhIS8aGXde4zcY6MRQY--AeLf7eMC1l7YqRsDMT2aXR-XvmlyS1SZ8w3jQCAn92kyq0lvVBI0vbW6zTaISpeYeTkalej7sq83VulLrPYlpoSW7TaZJkIH6Vwg1dMtCYEA3Z52vTt0f7gE2GzyQyVnztGWaY2AOGc8GjyAY49tJ5GV4XHuvzoEpynGcTw7TqFlPoS9"/>
+</div>
+</div>
+</header>
+<!-- Dashboard Body -->
+<section class="p-10 max-w-7xl mx-auto space-y-10">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Performance Overview</h3>
+<h2 class="text-4xl font-bold text-secondary font-montserrat tracking-tight">Executive Lead Dashboard</h2>
+</div>
+<div class="flex space-x-3">
+<button class="bg-white border border-slate-200 px-4 py-2 text-xs font-bold uppercase tracking-widest text-secondary hover:bg-slate-50 transition-colors">Export Report</button>
+<button class="bg-secondary text-white px-4 py-2 text-xs font-bold uppercase tracking-widest hover:opacity-90 transition-opacity">Q3 Projection</button>
+</div>
+</div>
+<!-- Core KPIs - Bento Grid Style -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Total Leads -->
+<div class="bg-surface-container-lowest p-8 rounded-none shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">leaderboard</span>
+</div>
+<p class="text-[0.6875rem] font-black uppercase tracking-widest text-slate-400 mb-4">Total Active Leads</p>
+<div class="flex items-baseline space-x-2">
+<span class="text-editorial-display text-secondary">12,842</span>
+<span class="text-primary font-bold text-sm flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span>+12%
+                        </span>
+</div>
+<div class="mt-6 w-full h-1 bg-slate-100">
+<div class="h-full bg-primary" style="width: 72%"></div>
+</div>
+</div>
+<!-- Conversion Rate -->
+<div class="bg-surface-container-lowest p-8 rounded-none shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">analytics</span>
+</div>
+<p class="text-[0.6875rem] font-black uppercase tracking-widest text-slate-400 mb-4">Conversion Rate</p>
+<div class="flex items-baseline space-x-2">
+<span class="text-editorial-display text-secondary">24.8<span class="text-2xl font-bold">%</span></span>
+<span class="text-primary font-bold text-sm flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span>+3.1%
+                        </span>
+</div>
+<div class="mt-6 flex space-x-1">
+<div class="h-1 flex-1 bg-primary"></div>
+<div class="h-1 flex-1 bg-primary"></div>
+<div class="h-1 flex-1 bg-primary"></div>
+<div class="h-1 flex-1 bg-slate-200"></div>
+</div>
+</div>
+<!-- New Leads Today -->
+<div class="bg-surface-container-lowest p-8 rounded-none shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">bolt</span>
+</div>
+<p class="text-[0.6875rem] font-black uppercase tracking-widest text-slate-400 mb-4">New Leads Today</p>
+<div class="flex items-baseline space-x-2">
+<span class="text-editorial-display text-secondary">142</span>
+<span class="text-slate-400 font-bold text-sm">Target: 150</span>
+</div>
+<div class="mt-6 flex items-center justify-between">
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="close up headshot of diverse lead profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb9PqLdtCTN0wVtPXEbiHIn8PeFXPniLQnIU_zsYYwXwbAHInXDsAGLTPedOv9jIix5REJhB1PvJjLjiv2AYTOpBqp72DdqYxsvcWS-r9PGGJtvnLLUX3DAIqfqnxuzhdFRCLZcHjPZgRbS0YtzJhqdaIBLDRg6G_DmNTDrrD7hkKd0QJPBlyBvYq_XyIdn_vKKz0vdFtusQpBeoLn2C65OqwbVyBSN91rcok9W9EW35Xr2xkFIiqmwITMQMC7QkXfxIYUSiz1O81t"/>
+<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="close up headshot of professional woman in business attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSTPCun5KHJTriMPOpknmECEboeOyXEfcpDUuKjaO5JC17jyuy_Y8Z5i27zP6g117zYWB5TaymGU0-eheOiyVBBCiclOMxFle0UURvJI52ExkJrQM_OqZkGrdPrH5rVVsCYetOjh7nJLclKLFJLho3B0mwYi35-ETfkgAhf7DyVhC6EmrW7e9-HK2cddrElYs0gJzjzSyG4IuuY4iLxJftxeHgZeyKgdBtmbGqIi3l3nF8OjERtGRkJzoOUB4gBxTT9Nddcl5isFNm"/>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-500">+139</div>
+</div>
+<span class="text-[10px] font-black uppercase tracking-tighter text-primary">In Progress</span>
+</div>
+</div>
+</div>
+<!-- Charts & Lists Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+<!-- Lead Growth Strategy - Large Chart Simulation -->
+<div class="lg:col-span-2 bg-surface-container-low p-10 flex flex-col justify-between min-h-[450px]">
+<div>
+<div class="flex justify-between items-start mb-10">
+<div>
+<h4 class="text-xl font-bold text-secondary font-montserrat">Lead Growth Strategy</h4>
+<p class="text-sm text-slate-500 mt-1">Weekly acquisition volume relative to marketing spend.</p>
+</div>
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-2">
+<div class="w-3 h-3 bg-primary"></div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Volume</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-3 h-3 bg-secondary"></div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Spend</span>
+</div>
+</div>
+</div>
+<!-- Visual Chart Representation (Simulated Chart.js with SVG) -->
+<div class="relative h-64 w-full flex items-end justify-between px-2">
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none">
+<polyline class="drop-shadow-lg" fill="none" points="0,200 150,150 300,180 450,80 600,100 750,40" stroke="#10B981" stroke-linecap="round" stroke-width="4"></polyline>
+<polyline fill="none" opacity="0.3" points="0,220 150,190 300,210 450,160 600,170 750,130" stroke="#1E3A8A" stroke-dasharray="4" stroke-width="2"></polyline>
+</svg>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-[-30px] w-full flex justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest">
+<span>Week 01</span>
+<span>Week 02</span>
+<span>Week 03</span>
+<span>Week 04</span>
+<span>Week 05</span>
+<span>Current</span>
+</div>
+</div>
+</div>
+<div class="mt-12 flex space-x-10 border-t border-slate-200 pt-8">
+<div>
+<p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Peak Volume</p>
+<p class="text-lg font-bold text-secondary">2,140 / wk</p>
+</div>
+<div>
+<p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">CPL Avg</p>
+<p class="text-lg font-bold text-secondary">$14.20</p>
+</div>
+</div>
+</div>
+<!-- Lead Sources - Progress Bar List -->
+<div class="bg-surface-container-lowest p-8 border border-slate-100 flex flex-col">
+<h4 class="text-xl font-bold text-secondary font-montserrat mb-8">Lead Sources</h4>
+<div class="space-y-8 flex-1">
+<!-- Organic Search -->
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-sm font-bold text-secondary">Organic Search</p>
+<p class="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">High Intent Traffic</p>
+</div>
+<span class="text-sm font-black text-secondary">48%</span>
+</div>
+<div class="h-2 w-full bg-slate-100 overflow-hidden">
+<div class="h-full bg-primary" style="width: 48%"></div>
+</div>
+</div>
+<!-- LinkedIn Ads -->
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-sm font-bold text-secondary">LinkedIn Ads</p>
+<p class="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">B2B Professional Focus</p>
+</div>
+<span class="text-sm font-black text-secondary">32%</span>
+</div>
+<div class="h-2 w-full bg-slate-100 overflow-hidden">
+<div class="h-full bg-secondary" style="width: 32%"></div>
+</div>
+</div>
+<!-- Direct Referral -->
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-sm font-bold text-secondary">Direct Referral</p>
+<p class="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Word of Mouth Equity</p>
+</div>
+<span class="text-sm font-black text-secondary">20%</span>
+</div>
+<div class="h-2 w-full bg-slate-100 overflow-hidden">
+<div class="h-full bg-slate-400" style="width: 20%"></div>
+</div>
+</div>
+</div>
+<div class="mt-10 p-4 bg-slate-50 border-l-2 border-primary">
+<p class="text-[10px] text-slate-500 font-medium italic leading-relaxed">
+                            "Direct referrals are up 4% this month, signaling strong customer satisfaction."
+                        </p>
+</div>
+</div>
+</div>
+<!-- Recent Activity Section -->
+<div class="bg-surface-container-lowest p-10">
+<div class="flex justify-between items-center mb-10">
+<h4 class="text-xl font-bold text-secondary font-montserrat">Recent Activity</h4>
+<button class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline transition-all">View All Audit Logs</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
+<!-- Activity Item 1 -->
+<div class="audit-rail pl-6 py-1">
+<div class="flex items-center space-x-2 mb-2">
+<span class="text-[10px] font-black uppercase tracking-widest text-slate-400">09:42 AM</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<p class="text-sm font-bold text-secondary">New Enterprise Lead: CloudCorp</p>
+<p class="text-xs text-slate-500 mt-1">Assigned to: Marcus Aurelius</p>
+</div>
+<!-- Activity Item 2 -->
+<div class="audit-rail pl-6 py-1">
+<div class="flex items-center space-x-2 mb-2">
+<span class="text-[10px] font-black uppercase tracking-widest text-slate-400">08:15 AM</span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+</div>
+<p class="text-sm font-bold text-secondary">Pipeline Shift: ZenLabs</p>
+<p class="text-xs text-slate-500 mt-1">Moved to 'Decision Maker' phase</p>
+</div>
+<!-- Activity Item 3 -->
+<div class="audit-rail pl-6 py-1">
+<div class="flex items-center space-x-2 mb-2">
+<span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Yesterday</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<p class="text-sm font-bold text-secondary">Conversion Confirmed: GlobalTech</p>
+<p class="text-xs text-slate-500 mt-1">Value: $48,000 ARR</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Visual Identity -->
+<footer class="mt-20 px-10 py-6 border-t border-slate-200 text-center">
+<p class="text-[0.6875rem] font-black text-slate-400 uppercase tracking-[0.3em]">Precision Engineering by Velocity Pro Systems © 2024</p>
+</footer>
+</main>
+<!-- Floating Action for Focused Dashboard (Optional Contextual FAB) -->
+<button class="fixed bottom-10 right-10 w-16 h-16 bg-secondary text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl">add_chart</span>
+</button>
+</body></html>

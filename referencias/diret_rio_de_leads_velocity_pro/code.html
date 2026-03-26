@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Velocity Pro | Lead Directory</title>
+<!-- Montserrat for headings and precision UI -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#e6e8ea",
+              "on-secondary-container": "#1d3989",
+              "on-surface-variant": "#444651",
+              "on-error": "#ffffff",
+              "on-secondary-fixed": "#00164e",
+              "surface-container-low": "#f2f4f6",
+              "inverse-on-surface": "#eff1f3",
+              "on-tertiary-fixed-variant": "#38485d",
+              "error": "#ba1a1a",
+              "secondary-fixed-dim": "#b6c4ff",
+              "on-tertiary-container": "#9dadc6",
+              "on-primary-fixed-variant": "#005236",
+              "primary-fixed": "#6ffbbe",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#314156",
+              "on-primary-container": "#27c38a",
+              "surface-dim": "#d8dadc",
+              "on-surface": "#191c1e",
+              "secondary-fixed": "#dce1ff",
+              "secondary-container": "#8fa7fe",
+              "inverse-surface": "#2d3133",
+              "on-background": "#191c1e",
+              "surface": "#f7f9fb",
+              "tertiary-fixed-dim": "#b7c8e1",
+              "inverse-primary": "#4edea3",
+              "surface-variant": "#e0e3e5",
+              "on-primary-fixed": "#002113",
+              "background": "#f7f9fb",
+              "error-container": "#ffdad6",
+              "primary-fixed-dim": "#4edea3",
+              "secondary": "#1E3A8A", /* Executive Navy mapping */
+              "surface-tint": "#006c49",
+              "outline-variant": "#c5c5d3",
+              "surface-bright": "#f7f9fb",
+              "tertiary": "#64748B", /* Utility Slate mapping */
+              "surface-container": "#eceef0",
+              "on-tertiary": "#ffffff",
+              "outline": "#757682",
+              "on-primary": "#ffffff",
+              "on-secondary": "#ffffff",
+              "surface-container-highest": "#e0e3e5",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-fixed-variant": "#264191",
+              "primary-container": "#10B981", /* Action Green mapping */
+              "primary": "#10B981", /* Action Green mapping */
+              "tertiary-fixed": "#d3e4fe",
+              "on-tertiary-fixed": "#0b1c30"
+            },
+            fontFamily: {
+              "montserrat": ["Montserrat", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .audit-rail-active {
+            border-left: 2px solid #10B981;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- SideNavBar (Authority: JSON & Design System) -->
+<aside class="h-screen w-64 fixed left-0 top-0 flex flex-col bg-slate-100 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 z-50">
+<div class="flex flex-col h-full py-6">
+<!-- Brand Header -->
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+</div>
+<div>
+<h1 class="text-lg font-black text-blue-900 dark:text-blue-100 font-montserrat tracking-tighter">Velocity CRM</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Enterprise Edition</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 font-montserrat text-sm font-medium hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all rounded-md" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 font-montserrat text-sm font-medium hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all rounded-md" href="#">
+<span class="material-symbols-outlined text-[20px]">account_tree</span>
+<span>Sales Pipeline</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 font-montserrat text-sm font-medium hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all rounded-md" href="#">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span>Messaging</span>
+</a>
+<!-- Active Tab: Lead Directory -->
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 text-blue-900 dark:text-emerald-400 font-bold shadow-sm border-l-4 border-emerald-500 font-montserrat text-sm translate-x-1 duration-150 rounded-r-md" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span>Lead Directory</span>
+</a>
+</nav>
+<!-- CTA -->
+<div class="px-6 mt-6">
+<button class="w-full py-3 bg-primary text-white font-montserrat font-bold text-xs uppercase tracking-wider rounded-md shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
+                    Add New Lead
+                </button>
+</div>
+<!-- Footer Nav -->
+<div class="px-3 pt-6 mt-auto border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 font-montserrat text-sm font-medium hover:bg-slate-200/50 transition-all rounded-md" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 font-montserrat text-sm font-medium hover:bg-slate-200/50 transition-all rounded-md" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- TopAppBar (Authority: JSON & Design System) -->
+<header class="flex justify-between items-center px-8 w-full h-16 sticky top-0 z-40 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-blue-900 dark:text-white tracking-tighter font-montserrat">Lead Directory</span>
+<span class="text-tertiary text-xs font-medium bg-surface-container-high px-2 py-0.5 rounded">v2.4.0</span>
+</div>
+<div class="flex items-center gap-6">
+<!-- Search Component -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="bg-surface-container-low border-none rounded-md pl-10 pr-4 py-1.5 text-sm w-64 focus:ring-2 focus:ring-secondary/20" placeholder="Search entities..." type="text"/>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-slate-200 overflow-hidden ml-2 border border-slate-300">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="professional headshot of a corporate executive with a friendly expression in a modern office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdMEJmhnfaXd1h3EyndVmnshEgiLHjQsMrIUHPK0cTqj2ND2c9xMXpANA48gJANlvleTDmlExURVZxtYnHc66c8lrLhFj82XqbWsvsAGOutiRjtIu_sYxnD8iLS6DJLZhF7673uwh1aDCOyl3FVmvw6hoSf_ECWE2NWmwYFFywVcMswoF_sfdiSWfnNsnKZIScHvHXgPLT0LUiVzQD7RXdNgIOJZ2SkdWP677EOEpz1njn4cOqxk_6zsrY4ZhRfi4UnS4QZ5UwWbTt"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-8 flex-1 bg-surface space-y-8">
+<!-- Page Header / Hero Branding -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="text-4xl md:text-5xl font-extrabold text-secondary font-montserrat tracking-tighter leading-tight">
+                        Institutional <span class="text-primary">Ledger</span>
+</h2>
+<p class="text-tertiary mt-2 max-w-lg font-body leading-relaxed">
+                        High-precision lead management for institutional finance. Monitor engagement metrics, propensity scores, and interaction velocity in real-time.
+                    </p>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2.5 bg-surface-container-lowest border border-outline-variant/30 text-secondary font-bold rounded-md hover:bg-surface-container-high transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Export CSV
+                    </button>
+<button class="px-8 py-2.5 bg-primary text-white font-bold rounded-md shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">person_add</span>
+                        Create New Lead
+                    </button>
+</div>
+</section>
+<!-- Filtering Interface -->
+<section class="bg-surface-container-low p-6 rounded-xl flex flex-wrap items-center gap-6">
+<div class="flex flex-col gap-1.5">
+<label class="text-[10px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat">Lead Status</label>
+<select class="bg-surface-container-lowest border-none rounded-md py-2 px-4 text-sm font-medium text-on-surface shadow-sm focus:ring-2 focus:ring-secondary min-w-[160px]">
+<option>All Statuses</option>
+<option>Discovery</option>
+<option>Qualified</option>
+<option>Negotiation</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-[10px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat">Time Horizon</label>
+<select class="bg-surface-container-lowest border-none rounded-md py-2 px-4 text-sm font-medium text-on-surface shadow-sm focus:ring-2 focus:ring-secondary min-w-[160px]">
+<option>Current Quarter</option>
+<option>Next 6 Months</option>
+<option>FY 2024</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-[10px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat">Lead Score Range</label>
+<div class="flex items-center gap-2 bg-surface-container-lowest px-4 py-2 rounded-md shadow-sm">
+<input class="accent-primary w-32" type="range"/>
+<span class="text-xs font-bold text-secondary">75+</span>
+</div>
+</div>
+<button class="self-end mb-0.5 px-4 py-2 text-tertiary font-bold text-xs uppercase hover:text-secondary transition-colors">
+                    Clear Filters
+                </button>
+</section>
+<!-- Data Grid Section -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Entity</th>
+<th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Primary Contact</th>
+<th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Engagement Status</th>
+<th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Propensity Score</th>
+<th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Last Interaction</th>
+<th class="px-6 py-4 border-b border-surface-container-high"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low">
+<!-- Lead Row 1 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group audit-rail-active">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center p-2">
+<img alt="Company Logo" class="w-full h-full object-contain" data-alt="minimalist modern corporate logo icon for a financial services firm with clean geometric lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnMf85GN3r1UvACBeutxoTAK64zYK6Xy4gErkTjk_lHYJtyGkU2vMf5n8A1NQpe-LBISB6H6F4cKGoYLF7VaE_oU8BI6H-UO0oQFmBFmeak9hVAEe1o9C_brhI37d_R1pgRGpAe7PK705fi16r2CN_V1IL7I88r580degcOlHZ4m8hmqPeVixNy2YTqUryHysGERGtJX_-HInRoroBP6eetO6KiE48qPajtbd_Zqff868E8GdeCJCKYkyq4OFuxQxMShXansdU-icr"/>
+</div>
+<div>
+<div class="font-bold text-secondary font-montserrat">Blackwood Assets</div>
+<div class="text-[10px] text-tertiary uppercase tracking-wider font-bold">New York, NY</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Sarah Jenkins</span>
+<span class="text-xs text-tertiary">Managing Director</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">
+                                        Negotiation
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[92%]"></div>
+</div>
+<span class="text-sm font-black text-secondary font-montserrat">92</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-medium">Oct 12, 2023</span>
+<span class="text-[10px] text-tertiary uppercase font-bold">Strategy Review</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-tertiary hover:text-secondary p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Lead Row 2 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center p-2">
+<img alt="Company Logo" class="w-full h-full object-contain" data-alt="clean vector logo for a global logistics company using blue and grey tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApQeIhWZZoq-hACprxBYGO3hhgweNWjdDQtaco9laNP01oMy9g3PDZWZYMwnWXcjsulv9tstIDZJgeHPTSqyS_sFg4km3Q6QfKbB5yu1FGBt_KxogymBa-7VLfs1fIAj7JyCZ829wmWO2DiWskiFBoLVr7Hx9SxqLLW6QOO9MB8qaRvkB8dmQlmDsFuTf5XhqNARYVULQ5LjQIcb8GArQ0Zy9xtvb5MX7pmVXg3jMYSMnEtK2PzGhEPvUqPPP05ssOWpXKn0wn5Eyb"/>
+</div>
+<div>
+<div class="font-bold text-secondary font-montserrat">Vertex Global</div>
+<div class="text-[10px] text-tertiary uppercase tracking-wider font-bold">London, UK</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Marcus Thorne</span>
+<span class="text-xs text-tertiary">Head of M&amp;A</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-secondary/10 text-secondary border border-secondary/20">
+                                        Qualified
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[78%]"></div>
+</div>
+<span class="text-sm font-black text-secondary font-montserrat">78</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-medium">Oct 11, 2023</span>
+<span class="text-[10px] text-tertiary uppercase font-bold">Initial Pitch</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-tertiary hover:text-secondary p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Lead Row 3 -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center p-2">
+<img alt="Company Logo" class="w-full h-full object-contain" data-alt="abstract geometric corporate logo design with high contrast for a tech venture capital firm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJOu4Uuo8inBfZ6X81ddg2HArVy2KvEscma1kR_IZ_KD8IcvWKCgd_G_f-Iet_H9-j7wDP8_ToEZbagqigL4mztizH-a3EX7qxPujO90TpqbpEns8W7ZMY4Vpma0ICEMugXvueSnYm39sFW5SP7VOdVeRGU8dtBkLlvpAQ-oAv4FJGuiualTzAHLK9cpQ1-c8USaSAQtdDkaZNWviktfDVhORLp9xwoVFoOWn8p8TbMQxFFfTSz3wJW1RvxQodOwgn_NoH4ROwwbHV"/>
+</div>
+<div>
+<div class="font-bold text-secondary font-montserrat">Nodal Ventures</div>
+<div class="text-[10px] text-tertiary uppercase tracking-wider font-bold">Singapore</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Elena Rodriguez</span>
+<span class="text-xs text-tertiary">Venture Partner</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+                                        Discovery
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[45%]"></div>
+</div>
+<span class="text-sm font-black text-secondary font-montserrat">45</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-sm font-medium">Oct 09, 2023</span>
+<span class="text-[10px] text-tertiary uppercase font-bold">Cold Outreach</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-tertiary hover:text-secondary p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-container-low/30 border-t border-surface-container-high flex items-center justify-between">
+<span class="text-xs font-medium text-tertiary">Showing 1-10 of 248 entities</span>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-high rounded transition-colors text-secondary disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center bg-secondary text-white rounded font-bold text-xs">1</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-xs">2</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-xs">3</button>
+<span class="text-tertiary px-1 text-xs">...</span>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-xs">25</button>
+<button class="p-2 hover:bg-surface-container-high rounded transition-colors text-secondary">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Secondary Insights: Propensity Matrix (Bento style) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10">
+<div class="bg-secondary text-white p-8 rounded-xl relative overflow-hidden group">
+<div class="relative z-10">
+<div class="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-70">Total Opportunity Value</div>
+<div class="text-4xl font-black font-montserrat tracking-tighter mb-4">$12.4M</div>
+<div class="flex items-center gap-2 text-primary font-bold text-xs">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+14.2% vs last month</span>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/20 flex flex-col justify-between">
+<div>
+<div class="text-[10px] font-black text-secondary uppercase tracking-[0.2em] mb-2">High Propensity Leads</div>
+<div class="text-4xl font-black text-secondary font-montserrat tracking-tighter">42</div>
+</div>
+<div class="mt-6 flex gap-1">
+<div class="flex-1 h-1.5 bg-primary rounded-full"></div>
+<div class="flex-1 h-1.5 bg-primary rounded-full"></div>
+<div class="flex-1 h-1.5 bg-primary rounded-full"></div>
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full"></div>
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full"></div>
+</div>
+<p class="text-[10px] text-tertiary font-bold uppercase mt-3">Priority Action: 12 Discovery calls required</p>
+</div>
+<div class="bg-primary p-8 rounded-xl text-white flex flex-col justify-between shadow-xl shadow-primary/10">
+<div>
+<div class="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-80">Conversion Velocity</div>
+<div class="text-4xl font-black font-montserrat tracking-tighter">18.4 Days</div>
+</div>
+<div class="flex items-center justify-between mt-4">
+<span class="text-xs font-medium opacity-90">Institutional average: 24 days</span>
+<span class="material-symbols-outlined">bolt</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

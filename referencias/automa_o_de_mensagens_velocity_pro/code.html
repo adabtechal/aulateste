@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Messaging Automation | Velocity Pro</title>
+<!-- Montserrat and Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#e6e8ea",
+              "on-secondary-container": "#1d3989",
+              "on-surface-variant": "#444651",
+              "on-error": "#ffffff",
+              "on-secondary-fixed": "#00164e",
+              "surface-container-low": "#f2f4f6",
+              "inverse-on-surface": "#eff1f3",
+              "on-tertiary-fixed-variant": "#38485d",
+              "error": "#ba1a1a",
+              "secondary-fixed-dim": "#b6c4ff",
+              "on-tertiary-container": "#9dadc6",
+              "on-primary-fixed-variant": "#005236",
+              "primary-fixed": "#6ffbbe",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#314156",
+              "on-primary-container": "#27c38a",
+              "surface-dim": "#d8dadc",
+              "on-surface": "#191c1e",
+              "secondary-fixed": "#dce1ff",
+              "secondary-container": "#8fa7fe",
+              "inverse-surface": "#2d3133",
+              "on-background": "#191c1e",
+              "surface": "#f7f9fb",
+              "tertiary-fixed-dim": "#b7c8e1",
+              "inverse-primary": "#4edea3",
+              "surface-variant": "#e0e3e5",
+              "on-primary-fixed": "#002113",
+              "background": "#f7f9fb",
+              "error-container": "#ffdad6",
+              "primary-fixed-dim": "#4edea3",
+              "secondary": "#1E3A8A", /* Overridden Navy */
+              "primary": "#10B981", /* Overridden Action Green */
+              "surface-tint": "#006c49",
+              "outline-variant": "#c5c5d3",
+              "surface-bright": "#f7f9fb",
+              "tertiary": "#64748B", /* Utility Slate */
+              "surface-container": "#eceef0",
+              "on-tertiary": "#ffffff",
+              "outline": "#757682",
+              "on-primary": "#ffffff",
+              "on-secondary": "#ffffff",
+              "surface-container-highest": "#e0e3e5",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-fixed-variant": "#264191",
+              "primary-container": "#d1fae5",
+              "tertiary-fixed": "#d3e4fe",
+              "on-tertiary-fixed": "#0b1c30"
+            },
+            fontFamily: {
+              "montserrat": ["Montserrat", "sans-serif"],
+              "headline": ["Montserrat"],
+              "body": ["Montserrat"],
+              "label": ["Montserrat"]
+            },
+            borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-panel {
+        background: rgba(224, 227, 229, 0.8);
+        backdrop-filter: blur(20px);
+      }
+      .audit-rail {
+        border-left: 2px solid #10B981;
+      }
+    </style>
+</head>
+<body class="bg-surface font-montserrat text-on-surface">
+<!-- SideNavBar (Shared Component) -->
+<nav class="h-screen w-64 fixed left-0 top-0 flex flex-col bg-slate-100 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 z-50">
+<div class="flex flex-col h-full py-6">
+<div class="px-6 mb-10">
+<h1 class="text-lg font-black text-blue-900 dark:text-blue-100 tracking-tighter">Velocity CRM</h1>
+<p class="text-xs font-medium text-slate-500 uppercase tracking-widest">Enterprise Edition</p>
+</div>
+<div class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-200/50 transition-all rounded" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-200/50 transition-all rounded" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span>Sales Pipeline</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 text-blue-900 dark:text-emerald-400 font-bold shadow-sm border-l-4 border-emerald-500 transition-all translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="chat" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span>Messaging</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-200/50 transition-all rounded" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Lead Directory</span>
+</a>
+</div>
+<div class="px-4 mt-auto space-y-2">
+<button class="w-full bg-primary text-white font-bold py-3 rounded-md shadow-lg hover:opacity-90 transition-opacity mb-6">
+                    Add New Lead
+                </button>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 font-medium hover:bg-slate-200/50 rounded transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 font-medium hover:bg-slate-200/50 rounded transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- TopAppBar (Shared Component) -->
+<header class="flex justify-between items-center px-10 w-full h-16 sticky top-0 z-40 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold text-blue-900 dark:text-white tracking-tighter">Messaging Automation</h2>
+<span class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[10px] font-black uppercase rounded tracking-wider">Velocity Pro</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="bg-surface-container-low border-none rounded-md pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-secondary w-64" placeholder="Search templates..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-slate-500 hover:text-secondary transition-colors" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-slate-500 hover:text-secondary transition-colors" data-icon="settings">settings</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-slate-200">
+<img alt="User Profile Avatar" data-alt="professional portrait of a senior account manager in a minimalist studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDogN0RsoGjRiZj_dZvsoyj2Q8R5WbPIBomf4m1pWbBP-TB1LFStxRonicDbRkBYQUbqP4cLzyL_nIkpmCglfBjrI1uNBx9oyeNZkZWZA2pqe0ed5TBqQfeZrEHZEQdynrJoS6HnSfuEzQNliecMWV6ptqir84Et6OifVG9PqOin2RN8anSHQsaOdfp2vgC_jlrf8Qt-8g6gArBisyWBX9YKhqm7GopKKtaTBFcAOjUgKsdHnJ-v-mpZsPt2UPBX4iPxEJxaWut0X4q"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Area: The Architectural Ledger -->
+<div class="flex-1 p-10 grid grid-cols-12 gap-10">
+<!-- Left Column: Automatic Triggers -->
+<section class="col-span-12 lg:col-span-7 space-y-10">
+<header>
+<h3 class="text-2xl font-bold text-secondary tracking-tight mb-2">Automatic Triggers</h3>
+<p class="text-tertiary text-sm max-w-md">Configure event-based sequences that deploy automatically across lead touchpoints.</p>
+</header>
+<!-- Trigger List -->
+<div class="space-y-4">
+<!-- Trigger Item 1 (Active) -->
+<div class="bg-surface-container-lowest p-6 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors audit-rail">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center bg-primary-container text-primary rounded-lg">
+<span class="material-symbols-outlined" data-icon="person_add" style="font-variation-settings: 'FILL' 1;">person_add</span>
+</div>
+<div>
+<h4 class="font-bold text-secondary">New Lead Registered</h4>
+<p class="text-xs text-tertiary font-medium">Triggered via API or Webhook • <span class="text-primary">Active Sequence</span></p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right mr-4">
+<p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Success Rate</p>
+<p class="text-sm font-bold text-primary">98.4%</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-secondary transition-colors">chevron_right</span>
+</div>
+</div>
+<!-- Trigger Item 2 -->
+<div class="bg-surface-container-low p-6 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container-high text-tertiary rounded-lg">
+<span class="material-symbols-outlined" data-icon="sync_alt">sync_alt</span>
+</div>
+<div>
+<h4 class="font-bold text-secondary">Status Changed</h4>
+<p class="text-xs text-tertiary font-medium">When lead moves to "Negotiation" • <span class="text-slate-500">Scheduled</span></p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right mr-4">
+<p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Success Rate</p>
+<p class="text-sm font-bold text-secondary">82.1%</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-secondary transition-colors">chevron_right</span>
+</div>
+</div>
+<!-- Trigger Item 3 -->
+<div class="bg-surface-container-low p-6 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container-high text-tertiary rounded-lg">
+<span class="material-symbols-outlined" data-icon="timer_off">timer_off</span>
+</div>
+<div>
+<h4 class="font-bold text-secondary">No Activity</h4>
+<p class="text-xs text-tertiary font-medium">Re-engagement sequence (48hr idle) • <span class="text-slate-500">Draft</span></p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right mr-4">
+<p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Success Rate</p>
+<p class="text-sm font-bold text-slate-400">--</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-secondary transition-colors">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Secondary Data Visualization -->
+<div class="pt-6">
+<div class="bg-slate-900 p-8 rounded-lg relative overflow-hidden">
+<div class="relative z-10">
+<h5 class="text-white text-sm font-bold uppercase tracking-tighter opacity-60 mb-1">Queue Health</h5>
+<div class="flex items-end gap-2">
+<p class="text-4xl font-black text-white leading-none">Healthy</p>
+<div class="flex gap-1 mb-1">
+<div class="w-2 h-4 bg-primary"></div>
+<div class="w-2 h-6 bg-primary"></div>
+<div class="w-2 h-3 bg-primary"></div>
+<div class="w-2 h-5 bg-primary"></div>
+</div>
+</div>
+<p class="text-white/40 text-xs mt-4 font-medium italic">Latency: 12ms | Global Node: North America-East</p>
+</div>
+<div class="absolute -right-10 -bottom-10 opacity-20">
+<span class="material-symbols-outlined text-[200px] text-white" data-icon="verified_user">verified_user</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Live Editor Side Panel -->
+<aside class="col-span-12 lg:col-span-5">
+<div class="bg-surface-container-lowest p-8 border border-outline-variant shadow-sm h-full flex flex-col">
+<div class="flex justify-between items-start mb-8">
+<div>
+<span class="text-[10px] font-black uppercase tracking-widest text-primary mb-2 block">Live Editor</span>
+<h3 class="text-xl font-bold text-secondary">Edit Template</h3>
+</div>
+<button class="bg-surface-container-low p-2 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-secondary" data-icon="close">close</span>
+</button>
+</div>
+<div class="space-y-6 flex-1">
+<div>
+<label class="block text-[10px] font-black uppercase tracking-widest text-tertiary mb-2">Subject Line</label>
+<input class="w-full bg-surface-container-low border-none p-4 font-bold text-secondary focus:ring-2 focus:ring-primary" type="text" value="Quick Update regarding your inquiry"/>
+</div>
+<div>
+<label class="block text-[10px] font-black uppercase tracking-widest text-tertiary mb-2">Message Body</label>
+<div class="relative group">
+<textarea class="w-full bg-surface-container-low border-none p-6 text-sm leading-relaxed text-secondary focus:ring-2 focus:ring-primary" rows="10">Hi {lead_name},
+
+Thank you for your interest in Velocity Pro. My name is {agent_name} and I'll be your primary point of contact during the onboarding process.
+
+Would you like to schedule a 15-minute briefing to discuss your lead directory goals?
+
+Best regards,
+{agent_name}</textarea>
+<div class="absolute bottom-4 right-4 flex gap-2">
+<button class="px-2 py-1 bg-white text-[10px] font-bold border border-outline-variant hover:border-primary transition-colors">Preview</button>
+<button class="px-2 py-1 bg-white text-[10px] font-bold border border-outline-variant hover:border-primary transition-colors">Test</button>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-[10px] font-black uppercase tracking-widest text-tertiary mb-3">Available Variables</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1 bg-slate-100 text-[10px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{lead_name}</button>
+<button class="px-3 py-1 bg-slate-100 text-[10px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{agent_name}</button>
+<button class="px-3 py-1 bg-slate-100 text-[10px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{company_name}</button>
+<button class="px-3 py-1 bg-slate-100 text-[10px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{next_available_slot}</button>
+</div>
+</div>
+</div>
+<div class="pt-8 mt-auto border-t border-outline-variant flex items-center justify-between">
+<button class="text-sm font-bold text-tertiary hover:text-error transition-colors">Discard Changes</button>
+<button class="bg-primary text-white px-8 py-3 font-bold hover:shadow-lg transition-all">Save Template</button>
+</div>
+</div>
+</aside>
+</div>
+<!-- Bottom Metrics: Performance Hub -->
+<footer class="mt-auto px-10 py-12 bg-surface-container-low grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 border-t border-outline-variant">
+<div class="space-y-1">
+<p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Messages Sent (24h)</p>
+<p class="text-4xl font-black text-secondary tracking-tighter">42,891</p>
+<div class="flex items-center gap-1 text-primary text-[10px] font-bold">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'wght' 700;">trending_up</span>
+                    +12% from yesterday
+                </div>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Engagement Rate</p>
+<p class="text-4xl font-black text-secondary tracking-tighter">24.6%</p>
+<div class="w-full bg-slate-300 h-1 mt-2">
+<div class="bg-primary h-full" style="width: 24.6%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] font-black uppercase tracking-widest text-tertiary">System Status</p>
+<div class="flex items-center gap-3">
+<div class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</div>
+<p class="text-2xl font-bold text-secondary tracking-tight">Fully Operational</p>
+</div>
+<p class="text-[10px] text-tertiary font-medium mt-1">Last heart-beat: 2.1s ago</p>
+</div>
+<div class="hidden lg:flex flex-col justify-center items-end">
+<div class="bg-surface-container-highest p-4 flex gap-4 items-center">
+<img alt="Performance Graph Preview" class="w-20 h-10 object-cover" data-alt="professional line graph showing increasing data trends with emerald green and navy highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD904yg9-lD_jT34S_NPeQ-4XBYZ5J-kOmyCpiONTT6DP4tJ3HKK0L58EcltCUHAquho2FEoMjN3QJg0VSnmIdXW2fLXT5H3xmdmxX1_C1hPFUQVZ0ZKokF-mq4UAtsPnbS4LOLw7iK5xJdH-nO0S6OUjNSI0waZLNjUyuahbBIzYHWoqfRJZFZ9AZAvAQ4QnUE5I4Vt4ThUx8-FYcJDGs-75_mZ5-XfKHQFC7h8XORKBYUzGr-cre6aYa-h-CqhynuMw2LK60Re0dR"/>
+<div class="text-right">
+<p class="text-[10px] font-black text-secondary uppercase tracking-widest">Global Reach</p>
+<p class="text-xs font-bold text-tertiary">142 Countries</p>
+</div>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

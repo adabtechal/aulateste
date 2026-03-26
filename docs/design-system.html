@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Design System | Sistema Aula 26</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#10B981",
+            "secondary": "#1E3A8A",
+            "tertiary": "#64748B",
+            "error": "#ba1a1a",
+            "surface": "#f7f9fb",
+            "surface-container-low": "#f2f4f6",
+            "surface-container": "#eceef0",
+            "surface-container-high": "#e6e8ea",
+            "surface-container-highest": "#e0e3e5",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#d8dadc",
+            "surface-variant": "#e0e3e5",
+            "on-surface": "#191c1e",
+            "on-surface-variant": "#444651",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-error": "#ffffff",
+            "primary-fixed": "#6ffbbe",
+            "primary-fixed-dim": "#4edea3",
+            "primary-container": "#d1fae5",
+            "on-primary-container": "#27c38a",
+            "secondary-container": "#8fa7fe",
+            "secondary-fixed": "#dce1ff",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a",
+            "inverse-surface": "#2d3133",
+            "inverse-primary": "#4edea3",
+            "outline": "#757682",
+            "outline-variant": "#c5c5d3",
+          },
+          fontFamily: {
+            "montserrat": ["Montserrat", "sans-serif"],
+            "inter": ["Inter", "sans-serif"],
+            "headline": ["Montserrat", "sans-serif"],
+            "body": ["Inter", "sans-serif"],
+            "label": ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "md": "0.375rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px",
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    .text-editorial-display {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .audit-rail {
+      border-left: 2px solid #10B981;
+    }
+    .glass-panel {
+      background: rgba(224, 227, 229, 0.8);
+      backdrop-filter: blur(20px);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+    }
+    .section-anchor {
+      scroll-margin-top: 80px;
+    }
+    html { scroll-behavior: smooth; }
+
+    /* Sidebar nav for the design system page */
+    .ds-nav a {
+      transition: all 0.15s;
+    }
+    .ds-nav a:hover {
+      color: #1E3A8A;
+      background: rgba(226,232,240,0.5);
+    }
+    .ds-nav a.active {
+      color: #1E3A8A;
+      font-weight: 700;
+      background: white;
+      border-left: 4px solid #10B981;
+      transform: translateX(4px);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body class="bg-surface font-inter text-on-surface antialiased">
+
+  <!-- Fixed Sidebar Navigation -->
+  <aside class="h-screen w-64 fixed left-0 top-0 flex flex-col bg-slate-100 border-r border-slate-200 z-50 overflow-y-auto">
+    <div class="flex flex-col h-full py-6">
+      <!-- Brand -->
+      <div class="px-6 mb-8">
+        <h1 class="text-lg font-black text-secondary tracking-tighter font-montserrat uppercase">Design System</h1>
+        <p class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Sistema Aula 26 v1.0</p>
+      </div>
+      <!-- Nav -->
+      <nav class="ds-nav flex-1 px-3 space-y-1 text-sm">
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#cores">
+          <span class="material-symbols-outlined text-[18px]">palette</span>Cores
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#superficies">
+          <span class="material-symbols-outlined text-[18px]">layers</span>Superficies
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#tipografia">
+          <span class="material-symbols-outlined text-[18px]">text_fields</span>Tipografia
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#espacamento">
+          <span class="material-symbols-outlined text-[18px]">space_bar</span>Espacamento
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#botoes">
+          <span class="material-symbols-outlined text-[18px]">smart_button</span>Botoes
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#inputs">
+          <span class="material-symbols-outlined text-[18px]">input</span>Inputs
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#cards">
+          <span class="material-symbols-outlined text-[18px]">dashboard</span>Cards
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#badges">
+          <span class="material-symbols-outlined text-[18px]">label</span>Badges & Status
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#progress">
+          <span class="material-symbols-outlined text-[18px]">data_usage</span>Progress Bars
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#navegacao">
+          <span class="material-symbols-outlined text-[18px]">menu</span>Navegacao
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#tabela">
+          <span class="material-symbols-outlined text-[18px]">table</span>Tabela de Dados
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#icones">
+          <span class="material-symbols-outlined text-[18px]">emoji_symbols</span>Iconografia
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#glass">
+          <span class="material-symbols-outlined text-[18px]">blur_on</span>Glassmorphism
+        </a>
+        <div class="pt-4 mt-2 border-t border-slate-200">
+          <p class="px-3 py-2 text-[9px] font-black uppercase tracking-widest text-primary">Telas do Sistema</p>
+        </div>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#tela-dashboard">
+          <span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#tela-kanban">
+          <span class="material-symbols-outlined text-[18px]">view_kanban</span>Kanban Pipeline
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#tela-diretorio">
+          <span class="material-symbols-outlined text-[18px]">group</span>Diretorio de Leads
+        </a>
+        <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium rounded" href="#tela-mensagens">
+          <span class="material-symbols-outlined text-[18px]">chat</span>Automacao Mensagens
+        </a>
+      </nav>
+      <div class="px-6 pt-4 border-t border-slate-200 mt-4">
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Architectural Ledger</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="ml-64 min-h-screen">
+
+    <!-- Top Bar -->
+    <header class="w-full h-16 bg-slate-50 border-b border-slate-200 flex items-center px-10 sticky top-0 z-40">
+      <h2 class="text-xl font-bold text-secondary tracking-tighter font-montserrat">Design System Visual Guide</h2>
+    </header>
+
+    <div class="p-10 max-w-6xl mx-auto space-y-16">
+
+      <!-- HERO -->
+      <section class="pb-8 border-b border-slate-200">
+        <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">The Architectural Ledger</h3>
+        <h2 class="text-5xl font-extrabold text-secondary font-montserrat tracking-tighter leading-tight">
+          Design <span class="text-primary">System</span>
+        </h2>
+        <p class="text-tertiary mt-3 max-w-2xl text-sm leading-relaxed">
+          Referencia visual completa para a construcao do Sistema Aula 26. Baseado no conceito "Architectural Ledger" — autoridade informacional com estetica FinTech editorial.
+        </p>
+      </section>
+
+      <!-- ==================== CORES ==================== -->
+      <section id="cores" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 01</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Paleta de Cores</h2>
+        </div>
+
+        <!-- Primary Colors -->
+        <div>
+          <h4 class="text-[11px] font-black uppercase tracking-widest text-tertiary mb-4">Cores Principais</h4>
+          <div class="grid grid-cols-3 gap-6">
+            <div>
+              <div class="h-28 bg-primary rounded-lg mb-3 flex items-end p-4">
+                <span class="text-white text-xs font-bold">#10B981</span>
+              </div>
+              <p class="font-bold text-secondary text-sm">Primary — Action Green</p>
+              <p class="text-xs text-tertiary">Sucesso, CTA principal</p>
+            </div>
+            <div>
+              <div class="h-28 bg-secondary rounded-lg mb-3 flex items-end p-4">
+                <span class="text-white text-xs font-bold">#1E3A8A</span>
+              </div>
+              <p class="font-bold text-secondary text-sm">Secondary — Executive Navy</p>
+              <p class="text-xs text-tertiary">Navegacao, headers, autoridade</p>
+            </div>
+            <div>
+              <div class="h-28 bg-tertiary rounded-lg mb-3 flex items-end p-4">
+                <span class="text-white text-xs font-bold">#64748B</span>
+              </div>
+              <p class="font-bold text-secondary text-sm">Tertiary — Utility Slate</p>
+              <p class="text-xs text-tertiary">Info secundaria, metadata</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extended Colors -->
+        <div>
+          <h4 class="text-[11px] font-black uppercase tracking-widest text-tertiary mb-4">Cores Estendidas</h4>
+          <div class="grid grid-cols-6 gap-4">
+            <div>
+              <div class="h-16 rounded-lg mb-2 border border-slate-200" style="background:#6ffbbe"></div>
+              <p class="text-[10px] font-bold text-secondary">primary-fixed</p>
+              <p class="text-[10px] text-tertiary">#6ffbbe</p>
+            </div>
+            <div>
+              <div class="h-16 rounded-lg mb-2 border border-slate-200" style="background:#4edea3"></div>
+              <p class="text-[10px] font-bold text-secondary">primary-fixed-dim</p>
+              <p class="text-[10px] text-tertiary">#4edea3</p>
+            </div>
+            <div>
+              <div class="h-16 rounded-lg mb-2 border border-slate-200" style="background:#d1fae5"></div>
+              <p class="text-[10px] font-bold text-secondary">primary-container</p>
+              <p class="text-[10px] text-tertiary">#d1fae5</p>
+            </div>
+            <div>
+              <div class="h-16 rounded-lg mb-2 border border-slate-200" style="background:#8fa7fe"></div>
+              <p class="text-[10px] font-bold text-secondary">secondary-container</p>
+              <p class="text-[10px] text-tertiary">#8fa7fe</p>
+            </div>
+            <div>
+              <div class="h-16 rounded-lg mb-2 border border-slate-200" style="background:#dce1ff"></div>
+              <p class="text-[10px] font-bold text-secondary">secondary-fixed</p>
+              <p class="text-[10px] text-tertiary">#dce1ff</p>
+            </div>
+            <div>
+              <div class="h-16 rounded-lg mb-2" style="background:#ba1a1a"></div>
+              <p class="text-[10px] font-bold text-secondary">error</p>
+              <p class="text-[10px] text-tertiary">#ba1a1a</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SUPERFICIES ==================== -->
+      <section id="superficies" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 02</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Hierarquia de Superficies</h2>
+          <p class="text-sm text-tertiary mt-1">Profundidade via camadas tonais — sem sombras para hierarquia</p>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-center gap-6">
+            <div class="w-48 h-20 bg-surface rounded-lg border border-slate-200 flex items-center justify-center">
+              <span class="text-xs font-bold text-secondary">surface</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-secondary">#f7f9fb — Base</p>
+              <p class="text-xs text-tertiary">Background geral da aplicacao</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-6 pl-8">
+            <div class="w-48 h-20 bg-surface-container-low rounded-lg flex items-center justify-center">
+              <span class="text-xs font-bold text-secondary">container-low</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-secondary">#f2f4f6 — Layout Blocks</p>
+              <p class="text-xs text-tertiary">Sidebar, filtros, areas de agrupamento</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-6 pl-16">
+            <div class="w-48 h-20 bg-surface-container-lowest rounded-lg shadow-sm flex items-center justify-center">
+              <span class="text-xs font-bold text-secondary">container-lowest</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-secondary">#ffffff — Cards Interativos</p>
+              <p class="text-xs text-tertiary">Efeito "lift" sem sombra pesada</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-6 pl-8">
+            <div class="w-48 h-20 bg-surface-container-high rounded-lg flex items-center justify-center">
+              <span class="text-xs font-bold text-secondary">container-high</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-secondary">#e6e8ea — Badges & Hover</p>
+              <p class="text-xs text-tertiary">Badges de contagem, hover states</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-6 pl-8">
+            <div class="w-48 h-20 bg-surface-container-highest rounded-lg flex items-center justify-center">
+              <span class="text-xs font-bold text-secondary">container-highest</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-secondary">#e0e3e5 — Glass Base</p>
+              <p class="text-xs text-tertiary">Base para glassmorphism (80% opacity + blur)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TIPOGRAFIA ==================== -->
+      <section id="tipografia" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 03</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Tipografia</h2>
+          <p class="text-sm text-tertiary mt-1">Montserrat para headlines + Inter para body</p>
+        </div>
+
+        <div class="bg-surface-container-lowest p-10 rounded-xl shadow-sm space-y-8">
+          <!-- Display -->
+          <div class="pb-6 border-b border-surface-container-low">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-3">Display — 3.5rem / ExtraBold / -0.02em</p>
+            <p class="text-editorial-display text-secondary font-montserrat">12,842</p>
+          </div>
+          <!-- Headline XL -->
+          <div class="pb-6 border-b border-surface-container-low">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-3">Headline XL — 2.5rem / ExtraBold</p>
+            <p class="text-4xl font-extrabold text-secondary font-montserrat tracking-tighter">Institutional <span class="text-primary">Ledger</span></p>
+          </div>
+          <!-- Headline LG -->
+          <div class="pb-6 border-b border-surface-container-low">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-3">Headline LG — 2rem / Bold</p>
+            <p class="text-3xl font-bold text-secondary font-montserrat tracking-tight">Executive Lead Dashboard</p>
+          </div>
+          <!-- Title LG -->
+          <div class="pb-6 border-b border-surface-container-low">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-3">Title LG — 1.25rem / Bold</p>
+            <p class="text-xl font-bold text-secondary font-montserrat">Lead Growth Strategy</p>
+          </div>
+          <!-- Body -->
+          <div class="pb-6 border-b border-surface-container-low">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-3">Body MD — 0.875rem / Regular / Inter</p>
+            <p class="text-sm text-on-surface font-inter leading-relaxed max-w-xl">High-precision lead management for institutional finance. Monitor engagement metrics, propensity scores, and interaction velocity in real-time.</p>
+          </div>
+          <!-- Labels -->
+          <div class="pb-6 border-b border-surface-container-low">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-3">Label LG — 0.6875rem / ExtraBold / Uppercase</p>
+            <p class="text-[0.6875rem] font-black uppercase tracking-[0.1em] text-secondary font-montserrat">Total Active Leads</p>
+          </div>
+          <!-- Label SM -->
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-3">Label MD — 0.625rem / Black / Uppercase</p>
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Performance Overview</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ESPACAMENTO ==================== -->
+      <section id="espacamento" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 04</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Escala de Espacamento</h2>
+        </div>
+
+        <div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm space-y-4">
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right"><span class="text-[10px] font-black text-tertiary uppercase tracking-wider">spacing-2</span></div>
+            <div class="h-6 bg-primary/20 rounded" style="width: 0.4rem;"></div>
+            <span class="text-xs text-secondary font-bold">0.4rem</span>
+            <span class="text-xs text-tertiary">— Tight (info densa)</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right"><span class="text-[10px] font-black text-tertiary uppercase tracking-wider">spacing-4</span></div>
+            <div class="h-6 bg-primary/30 rounded" style="width: 0.9rem;"></div>
+            <span class="text-xs text-secondary font-bold">0.9rem</span>
+            <span class="text-xs text-tertiary">— Standard (componentes)</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right"><span class="text-[10px] font-black text-tertiary uppercase tracking-wider">spacing-6</span></div>
+            <div class="h-6 bg-primary/40 rounded" style="width: 1.3rem;"></div>
+            <span class="text-xs text-secondary font-bold">1.3rem</span>
+            <span class="text-xs text-tertiary">— Separacao de itens (sem dividers)</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right"><span class="text-[10px] font-black text-tertiary uppercase tracking-wider">spacing-10</span></div>
+            <div class="h-6 bg-primary/50 rounded" style="width: 2.25rem;"></div>
+            <span class="text-xs text-secondary font-bold">2.25rem</span>
+            <span class="text-xs text-tertiary">— Sectional (entre secoes)</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right"><span class="text-[10px] font-black text-tertiary uppercase tracking-wider">spacing-20</span></div>
+            <div class="h-6 bg-primary/60 rounded" style="width: 4.5rem;"></div>
+            <span class="text-xs text-secondary font-bold">4.5rem</span>
+            <span class="text-xs text-tertiary">— Hero / Editorial</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== BOTOES ==================== -->
+      <section id="botoes" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 05</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Botoes</h2>
+        </div>
+
+        <div class="bg-surface-container-lowest p-10 rounded-xl shadow-sm">
+          <div class="grid grid-cols-2 gap-10">
+            <!-- Primary -->
+            <div class="space-y-3">
+              <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Primary CTA</p>
+              <button class="bg-primary text-white font-bold py-3 px-8 rounded-md shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all font-montserrat text-sm">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-lg">person_add</span>
+                  Create New Lead
+                </span>
+              </button>
+              <p class="text-xs text-tertiary">Action Green + white text + shadow glow</p>
+            </div>
+
+            <!-- Primary Compact -->
+            <div class="space-y-3">
+              <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Primary Compact</p>
+              <button class="bg-primary text-white font-bold py-3 px-6 rounded-md font-montserrat text-xs uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Add New Lead
+              </button>
+              <p class="text-xs text-tertiary">Label uppercase + tracking widest</p>
+            </div>
+
+            <!-- Secondary Outline -->
+            <div class="space-y-3">
+              <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Secondary Outline</p>
+              <button class="bg-white border border-slate-200 px-6 py-3 text-xs font-bold uppercase tracking-widest text-secondary hover:bg-slate-50 transition-colors">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-lg">download</span>
+                  Export CSV
+                </span>
+              </button>
+              <p class="text-xs text-tertiary">White bg + border sutil + Navy text</p>
+            </div>
+
+            <!-- Secondary Solid -->
+            <div class="space-y-3">
+              <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Secondary Solid</p>
+              <button class="bg-secondary text-white px-6 py-3 text-xs font-bold uppercase tracking-widest hover:opacity-90 transition-opacity">
+                Q3 Projection
+              </button>
+              <p class="text-xs text-tertiary">Navy solid para acoes contextuais</p>
+            </div>
+
+            <!-- Tertiary Ghost -->
+            <div class="space-y-3">
+              <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Tertiary (Ghost)</p>
+              <button class="text-tertiary font-bold text-xs uppercase hover:text-secondary transition-colors">
+                Clear Filters
+              </button>
+              <p class="text-xs text-tertiary">Sem bg, texto apenas, hover muda cor</p>
+            </div>
+
+            <!-- Text Link -->
+            <div class="space-y-3">
+              <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Link de Acao</p>
+              <button class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline transition-all">
+                View All Audit Logs
+              </button>
+              <p class="text-xs text-tertiary">Primary text + hover underline</p>
+            </div>
+
+            <!-- Destructive -->
+            <div class="space-y-3">
+              <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Destrutivo</p>
+              <button class="text-sm font-bold text-tertiary hover:text-error transition-colors">
+                Discard Changes
+              </button>
+              <p class="text-xs text-tertiary">Tertiary text → error on hover</p>
+            </div>
+
+            <!-- FAB -->
+            <div class="space-y-3">
+              <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">FAB (Floating Action)</p>
+              <button class="w-16 h-16 bg-secondary text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-3xl">add_chart</span>
+              </button>
+              <p class="text-xs text-tertiary">Navy + circular + shadow-2xl</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== INPUTS ==================== -->
+      <section id="inputs" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 06</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Campos de Entrada</h2>
+        </div>
+
+        <div class="bg-surface-container-lowest p-10 rounded-xl shadow-sm space-y-8">
+          <!-- Text Input -->
+          <div class="max-w-md space-y-2">
+            <label class="block text-[10px] font-black uppercase tracking-widest text-tertiary">Subject Line</label>
+            <input type="text" class="w-full bg-surface-container-low border-none rounded-md p-4 font-bold text-secondary focus:ring-2 focus:ring-primary" value="Quick Update regarding your inquiry"/>
+          </div>
+
+          <!-- Search -->
+          <div class="max-w-md space-y-2">
+            <label class="block text-[10px] font-black uppercase tracking-widest text-tertiary">Campo de Busca</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+              <input type="text" class="bg-surface-container-low border-none rounded-md pl-10 pr-4 py-2 text-sm w-full focus:ring-2 focus:ring-secondary/20" placeholder="Search entities..."/>
+            </div>
+          </div>
+
+          <!-- Select -->
+          <div class="max-w-md space-y-2">
+            <label class="block text-[10px] font-black uppercase tracking-[0.1em] text-secondary font-montserrat">Lead Status</label>
+            <select class="bg-surface-container-lowest border-none rounded-md py-2 px-4 text-sm font-medium text-on-surface shadow-sm focus:ring-2 focus:ring-secondary w-full">
+              <option>All Statuses</option>
+              <option>Discovery</option>
+              <option>Qualified</option>
+              <option>Negotiation</option>
+            </select>
+          </div>
+
+          <!-- Textarea -->
+          <div class="max-w-lg space-y-2">
+            <label class="block text-[10px] font-black uppercase tracking-widest text-tertiary">Message Body</label>
+            <textarea class="w-full bg-surface-container-low border-none rounded-md p-6 text-sm leading-relaxed text-secondary focus:ring-2 focus:ring-primary" rows="4">Hi {lead_name},
+
+Thank you for your interest in our product.</textarea>
+          </div>
+
+          <!-- Variable Chips -->
+          <div class="space-y-2">
+            <label class="block text-[10px] font-black uppercase tracking-widest text-tertiary">Variaveis Disponiveis</label>
+            <div class="flex flex-wrap gap-2">
+              <button class="px-3 py-1 bg-slate-100 text-[10px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{lead_name}</button>
+              <button class="px-3 py-1 bg-slate-100 text-[10px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{agent_name}</button>
+              <button class="px-3 py-1 bg-slate-100 text-[10px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{company_name}</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== CARDS ==================== -->
+      <section id="cards" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 07</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Cards</h2>
+        </div>
+
+        <!-- KPI Cards -->
+        <div>
+          <h4 class="text-[11px] font-black uppercase tracking-widest text-tertiary mb-4">KPI Cards (Dashboard)</h4>
+          <div class="grid grid-cols-3 gap-6">
+            <div class="bg-surface-container-lowest p-8 shadow-sm relative overflow-hidden group">
+              <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <span class="material-symbols-outlined text-6xl">leaderboard</span>
+              </div>
+              <p class="text-[0.6875rem] font-black uppercase tracking-widest text-slate-400 mb-4">Total Active Leads</p>
+              <div class="flex items-baseline space-x-2">
+                <span class="text-editorial-display text-secondary">12,842</span>
+                <span class="text-primary font-bold text-sm flex items-center">
+                  <span class="material-symbols-outlined text-sm mr-1">trending_up</span>+12%
+                </span>
+              </div>
+              <div class="mt-6 w-full h-1 bg-slate-100"><div class="h-full bg-primary" style="width: 72%"></div></div>
+            </div>
+
+            <div class="bg-surface-container-lowest p-8 shadow-sm relative overflow-hidden group">
+              <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <span class="material-symbols-outlined text-6xl">analytics</span>
+              </div>
+              <p class="text-[0.6875rem] font-black uppercase tracking-widest text-slate-400 mb-4">Conversion Rate</p>
+              <div class="flex items-baseline space-x-2">
+                <span class="text-editorial-display text-secondary">24.8<span class="text-2xl font-bold">%</span></span>
+                <span class="text-primary font-bold text-sm flex items-center">
+                  <span class="material-symbols-outlined text-sm mr-1">trending_up</span>+3.1%
+                </span>
+              </div>
+              <div class="mt-6 flex space-x-1">
+                <div class="h-1 flex-1 bg-primary"></div>
+                <div class="h-1 flex-1 bg-primary"></div>
+                <div class="h-1 flex-1 bg-primary"></div>
+                <div class="h-1 flex-1 bg-slate-200"></div>
+              </div>
+            </div>
+
+            <div class="bg-surface-container-lowest p-8 shadow-sm relative overflow-hidden group">
+              <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <span class="material-symbols-outlined text-6xl">bolt</span>
+              </div>
+              <p class="text-[0.6875rem] font-black uppercase tracking-widest text-slate-400 mb-4">New Leads Today</p>
+              <div class="flex items-baseline space-x-2">
+                <span class="text-editorial-display text-secondary">142</span>
+                <span class="text-slate-400 font-bold text-sm">Target: 150</span>
+              </div>
+              <div class="mt-6 flex items-center justify-between">
+                <div class="flex -space-x-2">
+                  <div class="w-6 h-6 rounded-full border-2 border-white bg-primary/20"></div>
+                  <div class="w-6 h-6 rounded-full border-2 border-white bg-secondary/20"></div>
+                  <div class="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-500">+139</div>
+                </div>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-primary">In Progress</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kanban Card -->
+        <div>
+          <h4 class="text-[11px] font-black uppercase tracking-widest text-tertiary mb-4">Kanban Card</h4>
+          <div class="grid grid-cols-3 gap-6">
+            <div class="bg-surface-container-lowest p-5 rounded-lg border-l-4 border-primary-fixed shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+              <div class="flex justify-between items-start mb-3">
+                <span class="text-[9px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Organic Search</span>
+                <span class="text-[10px] font-medium text-tertiary">2h ago</span>
+              </div>
+              <h4 class="font-montserrat font-bold text-secondary mb-1 group-hover:text-primary transition-colors">Stellar Dynamics Inc.</h4>
+              <p class="text-lg font-black text-secondary font-montserrat mb-4 tracking-tighter">$45,000</p>
+              <div class="flex items-center justify-between pt-3 border-t border-slate-50">
+                <div class="flex -space-x-2">
+                  <div class="w-6 h-6 rounded-full border-2 border-white bg-primary/30"></div>
+                </div>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors" style="font-size: 14px;">arrow_forward_ios</span>
+              </div>
+            </div>
+
+            <div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+              <div class="flex justify-between items-start mb-3">
+                <span class="text-[9px] font-bold uppercase tracking-tighter text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Referral</span>
+                <span class="text-[10px] font-medium text-tertiary">5h ago</span>
+              </div>
+              <h4 class="font-montserrat font-bold text-secondary mb-1 group-hover:text-primary transition-colors">Quantum Leap Logistics</h4>
+              <p class="text-lg font-black text-secondary font-montserrat mb-4 tracking-tighter">$12,800</p>
+              <div class="flex items-center justify-between pt-3 border-t border-slate-50">
+                <div class="flex -space-x-2">
+                  <div class="w-6 h-6 rounded-full border-2 border-white bg-secondary/30"></div>
+                </div>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors" style="font-size: 14px;">arrow_forward_ios</span>
+              </div>
+            </div>
+
+            <!-- Card with confidence bar -->
+            <div class="bg-surface-container-lowest p-5 rounded-lg border-l-4 border-primary shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+              <div class="flex justify-between items-start mb-3">
+                <span class="text-[9px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Enterprise Partner</span>
+                <span class="text-[10px] font-medium text-primary font-bold">In Review</span>
+              </div>
+              <h4 class="font-montserrat font-bold text-secondary mb-1 group-hover:text-primary transition-colors">Aetherium Cloud</h4>
+              <p class="text-lg font-black text-secondary font-montserrat mb-4 tracking-tighter">$520,000</p>
+              <div class="w-full bg-slate-100 h-1 rounded-full overflow-hidden">
+                <div class="bg-primary w-[85%] h-full"></div>
+              </div>
+              <p class="text-[9px] font-extrabold text-tertiary mt-2 uppercase tracking-widest">Confidence: 85%</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insight Cards (Bento) -->
+        <div>
+          <h4 class="text-[11px] font-black uppercase tracking-widest text-tertiary mb-4">Insight Cards (Bento Grid)</h4>
+          <div class="grid grid-cols-3 gap-6">
+            <!-- Navy -->
+            <div class="bg-secondary text-white p-8 rounded-xl relative overflow-hidden">
+              <div class="relative z-10">
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-70">Total Opportunity Value</div>
+                <div class="text-4xl font-black font-montserrat tracking-tighter mb-4">$12.4M</div>
+                <div class="flex items-center gap-2 text-primary font-bold text-xs">
+                  <span class="material-symbols-outlined text-sm">trending_up</span>+14.2% vs last month
+                </div>
+              </div>
+            </div>
+            <!-- White -->
+            <div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/20 flex flex-col justify-between">
+              <div>
+                <div class="text-[10px] font-black text-secondary uppercase tracking-[0.2em] mb-2">High Propensity Leads</div>
+                <div class="text-4xl font-black text-secondary font-montserrat tracking-tighter">42</div>
+              </div>
+              <div class="mt-6 flex gap-1">
+                <div class="flex-1 h-1.5 bg-primary rounded-full"></div>
+                <div class="flex-1 h-1.5 bg-primary rounded-full"></div>
+                <div class="flex-1 h-1.5 bg-primary rounded-full"></div>
+                <div class="flex-1 h-1.5 bg-surface-container-high rounded-full"></div>
+                <div class="flex-1 h-1.5 bg-surface-container-high rounded-full"></div>
+              </div>
+            </div>
+            <!-- Green -->
+            <div class="bg-primary p-8 rounded-xl text-white flex flex-col justify-between shadow-xl shadow-primary/10">
+              <div>
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-80">Conversion Velocity</div>
+                <div class="text-4xl font-black font-montserrat tracking-tighter">18.4 Days</div>
+              </div>
+              <div class="flex items-center justify-between mt-4">
+                <span class="text-xs font-medium opacity-90">Institutional average: 24 days</span>
+                <span class="material-symbols-outlined">bolt</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dark Card -->
+        <div>
+          <h4 class="text-[11px] font-black uppercase tracking-widest text-tertiary mb-4">Card Escuro (Destaque)</h4>
+          <div class="max-w-md">
+            <div class="bg-slate-900 p-8 rounded-lg relative overflow-hidden">
+              <div class="relative z-10">
+                <h5 class="text-white text-sm font-bold uppercase tracking-tighter opacity-60 mb-1">Queue Health</h5>
+                <div class="flex items-end gap-2">
+                  <p class="text-4xl font-black text-white leading-none">Healthy</p>
+                  <div class="flex gap-1 mb-1">
+                    <div class="w-2 h-4 bg-primary"></div>
+                    <div class="w-2 h-6 bg-primary"></div>
+                    <div class="w-2 h-3 bg-primary"></div>
+                    <div class="w-2 h-5 bg-primary"></div>
+                  </div>
+                </div>
+                <p class="text-white/40 text-xs mt-4 font-medium italic">Latency: 12ms | Global Node: North America-East</p>
+              </div>
+              <div class="absolute -right-10 -bottom-10 opacity-20">
+                <span class="material-symbols-outlined text-[120px] text-white">verified_user</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== BADGES ==================== -->
+      <section id="badges" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 08</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Badges & Status</h2>
+        </div>
+
+        <div class="bg-surface-container-lowest p-10 rounded-xl shadow-sm space-y-8">
+          <!-- Status Badges -->
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-4">Badges de Status (Tabela)</p>
+            <div class="flex flex-wrap gap-4">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">Negotiation</span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-secondary/10 text-secondary border border-secondary/20">Qualified</span>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">Discovery</span>
+            </div>
+          </div>
+
+          <!-- Source Badges -->
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-4">Badges de Source (Kanban)</p>
+            <div class="flex flex-wrap gap-4">
+              <span class="text-[9px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Organic Search</span>
+              <span class="text-[9px] font-bold uppercase tracking-tighter text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Referral</span>
+              <span class="text-[9px] font-bold uppercase tracking-tighter text-slate-600 bg-slate-100 px-2 py-0.5 rounded">Cold Outreach</span>
+              <span class="text-[9px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Direct Inquiry</span>
+              <span class="text-[9px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Enterprise Partner</span>
+            </div>
+          </div>
+
+          <!-- Counter & Tag Badges -->
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-4">Badges de Contagem & Tag</p>
+            <div class="flex flex-wrap gap-4 items-center">
+              <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">04</span>
+              <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">08</span>
+              <span class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[10px] font-black uppercase rounded tracking-wider">Velocity Pro</span>
+              <span class="text-tertiary text-xs font-medium bg-surface-container-high px-2 py-0.5 rounded">v2.4.0</span>
+            </div>
+          </div>
+
+          <!-- Audit Rail -->
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-4">Audit Rail (Componente Unico)</p>
+            <div class="space-y-4 max-w-md">
+              <div class="audit-rail pl-6 py-1">
+                <div class="flex items-center space-x-2 mb-2">
+                  <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">09:42 AM</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                </div>
+                <p class="text-sm font-bold text-secondary">New Enterprise Lead: CloudCorp</p>
+                <p class="text-xs text-slate-500 mt-1">Assigned to: Marcus Aurelius</p>
+              </div>
+              <div class="audit-rail pl-6 py-1">
+                <div class="flex items-center space-x-2 mb-2">
+                  <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">08:15 AM</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                </div>
+                <p class="text-sm font-bold text-secondary">Pipeline Shift: ZenLabs</p>
+                <p class="text-xs text-slate-500 mt-1">Moved to 'Decision Maker' phase</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Status -->
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-4">Indicador de Status Online</p>
+            <div class="flex items-center gap-3">
+              <div class="relative flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+              </div>
+              <p class="text-lg font-bold text-secondary tracking-tight">Fully Operational</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PROGRESS ==================== -->
+      <section id="progress" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 09</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Progress Bars</h2>
+        </div>
+
+        <div class="bg-surface-container-lowest p-10 rounded-xl shadow-sm space-y-8 max-w-lg">
+          <div class="space-y-2">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Barra Simples (h-1)</p>
+            <div class="h-1 w-full bg-slate-100"><div class="h-full bg-primary" style="width: 72%"></div></div>
+          </div>
+
+          <div class="space-y-2">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Barra com Label (h-2)</p>
+            <div class="flex items-center gap-3">
+              <p class="text-sm font-bold text-secondary w-28">Organic Search</p>
+              <div class="h-2 flex-1 bg-slate-100 overflow-hidden"><div class="h-full bg-primary" style="width: 48%"></div></div>
+              <span class="text-sm font-black text-secondary">48%</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <p class="text-sm font-bold text-secondary w-28">LinkedIn Ads</p>
+              <div class="h-2 flex-1 bg-slate-100 overflow-hidden"><div class="h-full bg-secondary" style="width: 32%"></div></div>
+              <span class="text-sm font-black text-secondary">32%</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <p class="text-sm font-bold text-secondary w-28">Direct Referral</p>
+              <div class="h-2 flex-1 bg-slate-100 overflow-hidden"><div class="h-full bg-slate-400" style="width: 20%"></div></div>
+              <span class="text-sm font-black text-secondary">20%</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Barra Segmentada</p>
+            <div class="flex space-x-1">
+              <div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+              <div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+              <div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+              <div class="h-1.5 flex-1 bg-surface-container-high rounded-full"></div>
+              <div class="h-1.5 flex-1 bg-surface-container-high rounded-full"></div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary">Propensity Score</p>
+            <div class="flex items-center gap-3">
+              <div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+                <div class="h-full bg-primary w-[92%]"></div>
+              </div>
+              <span class="text-sm font-black text-secondary font-montserrat">92</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+                <div class="h-full bg-primary w-[78%]"></div>
+              </div>
+              <span class="text-sm font-black text-secondary font-montserrat">78</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+                <div class="h-full bg-secondary w-[45%]"></div>
+              </div>
+              <span class="text-sm font-black text-secondary font-montserrat">45</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NAVEGACAO ==================== -->
+      <section id="navegacao" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 10</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Navegacao (Sidebar + Top Bar)</h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8">
+          <!-- Sidebar Demo -->
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-4">Sidebar</p>
+            <div class="bg-slate-100 rounded-xl p-4 w-64 space-y-1">
+              <div class="px-4 mb-6">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-secondary rounded flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-sm">rocket_launch</span>
+                  </div>
+                  <div>
+                    <p class="text-sm font-black text-blue-900 tracking-tighter">Velocity CRM</p>
+                    <p class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Enterprise Edition</p>
+                  </div>
+                </div>
+              </div>
+              <a class="flex items-center gap-3 px-3 py-2.5 bg-white text-blue-900 font-bold shadow-sm border-l-4 border-emerald-500 translate-x-1 text-sm font-montserrat rounded-r" href="#">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>Dashboard
+              </a>
+              <a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 font-medium hover:bg-slate-200/50 text-sm font-montserrat rounded" href="#">
+                <span class="material-symbols-outlined text-[20px]">account_tree</span>Sales Pipeline
+              </a>
+              <a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 font-medium hover:bg-slate-200/50 text-sm font-montserrat rounded" href="#">
+                <span class="material-symbols-outlined text-[20px]">chat</span>Messaging
+              </a>
+              <a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 font-medium hover:bg-slate-200/50 text-sm font-montserrat rounded" href="#">
+                <span class="material-symbols-outlined text-[20px]">group</span>Lead Directory
+              </a>
+              <div class="pt-4">
+                <button class="w-full bg-primary text-white py-3 rounded-md font-montserrat font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add</span>Add New Lead
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Bar Demo -->
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-tertiary mb-4">Top Bar</p>
+            <div class="bg-slate-50 rounded-xl h-16 flex items-center justify-between px-6 border border-slate-200">
+              <div class="flex items-center gap-4">
+                <h2 class="text-lg font-bold text-blue-900 tracking-tighter font-montserrat">Sales Pipeline</h2>
+                <div class="h-4 w-[1px] bg-slate-300"></div>
+                <div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low rounded text-xs font-semibold text-tertiary">
+                  <span class="material-symbols-outlined text-sm">filter_list</span>Q4 Projections
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="relative">
+                  <span class="material-symbols-outlined text-slate-500">notifications</span>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></span>
+                </div>
+                <span class="material-symbols-outlined text-slate-500">settings</span>
+                <div class="w-8 h-8 rounded-full bg-slate-200 border border-slate-300"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TABELA ==================== -->
+      <section id="tabela" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 11</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Tabela de Dados</h2>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-surface-container-low/50">
+                <th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Entity</th>
+                <th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Primary Contact</th>
+                <th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Status</th>
+                <th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Score</th>
+                <th class="px-6 py-4 text-[11px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Last Interaction</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-container-low">
+              <tr class="hover:bg-surface-container-low/30 transition-colors" style="border-left: 2px solid #10B981;">
+                <td class="px-6 py-5">
+                  <div><div class="font-bold text-secondary font-montserrat">Blackwood Assets</div><div class="text-[10px] text-tertiary uppercase tracking-wider font-bold">New York, NY</div></div>
+                </td>
+                <td class="px-6 py-5">
+                  <div><span class="font-semibold text-on-surface">Sarah Jenkins</span><br/><span class="text-xs text-tertiary">Managing Director</span></div>
+                </td>
+                <td class="px-6 py-5">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">Negotiation</span>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-primary w-[92%]"></div></div>
+                    <span class="text-sm font-black text-secondary font-montserrat">92</span>
+                  </div>
+                </td>
+                <td class="px-6 py-5">
+                  <div><span class="text-sm font-medium">Oct 12, 2023</span><br/><span class="text-[10px] text-tertiary uppercase font-bold">Strategy Review</span></div>
+                </td>
+              </tr>
+              <tr class="hover:bg-surface-container-low/30 transition-colors">
+                <td class="px-6 py-5">
+                  <div><div class="font-bold text-secondary font-montserrat">Vertex Global</div><div class="text-[10px] text-tertiary uppercase tracking-wider font-bold">London, UK</div></div>
+                </td>
+                <td class="px-6 py-5">
+                  <div><span class="font-semibold text-on-surface">Marcus Thorne</span><br/><span class="text-xs text-tertiary">Head of M&amp;A</span></div>
+                </td>
+                <td class="px-6 py-5">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-secondary/10 text-secondary border border-secondary/20">Qualified</span>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-primary w-[78%]"></div></div>
+                    <span class="text-sm font-black text-secondary font-montserrat">78</span>
+                  </div>
+                </td>
+                <td class="px-6 py-5">
+                  <div><span class="text-sm font-medium">Oct 11, 2023</span><br/><span class="text-[10px] text-tertiary uppercase font-bold">Initial Pitch</span></div>
+                </td>
+              </tr>
+              <tr class="hover:bg-surface-container-low/30 transition-colors">
+                <td class="px-6 py-5">
+                  <div><div class="font-bold text-secondary font-montserrat">Nodal Ventures</div><div class="text-[10px] text-tertiary uppercase tracking-wider font-bold">Singapore</div></div>
+                </td>
+                <td class="px-6 py-5">
+                  <div><span class="font-semibold text-on-surface">Elena Rodriguez</span><br/><span class="text-xs text-tertiary">Venture Partner</span></div>
+                </td>
+                <td class="px-6 py-5">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">Discovery</span>
+                </td>
+                <td class="px-6 py-5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-secondary w-[45%]"></div></div>
+                    <span class="text-sm font-black text-secondary font-montserrat">45</span>
+                  </div>
+                </td>
+                <td class="px-6 py-5">
+                  <div><span class="text-sm font-medium">Oct 09, 2023</span><br/><span class="text-[10px] text-tertiary uppercase font-bold">Cold Outreach</span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Pagination -->
+          <div class="px-6 py-4 bg-surface-container-low/30 border-t border-surface-container-high flex items-center justify-between">
+            <span class="text-xs font-medium text-tertiary">Showing 1-10 of 248 entities</span>
+            <div class="flex items-center gap-2">
+              <button class="p-2 hover:bg-surface-container-high rounded transition-colors text-secondary opacity-30" disabled>
+                <span class="material-symbols-outlined">chevron_left</span>
+              </button>
+              <button class="w-8 h-8 flex items-center justify-center bg-secondary text-white rounded font-bold text-xs">1</button>
+              <button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-xs">2</button>
+              <button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-xs">3</button>
+              <span class="text-tertiary px-1 text-xs">...</span>
+              <button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-xs">25</button>
+              <button class="p-2 hover:bg-surface-container-high rounded transition-colors text-secondary">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ICONES ==================== -->
+      <section id="icones" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 12</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Iconografia</h2>
+          <p class="text-sm text-tertiary mt-1">Material Symbols Outlined — thick-stroke, geometric</p>
+        </div>
+
+        <div class="bg-surface-container-lowest p-10 rounded-xl shadow-sm">
+          <div class="grid grid-cols-8 gap-6">
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">dashboard</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">dashboard</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">account_tree</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">account_tree</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">chat</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">chat</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">group</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">group</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">leaderboard</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">leaderboard</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">analytics</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">analytics</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">bolt</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">bolt</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">trending_up</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">trending_up</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">notifications</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">notifications</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">settings</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">settings</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">search</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">search</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">add_circle</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">add_circle</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">person_add</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">person_add</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">download</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">download</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">verified_user</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">verified_user</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary">rocket_launch</span>
+              </div>
+              <span class="text-[9px] text-tertiary font-bold">rocket_launch</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== GLASSMORPHISM ==================== -->
+      <section id="glass" class="section-anchor space-y-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Secao 13</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Glassmorphism & Efeitos</h2>
+        </div>
+
+        <div class="relative rounded-xl overflow-hidden" style="background: linear-gradient(135deg, #1E3A8A 0%, #10B981 100%); min-height: 300px;">
+          <div class="absolute inset-0 flex items-center justify-center gap-8 p-10">
+            <!-- Glass Card -->
+            <div class="glass-card p-8 rounded-xl w-72 shadow-lg">
+              <p class="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2">Glass Card</p>
+              <p class="text-2xl font-black text-secondary font-montserrat tracking-tighter">$1,248,500</p>
+              <p class="text-xs text-tertiary mt-2">rgba(255,255,255,0.8) + blur(20px)</p>
+            </div>
+            <!-- Glass Panel -->
+            <div class="glass-panel p-8 rounded-xl w-72 shadow-lg">
+              <p class="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2">Glass Panel</p>
+              <p class="text-2xl font-black text-secondary font-montserrat tracking-tighter">42 Leads</p>
+              <p class="text-xs text-tertiary mt-2">rgba(224,227,229,0.8) + blur(20px)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Border Radius Reference -->
+        <div>
+          <h4 class="text-[11px] font-black uppercase tracking-widest text-tertiary mb-4">Border Radius Scale</h4>
+          <div class="flex items-end gap-6">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-secondary" style="border-radius: 0.125rem;"></div>
+              <p class="text-[9px] font-bold text-tertiary mt-2">DEFAULT<br/>0.125rem</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-secondary" style="border-radius: 0.375rem;"></div>
+              <p class="text-[9px] font-bold text-tertiary mt-2">md<br/>0.375rem</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-secondary" style="border-radius: 0.5rem;"></div>
+              <p class="text-[9px] font-bold text-tertiary mt-2">lg<br/>0.5rem</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-secondary" style="border-radius: 0.75rem;"></div>
+              <p class="text-[9px] font-bold text-tertiary mt-2">xl<br/>0.75rem</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 bg-secondary rounded-full"></div>
+              <p class="text-[9px] font-bold text-tertiary mt-2">full<br/>9999px</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================== -->
+      <!-- ==================== TELAS DO SISTEMA ========================== -->
+      <!-- ================================================================== -->
+
+      <div class="pt-16 pb-8 border-t border-slate-200 mt-16">
+        <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Preview de Telas</h3>
+        <h2 class="text-3xl font-extrabold text-secondary font-montserrat tracking-tighter">Telas do <span class="text-primary">Sistema</span></h2>
+        <p class="text-sm text-tertiary mt-2">Mockups completos das 4 telas principais do sistema, aplicando todos os tokens e padroes do design system.</p>
+      </div>
+
+      <!-- ==================== TELA 1: DASHBOARD ==================== -->
+      <section id="tela-dashboard" class="section-anchor space-y-6">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Tela 01</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Dashboard de Leads</h2>
+        </div>
+
+        <!-- Full Screen Mock -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden shadow-lg">
+          <div class="flex bg-surface min-h-[800px]">
+            <!-- Sidebar -->
+            <aside class="w-56 bg-slate-100 border-r border-slate-200 flex-shrink-0 flex flex-col">
+              <div class="py-5 px-5">
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-7 h-7 bg-secondary rounded flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-sm">school</span>
+                  </div>
+                  <span class="text-sm font-black text-blue-900 tracking-tighter font-montserrat">Sistema Aula</span>
+                </div>
+                <p class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Gestao de Leads v1.0</p>
+              </div>
+              <nav class="flex-1 px-2 space-y-0.5 mt-2">
+                <a class="flex items-center gap-2 px-3 py-2 bg-white text-blue-900 font-bold shadow-sm border-l-4 border-emerald-500 translate-x-1 text-xs font-montserrat rounded-r" href="#">
+                  <span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard
+                </a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#">
+                  <span class="material-symbols-outlined text-[18px]">view_kanban</span>Pipeline
+                </a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#">
+                  <span class="material-symbols-outlined text-[18px]">chat</span>Mensagens
+                </a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#">
+                  <span class="material-symbols-outlined text-[18px]">group</span>Leads
+                </a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#">
+                  <span class="material-symbols-outlined text-[18px]">calendar_month</span>Agenda
+                </a>
+              </nav>
+              <div class="px-3 pb-4">
+                <button class="w-full bg-primary text-white py-2.5 rounded-md font-montserrat font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1">
+                  <span class="material-symbols-outlined text-sm">add</span>Novo Lead
+                </button>
+              </div>
+              <div class="px-2 py-3 border-t border-slate-200 space-y-0.5">
+                <a class="flex items-center gap-2 px-3 py-1.5 text-slate-500 text-xs font-montserrat" href="#"><span class="material-symbols-outlined text-[16px]">help</span>Suporte</a>
+                <a class="flex items-center gap-2 px-3 py-1.5 text-slate-500 text-xs font-montserrat" href="#"><span class="material-symbols-outlined text-[16px]">logout</span>Sair</a>
+              </div>
+            </aside>
+
+            <!-- Main -->
+            <div class="flex-1 flex flex-col min-w-0">
+              <!-- Top Bar -->
+              <header class="h-14 bg-slate-50 border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
+                <span class="text-base font-bold text-secondary tracking-tighter font-montserrat">Sistema Aula 26</span>
+                <div class="flex items-center gap-4">
+                  <div class="relative">
+                    <span class="material-symbols-outlined text-slate-500 text-xl">notifications</span>
+                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></span>
+                  </div>
+                  <span class="material-symbols-outlined text-slate-500 text-xl">settings</span>
+                  <div class="flex items-center gap-2 pl-3 border-l border-slate-200">
+                    <div class="text-right">
+                      <p class="text-[10px] font-bold text-secondary font-montserrat">Prof. Maria Silva</p>
+                      <p class="text-[8px] text-slate-500 uppercase font-black tracking-tighter">Coordenadora</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+                      <span class="material-symbols-outlined text-secondary text-sm">person</span>
+                    </div>
+                  </div>
+                </div>
+              </header>
+
+              <!-- Content -->
+              <div class="p-8 space-y-8 overflow-y-auto">
+                <!-- Page Header -->
+                <div class="flex justify-between items-end">
+                  <div>
+                    <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-1">Visao Geral</h3>
+                    <h2 class="text-3xl font-bold text-secondary font-montserrat tracking-tight">Dashboard de Leads</h2>
+                  </div>
+                  <div class="flex gap-2">
+                    <button class="bg-white border border-slate-200 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-secondary">Exportar</button>
+                    <button class="bg-secondary text-white px-3 py-2 text-[10px] font-bold uppercase tracking-widest">Marco 2026</button>
+                  </div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-4 gap-5">
+                  <div class="bg-white p-6 shadow-sm relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-5xl">people</span></div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Total de Leads</p>
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-4xl font-extrabold text-secondary font-montserrat" style="letter-spacing:-0.02em">1,847</span>
+                      <span class="text-primary font-bold text-xs flex items-center"><span class="material-symbols-outlined text-xs mr-0.5">trending_up</span>+18%</span>
+                    </div>
+                    <div class="mt-4 h-1 bg-slate-100"><div class="h-full bg-primary" style="width:78%"></div></div>
+                  </div>
+                  <div class="bg-white p-6 shadow-sm relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-5xl">school</span></div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Matriculados</p>
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-4xl font-extrabold text-secondary font-montserrat" style="letter-spacing:-0.02em">312</span>
+                      <span class="text-primary font-bold text-xs flex items-center"><span class="material-symbols-outlined text-xs mr-0.5">trending_up</span>+24%</span>
+                    </div>
+                    <div class="mt-4 flex space-x-1">
+                      <div class="h-1 flex-1 bg-primary"></div><div class="h-1 flex-1 bg-primary"></div><div class="h-1 flex-1 bg-slate-200"></div><div class="h-1 flex-1 bg-slate-200"></div>
+                    </div>
+                  </div>
+                  <div class="bg-white p-6 shadow-sm relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-5xl">percent</span></div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Taxa Conversao</p>
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-4xl font-extrabold text-secondary font-montserrat" style="letter-spacing:-0.02em">16.9<span class="text-xl">%</span></span>
+                    </div>
+                    <div class="mt-4 h-1 bg-slate-100"><div class="h-full bg-secondary" style="width:16.9%"></div></div>
+                  </div>
+                  <div class="bg-white p-6 shadow-sm relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-5xl">bolt</span></div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Novos Hoje</p>
+                    <div class="flex items-baseline gap-2">
+                      <span class="text-4xl font-extrabold text-secondary font-montserrat" style="letter-spacing:-0.02em">23</span>
+                      <span class="text-slate-400 font-bold text-xs">Meta: 30</span>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between">
+                      <div class="flex -space-x-1.5">
+                        <div class="w-5 h-5 rounded-full border-2 border-white bg-primary/20"></div>
+                        <div class="w-5 h-5 rounded-full border-2 border-white bg-secondary/20"></div>
+                        <div class="w-5 h-5 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[7px] font-bold text-slate-500">+21</div>
+                      </div>
+                      <span class="text-[9px] font-black uppercase tracking-tighter text-primary">Em Andamento</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Chart + Sources -->
+                <div class="grid grid-cols-3 gap-8">
+                  <!-- Chart -->
+                  <div class="col-span-2 bg-surface-container-low p-8 flex flex-col justify-between min-h-[320px]">
+                    <div>
+                      <div class="flex justify-between items-start mb-8">
+                        <div>
+                          <h4 class="text-lg font-bold text-secondary font-montserrat">Captacao de Leads</h4>
+                          <p class="text-xs text-slate-500 mt-1">Volume semanal de novos leads por canal</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                          <div class="flex items-center gap-1"><div class="w-2.5 h-2.5 bg-primary"></div><span class="text-[9px] font-bold uppercase tracking-wider text-slate-500">WhatsApp</span></div>
+                          <div class="flex items-center gap-1"><div class="w-2.5 h-2.5 bg-secondary"></div><span class="text-[9px] font-bold uppercase tracking-wider text-slate-500">Site</span></div>
+                        </div>
+                      </div>
+                      <div class="relative h-40 w-full">
+                        <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                          <polyline fill="none" points="0,130 100,110 200,120 300,60 400,80 500,30 600,20" stroke="#10B981" stroke-width="3" stroke-linecap="round"/>
+                          <polyline fill="none" points="0,140 100,130 200,140 300,110 400,120 500,90 600,80" stroke="#1E3A8A" stroke-width="2" stroke-dasharray="4" opacity="0.4"/>
+                        </svg>
+                        <div class="absolute bottom-[-24px] w-full flex justify-between text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                          <span>Sem 1</span><span>Sem 2</span><span>Sem 3</span><span>Sem 4</span><span>Sem 5</span><span>Sem 6</span><span>Atual</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-10 flex gap-8 border-t border-slate-200 pt-6">
+                      <div>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">Pico Semanal</p>
+                        <p class="text-base font-bold text-secondary">342 / sem</p>
+                      </div>
+                      <div>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">Custo por Lead</p>
+                        <p class="text-base font-bold text-secondary">R$ 8,50</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sources -->
+                  <div class="bg-white p-6 border border-slate-100 flex flex-col">
+                    <h4 class="text-base font-bold text-secondary font-montserrat mb-6">Origem dos Leads</h4>
+                    <div class="space-y-6 flex-1">
+                      <div class="space-y-2">
+                        <div class="flex justify-between items-end">
+                          <div><p class="text-xs font-bold text-secondary">WhatsApp</p><p class="text-[9px] text-slate-500 uppercase font-bold tracking-tighter">Canal Principal</p></div>
+                          <span class="text-xs font-black text-secondary">52%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-100 overflow-hidden"><div class="h-full bg-primary" style="width:52%"></div></div>
+                      </div>
+                      <div class="space-y-2">
+                        <div class="flex justify-between items-end">
+                          <div><p class="text-xs font-bold text-secondary">Instagram</p><p class="text-[9px] text-slate-500 uppercase font-bold tracking-tighter">Trafego Pago</p></div>
+                          <span class="text-xs font-black text-secondary">28%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-100 overflow-hidden"><div class="h-full bg-secondary" style="width:28%"></div></div>
+                      </div>
+                      <div class="space-y-2">
+                        <div class="flex justify-between items-end">
+                          <div><p class="text-xs font-bold text-secondary">Indicacao</p><p class="text-[9px] text-slate-500 uppercase font-bold tracking-tighter">Boca a Boca</p></div>
+                          <span class="text-xs font-black text-secondary">20%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-slate-100 overflow-hidden"><div class="h-full bg-slate-400" style="width:20%"></div></div>
+                      </div>
+                    </div>
+                    <div class="mt-6 p-3 bg-slate-50 border-l-2 border-primary">
+                      <p class="text-[9px] text-slate-500 font-medium italic leading-relaxed">"WhatsApp cresceu 15% este mes — principal canal de conversao."</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white p-8">
+                  <div class="flex justify-between items-center mb-6">
+                    <h4 class="text-base font-bold text-secondary font-montserrat">Atividade Recente</h4>
+                    <button class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Ver Tudo</button>
+                  </div>
+                  <div class="grid grid-cols-3 gap-8">
+                    <div class="audit-rail pl-5 py-1">
+                      <div class="flex items-center gap-1.5 mb-1.5"><span class="text-[9px] font-black uppercase tracking-widest text-slate-400">10:30</span><span class="w-1.5 h-1.5 rounded-full bg-primary"></span></div>
+                      <p class="text-xs font-bold text-secondary">Novo lead: Ana Souza</p>
+                      <p class="text-[10px] text-slate-500 mt-0.5">WhatsApp — Curso de Ingles</p>
+                    </div>
+                    <div class="audit-rail pl-5 py-1">
+                      <div class="flex items-center gap-1.5 mb-1.5"><span class="text-[9px] font-black uppercase tracking-widest text-slate-400">09:15</span><span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span></div>
+                      <p class="text-xs font-bold text-secondary">Matricula confirmada: Carlos Lima</p>
+                      <p class="text-[10px] text-slate-500 mt-0.5">Turma A — Valor: R$ 2.400</p>
+                    </div>
+                    <div class="audit-rail pl-5 py-1">
+                      <div class="flex items-center gap-1.5 mb-1.5"><span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Ontem</span><span class="w-1.5 h-1.5 rounded-full bg-primary"></span></div>
+                      <p class="text-xs font-bold text-secondary">Follow-up enviado: 12 leads</p>
+                      <p class="text-[10px] text-slate-500 mt-0.5">Automacao WhatsApp — 92% entregue</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TELA 2: KANBAN ==================== -->
+      <section id="tela-kanban" class="section-anchor space-y-6 pt-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Tela 02</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Kanban — Pipeline de Vendas</h2>
+        </div>
+
+        <div class="border border-slate-200 rounded-xl overflow-hidden shadow-lg">
+          <div class="flex bg-surface min-h-[700px]">
+            <!-- Sidebar (compact) -->
+            <aside class="w-56 bg-slate-100 border-r border-slate-200 flex-shrink-0 flex flex-col">
+              <div class="py-5 px-5">
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-7 h-7 bg-secondary rounded flex items-center justify-center"><span class="material-symbols-outlined text-white text-sm">school</span></div>
+                  <span class="text-sm font-black text-blue-900 tracking-tighter font-montserrat">Sistema Aula</span>
+                </div>
+                <p class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Gestao de Leads v1.0</p>
+              </div>
+              <nav class="flex-1 px-2 space-y-0.5 mt-2">
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard</a>
+                <a class="flex items-center gap-2 px-3 py-2 bg-white text-blue-900 font-bold shadow-sm border-l-4 border-emerald-500 translate-x-1 text-xs font-montserrat rounded-r" href="#"><span class="material-symbols-outlined text-[18px]">view_kanban</span>Pipeline</a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">chat</span>Mensagens</a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">group</span>Leads</a>
+              </nav>
+              <div class="px-3 pb-4"><button class="w-full bg-primary text-white py-2.5 rounded-md font-montserrat font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1"><span class="material-symbols-outlined text-sm">add</span>Novo Lead</button></div>
+            </aside>
+
+            <!-- Main -->
+            <div class="flex-1 flex flex-col min-w-0">
+              <header class="h-14 bg-slate-50 border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-bold text-secondary tracking-tighter font-montserrat">Pipeline de Vendas</span>
+                  <div class="h-4 w-[1px] bg-slate-300"></div>
+                  <span class="text-[10px] font-semibold text-tertiary bg-surface-container-high px-2 py-0.5 rounded">Marco 2026</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="relative"><span class="material-symbols-outlined text-slate-400 text-lg">search</span></div>
+                  <span class="material-symbols-outlined text-slate-500 text-xl">notifications</span>
+                  <div class="w-7 h-7 rounded-full bg-slate-200 border border-slate-300"></div>
+                </div>
+              </header>
+
+              <!-- Pipeline Header -->
+              <div class="px-6 pt-6 pb-3 flex justify-between items-end">
+                <div>
+                  <h2 class="text-2xl font-bold font-montserrat tracking-tight text-secondary">Funil de Conversao</h2>
+                  <p class="text-tertiary text-xs">Acompanhamento em tempo real dos leads por etapa</p>
+                </div>
+                <div class="flex gap-3 items-center">
+                  <div class="text-right">
+                    <p class="text-[9px] uppercase font-extrabold tracking-widest text-tertiary">Valor Total Pipeline</p>
+                    <p class="text-xl font-black text-secondary font-montserrat">R$ 184.200</p>
+                  </div>
+                  <button class="bg-primary text-white px-4 py-2.5 rounded-md font-montserrat font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-primary/10"><span class="material-symbols-outlined text-base">add_circle</span>Add Lead</button>
+                </div>
+              </div>
+
+              <!-- Kanban Board -->
+              <div class="flex-1 overflow-x-auto px-6 pb-6 pt-3">
+                <div class="flex gap-5 h-full items-start" style="min-width: 1100px;">
+                  <!-- Col: Novo -->
+                  <div class="w-[240px] flex-shrink-0">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                      <div class="flex items-center gap-1.5"><span class="w-2 h-2 bg-slate-400 rounded-full"></span><h3 class="text-[10px] font-extrabold uppercase tracking-widest text-tertiary">Novo</h3><span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded text-[9px] font-bold">06</span></div>
+                    </div>
+                    <div class="space-y-3">
+                      <div class="bg-white p-4 rounded-lg border-l-4 border-primary-fixed shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex justify-between mb-2"><span class="text-[8px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">WhatsApp</span><span class="text-[9px] text-tertiary">1h</span></div>
+                        <h4 class="font-montserrat font-bold text-secondary text-sm group-hover:text-primary transition-colors">Ana Carolina Souza</h4>
+                        <p class="text-xs text-tertiary mt-0.5">Curso de Ingles — Turma B</p>
+                        <p class="text-base font-black text-secondary font-montserrat tracking-tighter mt-2">R$ 2.400</p>
+                      </div>
+                      <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex justify-between mb-2"><span class="text-[8px] font-bold uppercase tracking-tighter text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">Instagram</span><span class="text-[9px] text-tertiary">3h</span></div>
+                        <h4 class="font-montserrat font-bold text-secondary text-sm group-hover:text-primary transition-colors">Pedro Mendes</h4>
+                        <p class="text-xs text-tertiary mt-0.5">Intensivo ENEM</p>
+                        <p class="text-base font-black text-secondary font-montserrat tracking-tighter mt-2">R$ 1.800</p>
+                      </div>
+                      <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex justify-between mb-2"><span class="text-[8px] font-bold uppercase tracking-tighter text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">Indicacao</span><span class="text-[9px] text-tertiary">5h</span></div>
+                        <h4 class="font-montserrat font-bold text-secondary text-sm group-hover:text-primary transition-colors">Julia Ferreira</h4>
+                        <p class="text-xs text-tertiary mt-0.5">Reforco Matematica</p>
+                        <p class="text-base font-black text-secondary font-montserrat tracking-tighter mt-2">R$ 960</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Col: Contato Feito -->
+                  <div class="w-[240px] flex-shrink-0">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                      <div class="flex items-center gap-1.5"><span class="w-2 h-2 bg-blue-400 rounded-full"></span><h3 class="text-[10px] font-extrabold uppercase tracking-widest text-tertiary">Contato Feito</h3><span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded text-[9px] font-bold">04</span></div>
+                    </div>
+                    <div class="space-y-3">
+                      <div class="bg-white p-4 rounded-lg border-l-4 border-secondary/20 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex justify-between mb-2"><span class="text-[8px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">WhatsApp</span><span class="text-[9px] text-tertiary">Ontem</span></div>
+                        <h4 class="font-montserrat font-bold text-secondary text-sm group-hover:text-primary transition-colors">Marcos Oliveira</h4>
+                        <p class="text-xs text-tertiary mt-0.5">MBA Gestao — Premium</p>
+                        <p class="text-base font-black text-secondary font-montserrat tracking-tighter mt-2">R$ 8.900</p>
+                        <div class="flex items-center gap-1.5 mt-2"><span class="material-symbols-outlined text-xs text-primary" style="font-variation-settings:'FILL' 1">call</span><span class="text-[9px] font-bold text-on-surface-variant">Ligacao: 14:30</span></div>
+                      </div>
+                      <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex justify-between mb-2"><span class="text-[8px] font-bold uppercase tracking-tighter text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">Site</span><span class="text-[9px] text-tertiary">2 dias</span></div>
+                        <h4 class="font-montserrat font-bold text-secondary text-sm group-hover:text-primary transition-colors">Camila Santos</h4>
+                        <p class="text-xs text-tertiary mt-0.5">Curso de Excel</p>
+                        <p class="text-base font-black text-secondary font-montserrat tracking-tighter mt-2">R$ 1.200</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Col: Aula Experimental -->
+                  <div class="w-[240px] flex-shrink-0">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                      <div class="flex items-center gap-1.5"><span class="w-2 h-2 bg-amber-400 rounded-full"></span><h3 class="text-[10px] font-extrabold uppercase tracking-widest text-tertiary">Aula Experimental</h3><span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded text-[9px] font-bold">03</span></div>
+                    </div>
+                    <div class="space-y-3">
+                      <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex justify-between mb-2"><span class="text-[8px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">WhatsApp</span><span class="text-[9px] text-tertiary">Hoje 15h</span></div>
+                        <h4 class="font-montserrat font-bold text-secondary text-sm group-hover:text-primary transition-colors">Roberto Dias</h4>
+                        <p class="text-xs text-tertiary mt-0.5">Espanhol Avancado</p>
+                        <p class="text-base font-black text-secondary font-montserrat tracking-tighter mt-2">R$ 3.600</p>
+                        <div class="bg-surface-container-low p-1.5 rounded flex items-center gap-1.5 mt-2">
+                          <span class="material-symbols-outlined text-slate-400 text-sm">event</span>
+                          <span class="text-[9px] font-semibold text-tertiary italic">Aula hoje as 15h — Sala 3</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Col: Negociacao -->
+                  <div class="w-[240px] flex-shrink-0">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                      <div class="flex items-center gap-1.5"><span class="w-2 h-2 bg-purple-400 rounded-full"></span><h3 class="text-[10px] font-extrabold uppercase tracking-widest text-tertiary">Negociacao</h3><span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded text-[9px] font-bold">02</span></div>
+                    </div>
+                    <div class="space-y-3">
+                      <div class="bg-white p-4 rounded-lg border-l-4 border-primary shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="flex justify-between mb-2"><span class="text-[8px] font-bold uppercase tracking-tighter text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Indicacao VIP</span><span class="text-[9px] text-primary font-bold">Quente</span></div>
+                        <h4 class="font-montserrat font-bold text-secondary text-sm group-hover:text-primary transition-colors">Familia Rodrigues</h4>
+                        <p class="text-xs text-tertiary mt-0.5">3 filhos — Pacote Familia</p>
+                        <p class="text-base font-black text-secondary font-montserrat tracking-tighter mt-2">R$ 12.600</p>
+                        <div class="w-full bg-slate-100 h-1 rounded-full overflow-hidden mt-2"><div class="bg-primary w-[90%] h-full"></div></div>
+                        <p class="text-[8px] font-extrabold text-tertiary mt-1 uppercase tracking-widest">Probabilidade: 90%</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Col: Matriculado -->
+                  <div class="w-[240px] flex-shrink-0">
+                    <div class="flex items-center justify-between mb-3 px-1">
+                      <div class="flex items-center gap-1.5"><span class="w-2 h-2 bg-primary rounded-full"></span><h3 class="text-[10px] font-extrabold uppercase tracking-widest text-tertiary">Matriculado</h3><span class="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded text-[9px] font-bold">15</span></div>
+                    </div>
+                    <div class="space-y-3">
+                      <div class="bg-white/40 backdrop-blur-sm p-4 rounded-lg border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-center py-8 opacity-60">
+                        <span class="material-symbols-outlined text-2xl text-slate-300 mb-1">inventory_2</span>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">15 matriculas este mes</p>
+                        <p class="text-[9px] text-slate-400 mt-1">R$ 47.800 em receita</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TELA 3: DIRETORIO ==================== -->
+      <section id="tela-diretorio" class="section-anchor space-y-6 pt-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Tela 03</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Diretorio de Leads</h2>
+        </div>
+
+        <div class="border border-slate-200 rounded-xl overflow-hidden shadow-lg">
+          <div class="flex bg-surface min-h-[780px]">
+            <!-- Sidebar -->
+            <aside class="w-56 bg-slate-100 border-r border-slate-200 flex-shrink-0 flex flex-col">
+              <div class="py-5 px-5">
+                <div class="flex items-center gap-2 mb-1"><div class="w-7 h-7 bg-secondary rounded flex items-center justify-center"><span class="material-symbols-outlined text-white text-sm">school</span></div><span class="text-sm font-black text-blue-900 tracking-tighter font-montserrat">Sistema Aula</span></div>
+                <p class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Gestao de Leads v1.0</p>
+              </div>
+              <nav class="flex-1 px-2 space-y-0.5 mt-2">
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard</a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">view_kanban</span>Pipeline</a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">chat</span>Mensagens</a>
+                <a class="flex items-center gap-2 px-3 py-2 bg-white text-blue-900 font-bold shadow-sm border-l-4 border-emerald-500 translate-x-1 text-xs font-montserrat rounded-r" href="#"><span class="material-symbols-outlined text-[18px]">group</span>Leads</a>
+              </nav>
+              <div class="px-3 pb-4"><button class="w-full bg-primary text-white py-2.5 rounded-md font-montserrat font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1"><span class="material-symbols-outlined text-sm">add</span>Novo Lead</button></div>
+            </aside>
+
+            <!-- Main -->
+            <div class="flex-1 flex flex-col min-w-0">
+              <header class="h-14 bg-slate-50 border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-bold text-secondary tracking-tighter font-montserrat">Diretorio de Leads</span>
+                  <span class="text-tertiary text-[10px] font-medium bg-surface-container-high px-2 py-0.5 rounded">v1.0</span>
+                </div>
+                <div class="flex items-center gap-4">
+                  <div class="relative"><span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-base">search</span><input class="bg-surface-container-low border-none rounded-md pl-8 pr-3 py-1.5 text-xs w-48 focus:ring-2 focus:ring-secondary/20" placeholder="Buscar alunos..." type="text"/></div>
+                  <span class="material-symbols-outlined text-slate-500">notifications</span>
+                  <div class="w-7 h-7 rounded-full bg-slate-200 border border-slate-300"></div>
+                </div>
+              </header>
+
+              <div class="p-6 space-y-6 overflow-y-auto flex-1">
+                <!-- Hero -->
+                <div class="flex justify-between items-end">
+                  <div>
+                    <h2 class="text-3xl font-extrabold text-secondary font-montserrat tracking-tighter">Cadastro de <span class="text-primary">Alunos</span></h2>
+                    <p class="text-tertiary text-xs mt-1 max-w-md">Gestao completa de leads e alunos. Acompanhe engajamento, interesse e historico de interacoes.</p>
+                  </div>
+                  <div class="flex gap-3">
+                    <button class="px-4 py-2 bg-white border border-outline-variant/30 text-secondary font-bold rounded-md text-xs flex items-center gap-1.5"><span class="material-symbols-outlined text-base">download</span>Exportar CSV</button>
+                    <button class="px-5 py-2 bg-primary text-white font-bold rounded-md shadow-lg shadow-primary/20 text-xs flex items-center gap-1.5"><span class="material-symbols-outlined text-base">person_add</span>Novo Lead</button>
+                  </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-surface-container-low p-4 rounded-xl flex flex-wrap items-center gap-5">
+                  <div class="flex flex-col gap-1">
+                    <label class="text-[9px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat">Status</label>
+                    <select class="bg-white border-none rounded-md py-1.5 px-3 text-xs font-medium shadow-sm focus:ring-2 focus:ring-secondary min-w-[130px]">
+                      <option>Todos</option><option>Novo</option><option>Em Contato</option><option>Matriculado</option>
+                    </select>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="text-[9px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat">Curso</label>
+                    <select class="bg-white border-none rounded-md py-1.5 px-3 text-xs font-medium shadow-sm focus:ring-2 focus:ring-secondary min-w-[130px]">
+                      <option>Todos os Cursos</option><option>Ingles</option><option>Espanhol</option><option>ENEM</option>
+                    </select>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="text-[9px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat">Score</label>
+                    <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md shadow-sm"><input class="accent-primary w-24" type="range"/><span class="text-[10px] font-bold text-secondary">60+</span></div>
+                  </div>
+                  <button class="self-end mb-0.5 text-tertiary font-bold text-[10px] uppercase hover:text-secondary transition-colors">Limpar</button>
+                </div>
+
+                <!-- Table -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                  <table class="w-full text-left border-collapse">
+                    <thead>
+                      <tr class="bg-surface-container-low/50">
+                        <th class="px-5 py-3 text-[10px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Aluno</th>
+                        <th class="px-5 py-3 text-[10px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Curso de Interesse</th>
+                        <th class="px-5 py-3 text-[10px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Status</th>
+                        <th class="px-5 py-3 text-[10px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Score</th>
+                        <th class="px-5 py-3 text-[10px] font-black text-secondary uppercase tracking-[0.1em] font-montserrat border-b border-surface-container-high">Ultimo Contato</th>
+                        <th class="px-5 py-3 border-b border-surface-container-high"></th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-surface-container-low">
+                      <tr class="hover:bg-surface-container-low/30 transition-colors" style="border-left:2px solid #10B981">
+                        <td class="px-5 py-4"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary text-sm">person</span></div><div><div class="font-bold text-secondary font-montserrat text-sm">Ana Carolina Souza</div><div class="text-[9px] text-tertiary uppercase tracking-wider font-bold">WhatsApp</div></div></div></td>
+                        <td class="px-5 py-4"><span class="text-sm font-medium">Ingles — Turma B</span></td>
+                        <td class="px-5 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">Negociacao</span></td>
+                        <td class="px-5 py-4"><div class="flex items-center gap-2"><div class="w-16 h-1.5 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-primary w-[88%]"></div></div><span class="text-xs font-black text-secondary font-montserrat">88</span></div></td>
+                        <td class="px-5 py-4"><div><span class="text-xs font-medium">Hoje, 10:30</span><br/><span class="text-[9px] text-tertiary uppercase font-bold">Msg WhatsApp</span></div></td>
+                        <td class="px-5 py-4"><button class="text-tertiary hover:text-secondary p-1"><span class="material-symbols-outlined text-lg">more_vert</span></button></td>
+                      </tr>
+                      <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-5 py-4"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center"><span class="material-symbols-outlined text-secondary text-sm">person</span></div><div><div class="font-bold text-secondary font-montserrat text-sm">Pedro Mendes</div><div class="text-[9px] text-tertiary uppercase tracking-wider font-bold">Instagram</div></div></div></td>
+                        <td class="px-5 py-4"><span class="text-sm font-medium">Intensivo ENEM</span></td>
+                        <td class="px-5 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-secondary/10 text-secondary border border-secondary/20">Em Contato</span></td>
+                        <td class="px-5 py-4"><div class="flex items-center gap-2"><div class="w-16 h-1.5 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-primary w-[72%]"></div></div><span class="text-xs font-black text-secondary font-montserrat">72</span></div></td>
+                        <td class="px-5 py-4"><div><span class="text-xs font-medium">Ontem, 16:45</span><br/><span class="text-[9px] text-tertiary uppercase font-bold">Ligacao</span></div></td>
+                        <td class="px-5 py-4"><button class="text-tertiary hover:text-secondary p-1"><span class="material-symbols-outlined text-lg">more_vert</span></button></td>
+                      </tr>
+                      <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-5 py-4"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center"><span class="material-symbols-outlined text-slate-500 text-sm">person</span></div><div><div class="font-bold text-secondary font-montserrat text-sm">Julia Ferreira</div><div class="text-[9px] text-tertiary uppercase tracking-wider font-bold">Indicacao</div></div></div></td>
+                        <td class="px-5 py-4"><span class="text-sm font-medium">Reforco Matematica</span></td>
+                        <td class="px-5 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">Novo</span></td>
+                        <td class="px-5 py-4"><div class="flex items-center gap-2"><div class="w-16 h-1.5 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-secondary w-[40%]"></div></div><span class="text-xs font-black text-secondary font-montserrat">40</span></div></td>
+                        <td class="px-5 py-4"><div><span class="text-xs font-medium">25 Mar</span><br/><span class="text-[9px] text-tertiary uppercase font-bold">Formulario Site</span></div></td>
+                        <td class="px-5 py-4"><button class="text-tertiary hover:text-secondary p-1"><span class="material-symbols-outlined text-lg">more_vert</span></button></td>
+                      </tr>
+                      <tr class="hover:bg-surface-container-low/30 transition-colors" style="border-left:2px solid #10B981">
+                        <td class="px-5 py-4"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary text-sm">person</span></div><div><div class="font-bold text-secondary font-montserrat text-sm">Marcos Oliveira</div><div class="text-[9px] text-tertiary uppercase tracking-wider font-bold">WhatsApp</div></div></div></td>
+                        <td class="px-5 py-4"><span class="text-sm font-medium">MBA Gestao</span></td>
+                        <td class="px-5 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">Aula Exp.</span></td>
+                        <td class="px-5 py-4"><div class="flex items-center gap-2"><div class="w-16 h-1.5 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-primary w-[95%]"></div></div><span class="text-xs font-black text-secondary font-montserrat">95</span></div></td>
+                        <td class="px-5 py-4"><div><span class="text-xs font-medium">Hoje, 14:30</span><br/><span class="text-[9px] text-tertiary uppercase font-bold">Aula Exp.</span></div></td>
+                        <td class="px-5 py-4"><button class="text-tertiary hover:text-secondary p-1"><span class="material-symbols-outlined text-lg">more_vert</span></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="px-5 py-3 bg-surface-container-low/30 border-t border-surface-container-high flex items-center justify-between">
+                    <span class="text-[10px] font-medium text-tertiary">Mostrando 1-10 de 184 leads</span>
+                    <div class="flex items-center gap-1.5">
+                      <button class="w-7 h-7 flex items-center justify-center bg-secondary text-white rounded font-bold text-[10px]">1</button>
+                      <button class="w-7 h-7 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-[10px]">2</button>
+                      <button class="w-7 h-7 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-[10px]">3</button>
+                      <span class="text-tertiary text-[10px]">...</span>
+                      <button class="w-7 h-7 flex items-center justify-center hover:bg-surface-container-high rounded text-secondary font-bold text-[10px]">19</button>
+                      <button class="p-1 hover:bg-surface-container-high rounded text-secondary"><span class="material-symbols-outlined text-base">chevron_right</span></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Insight Cards -->
+                <div class="grid grid-cols-3 gap-5">
+                  <div class="bg-secondary text-white p-6 rounded-xl relative overflow-hidden">
+                    <div class="relative z-10">
+                      <div class="text-[9px] font-black uppercase tracking-[0.2em] mb-1.5 opacity-70">Valor Total Pipeline</div>
+                      <div class="text-3xl font-black font-montserrat tracking-tighter mb-3">R$ 184.2K</div>
+                      <div class="flex items-center gap-1.5 text-primary font-bold text-[10px]"><span class="material-symbols-outlined text-xs">trending_up</span>+22% vs mes anterior</div>
+                    </div>
+                  </div>
+                  <div class="bg-white p-6 rounded-xl border border-outline-variant/20">
+                    <div class="text-[9px] font-black text-secondary uppercase tracking-[0.2em] mb-1.5">Leads Quentes</div>
+                    <div class="text-3xl font-black text-secondary font-montserrat tracking-tighter">28</div>
+                    <div class="mt-4 flex gap-1">
+                      <div class="flex-1 h-1 bg-primary rounded-full"></div><div class="flex-1 h-1 bg-primary rounded-full"></div><div class="flex-1 h-1 bg-primary rounded-full"></div><div class="flex-1 h-1 bg-surface-container-high rounded-full"></div><div class="flex-1 h-1 bg-surface-container-high rounded-full"></div>
+                    </div>
+                    <p class="text-[9px] text-tertiary font-bold uppercase mt-2">8 precisam follow-up urgente</p>
+                  </div>
+                  <div class="bg-primary p-6 rounded-xl text-white shadow-xl shadow-primary/10">
+                    <div class="text-[9px] font-black uppercase tracking-[0.2em] mb-1.5 opacity-80">Velocidade de Conversao</div>
+                    <div class="text-3xl font-black font-montserrat tracking-tighter">4.2 Dias</div>
+                    <div class="flex items-center justify-between mt-3">
+                      <span class="text-[10px] font-medium opacity-90">Media do setor: 7 dias</span>
+                      <span class="material-symbols-outlined">bolt</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TELA 4: MENSAGENS ==================== -->
+      <section id="tela-mensagens" class="section-anchor space-y-6 pt-8">
+        <div>
+          <h3 class="text-[0.6875rem] font-black uppercase tracking-[0.2em] text-primary mb-2">Tela 04</h3>
+          <h2 class="text-2xl font-bold text-secondary font-montserrat tracking-tight">Automacao de Mensagens</h2>
+        </div>
+
+        <div class="border border-slate-200 rounded-xl overflow-hidden shadow-lg">
+          <div class="flex bg-surface min-h-[750px]">
+            <!-- Sidebar -->
+            <aside class="w-56 bg-slate-100 border-r border-slate-200 flex-shrink-0 flex flex-col">
+              <div class="py-5 px-5">
+                <div class="flex items-center gap-2 mb-1"><div class="w-7 h-7 bg-secondary rounded flex items-center justify-center"><span class="material-symbols-outlined text-white text-sm">school</span></div><span class="text-sm font-black text-blue-900 tracking-tighter font-montserrat">Sistema Aula</span></div>
+                <p class="text-[9px] uppercase tracking-widest text-slate-500 font-bold">Gestao de Leads v1.0</p>
+              </div>
+              <nav class="flex-1 px-2 space-y-0.5 mt-2">
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span>Dashboard</a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">view_kanban</span>Pipeline</a>
+                <a class="flex items-center gap-2 px-3 py-2 bg-white text-blue-900 font-bold shadow-sm border-l-4 border-emerald-500 translate-x-1 text-xs font-montserrat rounded-r" href="#"><span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">chat</span>Mensagens</a>
+                <a class="flex items-center gap-2 px-3 py-2 text-slate-600 font-medium text-xs font-montserrat rounded" href="#"><span class="material-symbols-outlined text-[18px]">group</span>Leads</a>
+              </nav>
+              <div class="px-3 pb-4"><button class="w-full bg-primary text-white py-2.5 rounded-md font-montserrat font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-1"><span class="material-symbols-outlined text-sm">add</span>Novo Lead</button></div>
+            </aside>
+
+            <!-- Main -->
+            <div class="flex-1 flex flex-col min-w-0">
+              <header class="h-14 bg-slate-50 border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-bold text-secondary tracking-tighter font-montserrat">Automacao de Mensagens</span>
+                  <span class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[9px] font-black uppercase rounded tracking-wider">WhatsApp</span>
+                </div>
+                <div class="flex items-center gap-4">
+                  <div class="relative"><span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-base">search</span><input class="bg-surface-container-low border-none rounded-md pl-8 pr-3 py-1.5 text-xs w-48 focus:ring-2 focus:ring-secondary" placeholder="Buscar templates..." type="text"/></div>
+                  <span class="material-symbols-outlined text-slate-500">notifications</span>
+                  <div class="w-7 h-7 rounded-full bg-slate-200 border border-slate-300"></div>
+                </div>
+              </header>
+
+              <!-- Content 7/5 grid -->
+              <div class="flex-1 p-6 grid grid-cols-12 gap-6 overflow-y-auto">
+                <!-- Left: Triggers -->
+                <section class="col-span-7 space-y-6">
+                  <div>
+                    <h3 class="text-xl font-bold text-secondary tracking-tight mb-1">Gatilhos Automaticos</h3>
+                    <p class="text-tertiary text-xs max-w-md">Configure sequencias automaticas de WhatsApp para cada etapa do funil.</p>
+                  </div>
+
+                  <div class="space-y-3">
+                    <!-- Trigger 1: Active -->
+                    <div class="bg-white p-5 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors audit-rail">
+                      <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 flex items-center justify-center bg-primary-container text-primary rounded-lg"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">person_add</span></div>
+                        <div>
+                          <h4 class="font-bold text-secondary text-sm">Novo Lead Cadastrado</h4>
+                          <p class="text-[10px] text-tertiary">Mensagem de boas-vindas via WhatsApp · <span class="text-primary">Ativo</span></p>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-3">
+                        <div class="text-right mr-3"><p class="text-[9px] font-black uppercase tracking-widest text-tertiary">Taxa de Envio</p><p class="text-sm font-bold text-primary">97.2%</p></div>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-secondary transition-colors">chevron_right</span>
+                      </div>
+                    </div>
+
+                    <!-- Trigger 2 -->
+                    <div class="bg-surface-container-low p-5 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors">
+                      <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 flex items-center justify-center bg-surface-container-high text-tertiary rounded-lg"><span class="material-symbols-outlined">sync_alt</span></div>
+                        <div>
+                          <h4 class="font-bold text-secondary text-sm">Follow-up 48h</h4>
+                          <p class="text-[10px] text-tertiary">Lembrete automatico apos 48h sem resposta · <span class="text-slate-500">Agendado</span></p>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-3">
+                        <div class="text-right mr-3"><p class="text-[9px] font-black uppercase tracking-widest text-tertiary">Taxa de Envio</p><p class="text-sm font-bold text-secondary">84.5%</p></div>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-secondary transition-colors">chevron_right</span>
+                      </div>
+                    </div>
+
+                    <!-- Trigger 3 -->
+                    <div class="bg-surface-container-low p-5 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors">
+                      <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 flex items-center justify-center bg-surface-container-high text-tertiary rounded-lg"><span class="material-symbols-outlined">event</span></div>
+                        <div>
+                          <h4 class="font-bold text-secondary text-sm">Lembrete Aula Experimental</h4>
+                          <p class="text-[10px] text-tertiary">Envio 1h antes da aula agendada · <span class="text-primary">Ativo</span></p>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-3">
+                        <div class="text-right mr-3"><p class="text-[9px] font-black uppercase tracking-widest text-tertiary">Taxa de Envio</p><p class="text-sm font-bold text-primary">99.1%</p></div>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-secondary transition-colors">chevron_right</span>
+                      </div>
+                    </div>
+
+                    <!-- Trigger 4 -->
+                    <div class="bg-surface-container-low p-5 flex items-center justify-between group cursor-pointer hover:bg-surface-container-high transition-colors">
+                      <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 flex items-center justify-center bg-surface-container-high text-tertiary rounded-lg"><span class="material-symbols-outlined">timer_off</span></div>
+                        <div>
+                          <h4 class="font-bold text-secondary text-sm">Re-engajamento 7 dias</h4>
+                          <p class="text-[10px] text-tertiary">Leads inativos ha 7+ dias · <span class="text-slate-500">Rascunho</span></p>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-3">
+                        <div class="text-right mr-3"><p class="text-[9px] font-black uppercase tracking-widest text-tertiary">Taxa de Envio</p><p class="text-sm font-bold text-slate-400">--</p></div>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-secondary transition-colors">chevron_right</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Queue Health -->
+                  <div class="bg-slate-900 p-6 rounded-lg relative overflow-hidden">
+                    <div class="relative z-10">
+                      <h5 class="text-white text-xs font-bold uppercase tracking-tighter opacity-60 mb-0.5">Status WhatsApp API</h5>
+                      <div class="flex items-end gap-2">
+                        <p class="text-3xl font-black text-white leading-none">Conectado</p>
+                        <div class="flex gap-0.5 mb-1"><div class="w-1.5 h-3 bg-primary"></div><div class="w-1.5 h-5 bg-primary"></div><div class="w-1.5 h-2 bg-primary"></div><div class="w-1.5 h-4 bg-primary"></div></div>
+                      </div>
+                      <p class="text-white/40 text-[10px] mt-3 font-medium italic">Latencia: 8ms | Numero: +55 11 9xxxx-xxxx</p>
+                    </div>
+                    <div class="absolute -right-8 -bottom-8 opacity-20"><span class="material-symbols-outlined text-[140px] text-white">verified_user</span></div>
+                  </div>
+                </section>
+
+                <!-- Right: Template Editor -->
+                <aside class="col-span-5">
+                  <div class="bg-white p-6 border border-outline-variant shadow-sm h-full flex flex-col">
+                    <div class="flex justify-between items-start mb-6">
+                      <div>
+                        <span class="text-[9px] font-black uppercase tracking-widest text-primary mb-1.5 block">Editor ao Vivo</span>
+                        <h3 class="text-lg font-bold text-secondary">Editar Template</h3>
+                      </div>
+                      <button class="bg-surface-container-low p-1.5 hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-secondary text-lg">close</span></button>
+                    </div>
+                    <div class="space-y-5 flex-1">
+                      <div>
+                        <label class="block text-[9px] font-black uppercase tracking-widest text-tertiary mb-1.5">Nome do Template</label>
+                        <input class="w-full bg-surface-container-low border-none rounded-md p-3 font-bold text-secondary text-sm focus:ring-2 focus:ring-primary" type="text" value="Boas-vindas Novo Lead"/>
+                      </div>
+                      <div>
+                        <label class="block text-[9px] font-black uppercase tracking-widest text-tertiary mb-1.5">Mensagem</label>
+                        <textarea class="w-full bg-surface-container-low border-none rounded-md p-4 text-xs leading-relaxed text-secondary focus:ring-2 focus:ring-primary" rows="7">Ola {nome_aluno}! 👋
+
+Obrigado pelo interesse na {nome_escola}! Meu nome e {nome_atendente} e vou te ajudar a encontrar o curso ideal.
+
+Posso agendar uma aula experimental gratuita para voce?
+
+Escolha o melhor horario: {link_agendamento}</textarea>
+                      </div>
+                      <div>
+                        <label class="block text-[9px] font-black uppercase tracking-widest text-tertiary mb-2">Variaveis Disponiveis</label>
+                        <div class="flex flex-wrap gap-1.5">
+                          <button class="px-2.5 py-1 bg-slate-100 text-[9px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{nome_aluno}</button>
+                          <button class="px-2.5 py-1 bg-slate-100 text-[9px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{nome_atendente}</button>
+                          <button class="px-2.5 py-1 bg-slate-100 text-[9px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{nome_escola}</button>
+                          <button class="px-2.5 py-1 bg-slate-100 text-[9px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{nome_curso}</button>
+                          <button class="px-2.5 py-1 bg-slate-100 text-[9px] font-bold text-secondary rounded hover:bg-slate-200 transition-colors uppercase tracking-tight">{link_agendamento}</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="pt-5 mt-auto border-t border-outline-variant flex items-center justify-between">
+                      <button class="text-xs font-bold text-tertiary hover:text-error transition-colors">Descartar</button>
+                      <button class="bg-primary text-white px-6 py-2.5 font-bold text-xs hover:shadow-lg transition-all">Salvar Template</button>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+
+              <!-- Metrics Footer -->
+              <footer class="px-6 py-8 bg-surface-container-low grid grid-cols-4 gap-8 border-t border-outline-variant mt-auto">
+                <div class="space-y-0.5">
+                  <p class="text-[9px] font-black uppercase tracking-widest text-tertiary">Mensagens Enviadas (24h)</p>
+                  <p class="text-3xl font-black text-secondary tracking-tighter">1,247</p>
+                  <div class="flex items-center gap-1 text-primary text-[9px] font-bold"><span class="material-symbols-outlined text-[10px]">trending_up</span>+8% vs ontem</div>
+                </div>
+                <div class="space-y-0.5">
+                  <p class="text-[9px] font-black uppercase tracking-widest text-tertiary">Taxa de Leitura</p>
+                  <p class="text-3xl font-black text-secondary tracking-tighter">89.3%</p>
+                  <div class="w-full bg-slate-300 h-1 mt-1"><div class="bg-primary h-full" style="width:89.3%"></div></div>
+                </div>
+                <div class="space-y-0.5">
+                  <p class="text-[9px] font-black uppercase tracking-widest text-tertiary">Taxa de Resposta</p>
+                  <p class="text-3xl font-black text-secondary tracking-tighter">34.7%</p>
+                  <div class="w-full bg-slate-300 h-1 mt-1"><div class="bg-secondary h-full" style="width:34.7%"></div></div>
+                </div>
+                <div class="space-y-0.5">
+                  <p class="text-[9px] font-black uppercase tracking-widest text-tertiary">Status API</p>
+                  <div class="flex items-center gap-2">
+                    <div class="relative flex h-2.5 w-2.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span></div>
+                    <p class="text-xl font-bold text-secondary tracking-tight">Operacional</p>
+                  </div>
+                  <p class="text-[9px] text-tertiary font-medium mt-0.5">Heartbeat: 1.2s atras</p>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-20 py-8 border-t border-slate-200 text-center">
+        <p class="text-[0.6875rem] font-black text-slate-400 uppercase tracking-[0.3em]">Design System v1.0 — Sistema Aula 26 — The Architectural Ledger</p>
+      </footer>
+
+    </div>
+  </main>
+
+</body>
+</html>
