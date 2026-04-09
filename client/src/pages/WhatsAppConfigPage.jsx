@@ -1,54 +1,132 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2, Wifi, WifiOff, RefreshCw } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import toast from 'react-hot-toast';
+import { useAuth } from '../contexts/AuthContext';
 import * as api from '../services/api';
 
 export default function WhatsAppConfigPage() {
   const queryClient = useQueryClient();
+  const { profile, isSuperAdmin } = useAuth();
   const [newName, setNewName] = useState('');
   const [activeInstance, setActiveInstance] = useState(null);
+  const [selectedTenantId, setSelectedTenantId] = useState('');
 
-  const { data: instances = [] } = useQuery({ queryKey: ['whatsapp-instances'], queryFn: api.getInstances });
+  const { data: tenants = [] } = useQuery({
+    queryKey: ['user-tenants'],
+    queryFn: api.getUserTenants,
+    enabled: isSuperAdmin,
+  });
+
+  // Resolve tenant ativo: tenant_admin usa o próprio, superadmin escolhe.
+  const activeTenantId = useMemo(() => {
+    if (isSuperAdmin) return selectedTenantId;
+    return profile?.tenant_id || profile?.tenant?.id || '';
+  }, [isSuperAdmin, selectedTenantId, profile]);
+
+  // Auto-seleciona primeiro tenant para superadmin.
+  useEffect(() => {
+    if (isSuperAdmin && !selectedTenantId && tenants.length > 0) {
+      setSelectedTenantId(tenants[0].id);
+    }
+  }, [isSuperAdmin, selectedTenantId, tenants]);
+
+  const { data: instances = [] } = useQuery({
+    queryKey: ['whatsapp-instances', activeTenantId],
+    queryFn: () => api.getInstances(activeTenantId),
+    enabled: Boolean(activeTenantId),
+  });
 
   const createMut = useMutation({
-    mutationFn: (name) => api.createInstance(name),
+    mutationFn: (name) => api.createInstance(name, activeTenantId),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['whatsapp-instances'] });
+      queryClient.invalidateQueries({ queryKey: ['whatsapp-instances', activeTenantId] });
       setNewName('');
       setActiveInstance(data.instance?.instance_name);
       toast.success('Instância criada');
     },
-    onError: (err) => toast.error(err.response?.data?.message || 'Erro ao criar instância')
+    onError: (err) => {
+      const body = err.response?.data;
+      const msg = body?.message || 'Erro ao criar instância';
+      const detail = body?.details || body?.hint || body?.code;
+      toast.error(detail ? `${msg} — ${detail}` : msg);
+      if (body) console.error('[whatsapp.createInstance] detalhes:', body);
+    },
   });
 
   const deleteMut = useMutation({
-    mutationFn: api.deleteInstance,
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['whatsapp-instances'] }); toast.success('Instância removida'); }
+    mutationFn: (name) => api.deleteInstance(name, activeTenantId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['whatsapp-instances', activeTenantId] });
+      toast.success('Instância removida');
+    },
   });
+
+  const canCreate = Boolean(newName) && Boolean(activeTenantId) && !createMut.isPending;
 
   return (
     <div className="p-6 max-w-4xl">
       <h2 className="text-xl font-bold text-gray-900 mb-6">Configuração WhatsApp</h2>
 
+      {/* Tenant selector (superadmin) */}
+      {isSuperAdmin && (
+        <div className="bg-white border rounded-lg p-4 mb-6">
+          <label className="text-sm font-semibold block mb-2">Tenant alvo</label>
+          <select
+            value={selectedTenantId}
+            onChange={(e) => setSelectedTenantId(e.target.value)}
+            className="w-full border rounded-lg px-3 py-2 text-sm"
+          >
+            <option value="">Selecione uma tenant</option>
+            {tenants.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name} ({t.slug})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       {/* Create instance */}
       <div className="bg-white border rounded-lg p-4 mb-6">
         <h3 className="text-sm font-semibold mb-3">Nova Instância</h3>
         <div className="flex gap-2">
-          <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Nome da instância (ex: leadtrack-main)" className="flex-1 border rounded-lg px-3 py-2 text-sm" onKeyDown={e => e.key === 'Enter' && newName && createMut.mutate(newName)} />
-          <button onClick={() => newName && createMut.mutate(newName)} disabled={!newName || createMut.isPending} className="flex items-center gap-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50">
+          <input
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            placeholder="Nome da instância (ex: leadtrack-main)"
+            className="flex-1 border rounded-lg px-3 py-2 text-sm"
+            onKeyDown={(e) => e.key === 'Enter' && canCreate && createMut.mutate(newName)}
+          />
+          <button
+            onClick={() => canCreate && createMut.mutate(newName)}
+            disabled={!canCreate}
+            className="flex items-center gap-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          >
             <Plus size={16} /> Criar
           </button>
         </div>
+        {!activeTenantId && (
+          <p className="mt-2 text-xs text-amber-600">
+            {isSuperAdmin ? 'Selecione uma tenant acima para criar instâncias.' : 'Seu perfil não está vinculado a uma tenant.'}
+          </p>
+        )}
       </div>
 
       {/* Instances list */}
       <div className="space-y-4">
-        {instances.map(inst => (
-          <InstanceCard key={inst.id} instance={inst} isActive={activeInstance === inst.instance_name} onActivate={() => setActiveInstance(activeInstance === inst.instance_name ? null : inst.instance_name)} onDelete={() => deleteMut.mutate(inst.instance_name)} />
+        {instances.map((inst) => (
+          <InstanceCard
+            key={inst.id}
+            instance={inst}
+            tenantId={activeTenantId}
+            isActive={activeInstance === inst.instance_name}
+            onActivate={() => setActiveInstance(activeInstance === inst.instance_name ? null : inst.instance_name)}
+            onDelete={() => deleteMut.mutate(inst.instance_name)}
+          />
         ))}
-        {instances.length === 0 && (
+        {instances.length === 0 && activeTenantId && (
           <div className="bg-white border rounded-lg p-8 text-center text-gray-400">
             Nenhuma instância WhatsApp configurada
           </div>
@@ -58,12 +136,12 @@ export default function WhatsAppConfigPage() {
   );
 }
 
-function InstanceCard({ instance, isActive, onActivate, onDelete }) {
+function InstanceCard({ instance, tenantId, isActive, onActivate, onDelete }) {
   const { data: status } = useQuery({
-    queryKey: ['whatsapp-status', instance.instance_name],
-    queryFn: () => api.getConnectionStatus(instance.instance_name),
+    queryKey: ['whatsapp-status', instance.instance_name, tenantId],
+    queryFn: () => api.getConnectionStatus(instance.instance_name, tenantId),
     refetchInterval: isActive ? 10000 : 30000,
-    retry: false
+    retry: false,
   });
 
   const { data: qrData, refetch: refetchQR } = useQuery({
@@ -71,7 +149,7 @@ function InstanceCard({ instance, isActive, onActivate, onDelete }) {
     queryFn: () => api.getQRCode(instance.instance_name),
     enabled: isActive && status?.state !== 'open',
     refetchInterval: isActive && status?.state !== 'open' ? 30000 : false,
-    retry: false
+    retry: false,
   });
 
   const connected = status?.state === 'open';

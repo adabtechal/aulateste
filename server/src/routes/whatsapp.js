@@ -2,14 +2,33 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../lib/supabase');
 const evolutionApi = require('../services/evolutionApi');
+const { requireAuth, requireRole } = require('../middleware/auth');
+
+router.use(requireAuth);
+router.use(requireRole('superadmin', 'tenant_admin'));
+
+function resolveTenantId(req) {
+  if (req.auth.profile.role === 'superadmin') {
+    return req.query.tenantId || req.body?.tenantId || null;
+  }
+
+  return req.auth.profile.tenant_id;
+}
 
 // GET /api/whatsapp/instances — List saved instances
 router.get('/instances', async (req, res, next) => {
   try {
-    const { data, error } = await supabase
+    const tenantId = resolveTenantId(req);
+    let query = supabase
       .from('whatsapp_instances')
       .select('*')
       .order('created_at', { ascending: false });
+
+    if (tenantId) {
+      query = query.eq('tenant_id', tenantId);
+    }
+
+    const { data, error } = await query;
 
     if (error) throw error;
     res.json(data);
@@ -22,8 +41,14 @@ router.get('/instances', async (req, res, next) => {
 router.post('/instances', async (req, res, next) => {
   try {
     const { instanceName } = req.body;
+    const tenantId = resolveTenantId(req);
+
     if (!instanceName) {
       return res.status(400).json({ error: true, message: 'instanceName is required' });
+    }
+
+    if (!tenantId) {
+      return res.status(400).json({ error: true, message: 'tenantId is required for superadmin' });
     }
 
     const result = await evolutionApi.createInstance(instanceName);
@@ -34,7 +59,8 @@ router.post('/instances', async (req, res, next) => {
         instance_name: instanceName,
         api_url: process.env.EVOLUTION_API_URL,
         api_key: process.env.EVOLUTION_API_KEY,
-        status: 'disconnected'
+        status: 'disconnected',
+        tenant_id: tenantId,
       })
       .select()
       .single();
@@ -71,12 +97,19 @@ router.get('/instances/:name/status', async (req, res, next) => {
   try {
     const data = await evolutionApi.getConnectionState(req.params.name);
     const state = data?.instance?.state;
+    const tenantId = resolveTenantId(req);
 
     // Update status in DB
-    await supabase
+    let query = supabase
       .from('whatsapp_instances')
       .update({ status: state === 'open' ? 'connected' : 'disconnected', updated_at: new Date().toISOString() })
       .eq('instance_name', req.params.name);
+
+    if (tenantId) {
+      query = query.eq('tenant_id', tenantId);
+    }
+
+    await query;
 
     res.json({ state, instanceName: req.params.name });
   } catch (err) {
@@ -87,16 +120,24 @@ router.get('/instances/:name/status', async (req, res, next) => {
 // DELETE /api/whatsapp/instances/:name — Delete instance
 router.delete('/instances/:name', async (req, res, next) => {
   try {
+    const tenantId = resolveTenantId(req);
+
     try {
       await evolutionApi.deleteInstance(req.params.name);
     } catch (evoErr) {
       console.warn('Evolution delete failed:', evoErr.message);
     }
 
-    const { error } = await supabase
+    let query = supabase
       .from('whatsapp_instances')
       .delete()
       .eq('instance_name', req.params.name);
+
+    if (tenantId) {
+      query = query.eq('tenant_id', tenantId);
+    }
+
+    const { error } = await query;
 
     if (error) throw error;
     res.json({ success: true });
