@@ -99,8 +99,36 @@ export function AuthProvider({ children }) {
   }
 
   async function signOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    // Tenta encerrar a sessão no servidor, mas garante limpeza local mesmo se falhar.
+    // Sem isso, erros de rede/token expirado fazem o botão "não funcionar".
+    let serverError = null;
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) serverError = error;
+    } catch (err) {
+      serverError = err;
+    }
+
+    // Fallback: limpa estado React e storage do Supabase manualmente
+    setUser(null);
+    setProfile(null);
+
+    try {
+      const storageKeys = [];
+      for (let i = 0; i < window.localStorage.length; i++) {
+        const key = window.localStorage.key(i);
+        if (key && (key.startsWith('sb-') || key.includes('supabase'))) {
+          storageKeys.push(key);
+        }
+      }
+      storageKeys.forEach((key) => window.localStorage.removeItem(key));
+    } catch (err) {
+      console.warn('Falha ao limpar storage local de auth:', err);
+    }
+
+    if (serverError) {
+      console.warn('signOut do Supabase falhou, mas sessão local foi limpa:', serverError);
+    }
   }
 
   async function resetPassword(email) {

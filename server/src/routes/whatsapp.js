@@ -82,11 +82,34 @@ router.post('/instances', async (req, res, next) => {
   }
 });
 
-// GET /api/whatsapp/instances/:name/qrcode — Get QR code
+// GET /api/whatsapp/instances/:name/qrcode — Get QR code (auto-recover)
+//
+// Fluxo: ao pedir o QR, primeiro garantimos que a instância existe no Evolution
+// e que o webhook está apontando para a edge function `webhook-messages`.
+// Se a instância sumiu (404) ou o Evolution responde 5xx, recriamos e
+// reconfiguramos o webhook automaticamente — assim o usuário NUNCA fica preso
+// num loading infinito ao clicar em "Conectar".
 router.get('/instances/:name/qrcode', async (req, res, next) => {
   try {
-    const data = await evolutionApi.getQRCode(req.params.name);
-    res.json(data);
+    const instanceName = req.params.name;
+    const webhookUrl = process.env.WEBHOOK_URL;
+
+    // 1) Garante que a instância existe / recria se necessário
+    const ensured = await evolutionApi.ensureInstanceReady(instanceName, webhookUrl);
+
+    // 2) Se já está conectada, não há QR para retornar
+    if (ensured.state === 'open') {
+      return res.json({
+        connected: true,
+        state: 'open',
+        instanceName,
+        recreated: false,
+      });
+    }
+
+    // 3) Busca o QR (base64 + pairingCode)
+    const qr = await evolutionApi.getQRCode(instanceName);
+    res.json({ ...qr, recreated: ensured.recreated });
   } catch (err) {
     next(err);
   }

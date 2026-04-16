@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Users, MessageSquare, Wifi, LogOut, Loader2, UserPlus, Bot } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
@@ -32,6 +33,20 @@ function ProtectedRoute({ children }) {
 function Sidebar() {
   const location = useLocation();
   const { profile, signOut } = useAuth();
+  const [signingOut, setSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await signOut();
+    } catch (err) {
+      console.error('Erro ao fazer logout:', err);
+    } finally {
+      // Fallback final: força ida para /login mesmo se algo deu errado.
+      window.location.assign('/login');
+    }
+  }
 
   const links = [
     { to: '/kanban', icon: LayoutDashboard, label: 'Kanban' },
@@ -87,11 +102,12 @@ function Sidebar() {
             )}
           </div>
           <button
-            onClick={signOut}
-            className="flex items-center gap-2 px-3 py-2 w-full text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            onClick={handleSignOut}
+            disabled={signingOut}
+            className="flex items-center gap-2 px-3 py-2 w-full text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <LogOut size={18} />
-            Sair
+            {signingOut ? <Loader2 size={18} className="animate-spin" /> : <LogOut size={18} />}
+            {signingOut ? 'Saindo...' : 'Sair'}
           </button>
         </div>
       )}

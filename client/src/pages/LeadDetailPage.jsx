@@ -8,7 +8,7 @@ import Modal from '../components/ui/Modal';
 import LeadForm from '../components/leads/LeadForm';
 import MessageComposer from '../components/messages/MessageComposer';
 import MessageBubble from '../components/messages/MessageBubble';
-import { useRealtimeLeads } from '../hooks/useRealtime';
+import { useRealtimeLeads, useRealtimeLeadMessages } from '../hooks/useRealtime';
 import * as api from '../services/api';
 
 export default function LeadDetailPage() {
@@ -18,9 +18,22 @@ export default function LeadDetailPage() {
   const [editing, setEditing] = useState(false);
 
   useRealtimeLeads();
+  useRealtimeLeadMessages(id);
 
-  const { data: lead, isLoading } = useQuery({ queryKey: ['lead', id], queryFn: () => api.getLead(id) });
-  const { data: messages = [] } = useQuery({ queryKey: ['lead-messages', id], queryFn: () => api.getLeadMessages(id) });
+  const { data: lead, isLoading } = useQuery({
+    queryKey: ['lead', id],
+    queryFn: () => api.getLead(id),
+    // Fallback: se realtime falhar (publication não habilitada, RLS, rede instável),
+    // o polling garante que o chat não fique "preso" até um reload manual.
+    refetchInterval: 15000,
+    refetchOnWindowFocus: true,
+  });
+  const { data: messages = [] } = useQuery({
+    queryKey: ['lead-messages', id],
+    queryFn: () => api.getLeadMessages(id),
+    refetchInterval: 5000,
+    refetchOnWindowFocus: true,
+  });
 
   const updateMut = useMutation({
     mutationFn: (data) => api.updateLead(id, data),

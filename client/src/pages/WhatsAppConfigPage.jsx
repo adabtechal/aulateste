@@ -190,7 +190,16 @@ function InstanceCard({ instance, tenantId, isActive, onActivate, onDelete }) {
           {qrData.pairingCode && (
             <p className="mt-2 text-sm text-gray-500">Código: <strong>{qrData.pairingCode}</strong></p>
           )}
+          {qrData.recreated && (
+            <p className="text-xs text-amber-600 mt-2">Instância recriada automaticamente — webhook reconfigurado</p>
+          )}
           <p className="text-xs text-gray-400 mt-2">QR atualiza automaticamente a cada 30s</p>
+        </div>
+      )}
+
+      {isActive && !connected && !qrData?.code && qrData?.connected && (
+        <div className="mt-4 flex flex-col items-center border-t pt-4">
+          <p className="text-sm text-green-600">Instância já conectada — atualize a página</p>
         </div>
       )}
     </div>

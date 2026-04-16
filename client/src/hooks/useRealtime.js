@@ -29,3 +29,49 @@ export function useRealtimeLeads() {
     return () => { supabase.removeChannel(channel); };
   }, [queryClient]);
 }
+
+/**
+ * Subscription dedicada às mensagens de UM lead específico.
+ * Filtra server-side por `lead_id=eq.{leadId}` para evitar invalidar
+ * queries de outros leads. Use no LeadDetailPage para chat realtime.
+ */
+export function useRealtimeLeadMessages(leadId) {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!leadId) return;
+
+    const channel = supabase
+      .channel(`lead-messages-${leadId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'message_log',
+          filter: `lead_id=eq.${leadId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['lead-messages', leadId] });
+          queryClient.invalidateQueries({ queryKey: ['lead', leadId] });
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'lead_stage_history',
+          filter: `lead_id=eq.${leadId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['lead', leadId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [leadId, queryClient]);
+}
