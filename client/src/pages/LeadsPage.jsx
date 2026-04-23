@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search, Trash2, Edit } from 'lucide-react';
+import { Plus, Search, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Modal from '../components/ui/Modal';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
@@ -30,87 +30,90 @@ export default function LeadsPage() {
 
   const deleteMut = useMutation({
     mutationFn: api.deleteLead,
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['leads'] }); setDeleteId(null); toast.success('Lead excluído'); }
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['leads'] }); setDeleteId(null); toast.success('Lead excluido'); }
   });
 
   const leads = result?.data || [];
   const pagination = result?.pagination;
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900">Central de Leads</h2>
-        <button onClick={() => setShowNewLead(true)} className="flex items-center gap-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-          <Plus size={16} /> Novo Lead
+    <div className="p-8">
+      <div className="flex items-end justify-between mb-7">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-violet-500">Central</p>
+          <h2 className="text-[22px] font-semibold text-ink-900 tracking-tight">Central de <em className="font-serif font-normal text-violet-600">leads</em></h2>
+        </div>
+        <button onClick={() => setShowNewLead(true)} className="flex items-center gap-[7px] px-[14px] py-2 text-[13px] font-medium text-white bg-violet-500 rounded-md hover:bg-violet-600 transition-all shadow-violet">
+          <Plus size={14} strokeWidth={2} /> Novo lead
         </button>
       </div>
 
       <div className="flex gap-3 mb-4">
         <div className="relative flex-1 max-w-md">
-          <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
-          <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Buscar por nome, telefone ou email..." className="w-full pl-9 pr-3 py-2 border rounded-lg text-sm" />
+          <Search size={14} className="absolute left-3 top-[11px] text-ink-400" />
+          <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Buscar por nome, telefone ou email..." className="w-full pl-9 pr-3 py-[9px] border border-ink-200 rounded-sm text-[13px] bg-ink-0 outline-none transition focus:border-violet-500" />
         </div>
-        <select value={stageFilter} onChange={e => { setStageFilter(e.target.value); setPage(1); }} className="border rounded-lg px-3 py-2 text-sm">
-          <option value="">Todos os stages</option>
+        <select value={stageFilter} onChange={e => { setStageFilter(e.target.value); setPage(1); }} className="border border-ink-200 rounded-sm px-3 py-[9px] text-[13px] bg-ink-0 outline-none focus:border-violet-500">
+          <option value="">Todos os estagios</option>
           {stages.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
         </select>
       </div>
 
-      <div className="bg-white border rounded-lg overflow-hidden">
+      <div className="bg-ink-0 border border-ink-150 rounded-lg overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b">
-            <tr>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Nome</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Telefone</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Email</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Stage</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Tags</th>
-              <th className="px-4 py-3"></th>
+          <thead>
+            <tr className="bg-ink-50 border-b border-ink-150">
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Nome</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Telefone</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Email</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Estagio</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Tags</th>
+              <th className="px-4 py-[11px]"></th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody>
             {leads.map(lead => (
-              <tr key={lead.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => navigate(`/leads/${lead.id}`)}>
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">{lead.name}</td>
-                <td className="px-4 py-3 text-sm text-gray-600">{lead.phone}</td>
-                <td className="px-4 py-3 text-sm text-gray-600">{lead.email || '—'}</td>
-                <td className="px-4 py-3">
+              <tr key={lead.id} className="hover:bg-ink-50 cursor-pointer border-b border-ink-100 last:border-b-0 transition-colors" onClick={() => navigate(`/leads/${lead.id}`)}>
+                <td className="px-4 py-[13px] text-[13px] font-semibold text-ink-900">{lead.name}</td>
+                <td className="px-4 py-[13px] text-[13px] font-mono text-ink-600">{lead.phone}</td>
+                <td className="px-4 py-[13px] text-[13px] text-ink-600">{lead.email || '—'}</td>
+                <td className="px-4 py-[13px]">
                   {lead.kanban_stages && (
-                    <span className="inline-flex items-center gap-1.5 text-xs px-2 py-1 rounded-full" style={{ backgroundColor: lead.kanban_stages.color + '20', color: lead.kanban_stages.color }}>
-                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: lead.kanban_stages.color }} />
+                    <span className="inline-flex items-center gap-[5px] text-[10px] font-semibold uppercase tracking-[0.04em] px-[9px] py-[3px] rounded-full" style={{ backgroundColor: lead.kanban_stages.color + '18', color: lead.kanban_stages.color }}>
+                      <span className="w-[5px] h-[5px] rounded-full" style={{ backgroundColor: lead.kanban_stages.color }} />
                       {lead.kanban_stages.name}
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-3">
-                  <div className="flex gap-1">{lead.tags?.map(t => <span key={t} className="text-xs bg-gray-100 px-1.5 py-0.5 rounded">{t}</span>)}</div>
+                <td className="px-4 py-[13px]">
+                  <div className="flex gap-1">{lead.tags?.map(t => <span key={t} className="text-[9px] font-medium bg-ink-100 text-ink-600 px-[6px] py-[2px] rounded-xs">{t}</span>)}</div>
                 </td>
-                <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
-                  <button onClick={() => setDeleteId(lead.id)} className="text-gray-400 hover:text-red-600"><Trash2 size={16} /></button>
+                <td className="px-4 py-[13px]" onClick={e => e.stopPropagation()}>
+                  <button onClick={() => setDeleteId(lead.id)} className="text-ink-400 hover:text-danger-500 transition-colors"><Trash2 size={14} /></button>
                 </td>
               </tr>
             ))}
-            {isLoading && <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">Carregando...</td></tr>}
-            {!isLoading && leads.length === 0 && <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">Nenhum lead encontrado</td></tr>}
+            {isLoading && <tr><td colSpan={6} className="px-4 py-8 text-center text-ink-400 text-[13px]">Carregando...</td></tr>}
+            {!isLoading && leads.length === 0 && <tr><td colSpan={6} className="px-4 py-12 text-center text-ink-400 text-[13px]">Ainda nao ha leads por aqui</td></tr>}
           </tbody>
         </table>
       </div>
 
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between mt-4">
-          <span className="text-sm text-gray-500">{pagination.total} leads encontrados</span>
+          <span className="text-[13px] text-ink-500">{pagination.total} leads encontrados</span>
           <div className="flex gap-1">
             {Array.from({ length: pagination.totalPages }, (_, i) => (
-              <button key={i} onClick={() => setPage(i + 1)} className={`px-3 py-1 text-sm rounded ${page === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>{i + 1}</button>
+              <button key={i} onClick={() => setPage(i + 1)} className={`px-3 py-1 text-[13px] rounded-md transition-colors ${page === i + 1 ? 'bg-violet-500 text-white shadow-violet' : 'bg-ink-0 border border-ink-200 text-ink-700 hover:bg-ink-75'}`}>{i + 1}</button>
             ))}
           </div>
         </div>
       )}
 
-      <Modal open={showNewLead} onClose={() => setShowNewLead(false)} title="Novo Lead">
+      <Modal open={showNewLead} onClose={() => setShowNewLead(false)} title="Novo lead">
         <LeadForm onSubmit={(data) => createMut.mutate(data)} onCancel={() => setShowNewLead(false)} />
       </Modal>
-      <ConfirmDialog open={!!deleteId} onClose={() => setDeleteId(null)} onConfirm={() => deleteMut.mutate(deleteId)} title="Excluir Lead" message="Tem certeza? Esta ação não pode ser desfeita." />
+      <ConfirmDialog open={!!deleteId} onClose={() => setDeleteId(null)} onConfirm={() => deleteMut.mutate(deleteId)} title="Excluir lead" message="Excluir este lead? Esta acao nao pode ser desfeita." />
     </div>
   );
 }

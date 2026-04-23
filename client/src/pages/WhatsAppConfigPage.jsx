@@ -19,13 +19,11 @@ export default function WhatsAppConfigPage() {
     enabled: isSuperAdmin,
   });
 
-  // Resolve tenant ativo: tenant_admin usa o próprio, superadmin escolhe.
   const activeTenantId = useMemo(() => {
     if (isSuperAdmin) return selectedTenantId;
     return profile?.tenant_id || profile?.tenant?.id || '';
   }, [isSuperAdmin, selectedTenantId, profile]);
 
-  // Auto-seleciona primeiro tenant para superadmin.
   useEffect(() => {
     if (isSuperAdmin && !selectedTenantId && tenants.length > 0) {
       setSelectedTenantId(tenants[0].id);
@@ -44,14 +42,13 @@ export default function WhatsAppConfigPage() {
       queryClient.invalidateQueries({ queryKey: ['whatsapp-instances', activeTenantId] });
       setNewName('');
       setActiveInstance(data.instance?.instance_name);
-      toast.success('Instância criada');
+      toast.success('Instancia criada');
     },
     onError: (err) => {
       const body = err.response?.data;
-      const msg = body?.message || 'Erro ao criar instância';
+      const msg = body?.message || 'Erro ao criar instancia';
       const detail = body?.details || body?.hint || body?.code;
       toast.error(detail ? `${msg} — ${detail}` : msg);
-      if (body) console.error('[whatsapp.createInstance] detalhes:', body);
     },
   });
 
@@ -59,62 +56,60 @@ export default function WhatsAppConfigPage() {
     mutationFn: (name) => api.deleteInstance(name, activeTenantId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['whatsapp-instances', activeTenantId] });
-      toast.success('Instância removida');
+      toast.success('Instancia removida');
     },
   });
 
   const canCreate = Boolean(newName) && Boolean(activeTenantId) && !createMut.isPending;
 
   return (
-    <div className="p-6 max-w-4xl">
-      <h2 className="text-xl font-bold text-gray-900 mb-6">Configuração WhatsApp</h2>
+    <div className="p-8 max-w-4xl">
+      <div className="mb-7">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-violet-500">Config</p>
+        <h2 className="text-[22px] font-semibold text-ink-900 tracking-tight">Configuracao <em className="font-serif font-normal text-violet-600">WhatsApp</em></h2>
+      </div>
 
-      {/* Tenant selector (superadmin) */}
       {isSuperAdmin && (
-        <div className="bg-white border rounded-lg p-4 mb-6">
-          <label className="text-sm font-semibold block mb-2">Tenant alvo</label>
+        <div className="bg-ink-0 border border-ink-150 rounded-lg p-5 mb-6">
+          <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-500 block mb-[5px]">Tenant alvo</label>
           <select
             value={selectedTenantId}
             onChange={(e) => setSelectedTenantId(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-ink-200 rounded-sm px-3 py-[9px] text-[13px] bg-ink-0 outline-none focus:border-violet-500"
           >
             <option value="">Selecione uma tenant</option>
             {tenants.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.name} ({t.slug})
-              </option>
+              <option key={t.id} value={t.id}>{t.name} ({t.slug})</option>
             ))}
           </select>
         </div>
       )}
 
-      {/* Create instance */}
-      <div className="bg-white border rounded-lg p-4 mb-6">
-        <h3 className="text-sm font-semibold mb-3">Nova Instância</h3>
+      <div className="bg-ink-0 border border-ink-150 rounded-lg p-5 mb-6">
+        <h3 className="text-[13px] font-semibold text-ink-900 mb-3">Nova instancia</h3>
         <div className="flex gap-2">
           <input
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder="Nome da instância (ex: leadtrack-main)"
-            className="flex-1 border rounded-lg px-3 py-2 text-sm"
+            placeholder="Nome da instancia (ex: leadtrack-main)"
+            className="flex-1 border border-ink-200 rounded-sm px-3 py-[9px] text-[13px] bg-ink-0 outline-none focus:border-violet-500"
             onKeyDown={(e) => e.key === 'Enter' && canCreate && createMut.mutate(newName)}
           />
           <button
             onClick={() => canCreate && createMut.mutate(newName)}
             disabled={!canCreate}
-            className="flex items-center gap-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="flex items-center gap-[7px] px-[14px] py-2 text-[13px] font-medium text-white bg-violet-500 rounded-md hover:bg-violet-600 disabled:opacity-50 transition-all shadow-violet"
           >
-            <Plus size={16} /> Criar
+            <Plus size={14} /> Criar
           </button>
         </div>
         {!activeTenantId && (
-          <p className="mt-2 text-xs text-amber-600">
-            {isSuperAdmin ? 'Selecione uma tenant acima para criar instâncias.' : 'Seu perfil não está vinculado a uma tenant.'}
+          <p className="mt-2 text-xs text-warning-500">
+            {isSuperAdmin ? 'Selecione uma tenant acima para criar instancias.' : 'Seu perfil nao esta vinculado a uma tenant.'}
           </p>
         )}
       </div>
 
-      {/* Instances list */}
       <div className="space-y-4">
         {instances.map((inst) => (
           <InstanceCard
@@ -127,8 +122,8 @@ export default function WhatsAppConfigPage() {
           />
         ))}
         {instances.length === 0 && activeTenantId && (
-          <div className="bg-white border rounded-lg p-8 text-center text-gray-400">
-            Nenhuma instância WhatsApp configurada
+          <div className="bg-ink-0 border border-ink-150 rounded-lg p-12 text-center text-ink-400 text-[13px]">
+            Nenhuma instancia WhatsApp configurada
           </div>
         )}
       </div>
@@ -155,51 +150,51 @@ function InstanceCard({ instance, tenantId, isActive, onActivate, onDelete }) {
   const connected = status?.state === 'open';
 
   return (
-    <div className="bg-white border rounded-lg p-4">
+    <div className="bg-ink-0 border border-ink-150 rounded-lg p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {connected ? <Wifi size={20} className="text-green-600" /> : <WifiOff size={20} className="text-gray-400" />}
+          {connected ? <Wifi size={18} className="text-success-500" /> : <WifiOff size={18} className="text-ink-400" />}
           <div>
-            <h4 className="text-sm font-semibold">{instance.instance_name}</h4>
-            <p className={`text-xs ${connected ? 'text-green-600' : 'text-gray-500'}`}>
+            <h4 className="text-[13px] font-semibold text-ink-900">{instance.instance_name}</h4>
+            <p className={`text-[11px] ${connected ? 'text-success-500' : 'text-ink-500'}`}>
               {connected ? 'Conectado' : 'Desconectado'}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           {!connected && (
-            <button onClick={onActivate} className="px-3 py-1.5 text-xs text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100">
+            <button onClick={onActivate} className="px-3 py-[6px] text-xs font-medium text-violet-600 bg-violet-50 rounded-md hover:bg-violet-100 transition-colors">
               {isActive ? 'Fechar QR' : 'Conectar'}
             </button>
           )}
           {connected && (
-            <button onClick={() => refetchQR()} className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
+            <button onClick={() => refetchQR()} className="flex items-center gap-1 px-3 py-[6px] text-xs font-medium text-ink-600 bg-ink-75 rounded-md hover:bg-ink-100 transition-colors">
               <RefreshCw size={12} /> Reconectar
             </button>
           )}
-          <button onClick={onDelete} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded">
-            <Trash2 size={16} />
+          <button onClick={onDelete} className="p-[6px] text-ink-400 hover:text-danger-500 hover:bg-danger-50 rounded-lg transition-colors">
+            <Trash2 size={14} />
           </button>
         </div>
       </div>
 
       {isActive && !connected && qrData?.code && (
-        <div className="mt-4 flex flex-col items-center border-t pt-4">
-          <p className="text-sm text-gray-600 mb-3">Escaneie o QR Code com o WhatsApp</p>
+        <div className="mt-4 flex flex-col items-center border-t border-ink-100 pt-4">
+          <p className="text-[13px] text-ink-600 mb-3">Escaneie o QR Code com o WhatsApp</p>
           <QRCodeSVG value={qrData.code} size={256} />
           {qrData.pairingCode && (
-            <p className="mt-2 text-sm text-gray-500">Código: <strong>{qrData.pairingCode}</strong></p>
+            <p className="mt-2 text-[13px] text-ink-500">Codigo: <strong className="font-mono">{qrData.pairingCode}</strong></p>
           )}
           {qrData.recreated && (
-            <p className="text-xs text-amber-600 mt-2">Instância recriada automaticamente — webhook reconfigurado</p>
+            <p className="text-xs text-warning-500 mt-2">Instancia recriada automaticamente — webhook reconfigurado</p>
           )}
-          <p className="text-xs text-gray-400 mt-2">QR atualiza automaticamente a cada 30s</p>
+          <p className="text-xs text-ink-400 mt-2">QR atualiza automaticamente a cada 30s</p>
         </div>
       )}
 
       {isActive && !connected && !qrData?.code && qrData?.connected && (
-        <div className="mt-4 flex flex-col items-center border-t pt-4">
-          <p className="text-sm text-green-600">Instância já conectada — atualize a página</p>
+        <div className="mt-4 flex flex-col items-center border-t border-ink-100 pt-4">
+          <p className="text-[13px] text-success-500">Instancia ja conectada — atualize a pagina</p>
         </div>
       )}
     </div>

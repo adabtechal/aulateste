@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, MessageSquare, Wifi, LogOut, Loader2, UserPlus, Bot } from 'lucide-react';
+import { LayoutDashboard, Users, MessageSquare, Wifi, LogOut, Loader2, UserPlus, Bot, KanbanSquare } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
@@ -17,8 +17,8 @@ function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="animate-spin text-blue-600" size={40} />
+      <div className="min-h-screen flex items-center justify-center bg-ink-75">
+        <Loader2 className="animate-spin text-violet-500" size={40} />
       </div>
     );
   }
@@ -43,49 +43,81 @@ function Sidebar() {
     } catch (err) {
       console.error('Erro ao fazer logout:', err);
     } finally {
-      // Fallback final: força ida para /login mesmo se algo deu errado.
       window.location.assign('/login');
     }
   }
 
   const links = [
-    { to: '/kanban', icon: LayoutDashboard, label: 'Kanban' },
-    { to: '/leads', icon: Users, label: 'Leads' },
-    { to: '/messages', icon: MessageSquare, label: 'Mensagens' },
+    { to: '/kanban', icon: KanbanSquare, label: 'Pipeline', count: null },
+    { to: '/leads', icon: Users, label: 'Leads', count: null },
+    { to: '/messages', icon: MessageSquare, label: 'Mensagens', count: null },
+  ];
+
+  const configLinks = [
     { to: '/whatsapp', icon: Wifi, label: 'WhatsApp' },
   ];
 
   if (profile?.role === 'superadmin' || profile?.role === 'tenant_admin') {
-    links.push({ to: '/bot-config', icon: Bot, label: 'Bot' });
-    links.push({ to: '/users', icon: UserPlus, label: 'Usuários' });
+    configLinks.push({ to: '/bot-config', icon: Bot, label: 'Automacao' });
+    configLinks.push({ to: '/users', icon: UserPlus, label: 'Usuarios' });
   }
 
   const roleLabels = {
     superadmin: 'Super Admin',
     tenant_admin: 'Administrador',
-    tenant_user: 'Usuário',
+    tenant_user: 'Usuario',
   };
 
+  const initials = profile?.full_name
+    ? profile.full_name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()
+    : '?';
+
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 min-h-screen p-4 shrink-0 flex flex-col">
-      <div className="mb-8">
-        <h1 className="text-xl font-bold text-gray-900">LeadTrack Pro</h1>
-        <p className="text-sm text-gray-500">Pipeline de Vendas</p>
+    <aside className="w-[240px] bg-ink-0 border-r border-ink-150 min-h-screen p-[14px] shrink-0 flex flex-col sticky top-0 h-screen overflow-y-auto">
+      <div className="flex items-center gap-[10px] px-[10px] pb-5 pt-[6px]">
+        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-violet-700 flex items-center justify-center text-white text-[14px] font-extrabold tracking-tighter shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">L</div>
+        <span className="text-[15px] font-bold tracking-tight text-ink-900">leadtrack<span className="text-violet-500">.</span></span>
       </div>
-      <nav className="space-y-1 flex-1">
-        {links.map(({ to, icon: Icon, label }) => {
+
+      <nav className="flex-1 space-y-[2px]">
+        {links.map(({ to, icon: Icon, label, count }) => {
           const active = location.pathname.startsWith(to);
           return (
             <Link
               key={to}
               to={to}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center gap-[10px] px-[10px] py-2 rounded-lg text-[13px] font-medium transition-all duration-[120ms] ${
                 active
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-violet-50 text-violet-600 font-semibold'
+                  : 'text-ink-600 hover:bg-ink-75 hover:text-ink-900'
               }`}
             >
-              <Icon size={20} />
+              <Icon size={16} strokeWidth={1.75} />
+              {label}
+              {count && (
+                <span className={`ml-auto font-mono text-[10px] px-[6px] py-[1px] rounded-full ${active ? 'bg-violet-100 text-violet-700' : 'bg-ink-100 text-ink-500'}`}>
+                  {count}
+                </span>
+              )}
+            </Link>
+          );
+        })}
+
+        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-500 px-[10px] pt-[14px] pb-1">Config</p>
+
+        {configLinks.map(({ to, icon: Icon, label }) => {
+          const active = location.pathname.startsWith(to);
+          return (
+            <Link
+              key={to}
+              to={to}
+              className={`flex items-center gap-[10px] px-[10px] py-2 rounded-lg text-[13px] font-medium transition-all duration-[120ms] ${
+                active
+                  ? 'bg-violet-50 text-violet-600 font-semibold'
+                  : 'text-ink-600 hover:bg-ink-75 hover:text-ink-900'
+              }`}
+            >
+              <Icon size={16} strokeWidth={1.75} />
               {label}
             </Link>
           );
@@ -93,20 +125,22 @@ function Sidebar() {
       </nav>
 
       {profile && (
-        <div className="pt-4 border-t border-gray-200">
-          <div className="px-3 py-2">
-            <p className="text-sm font-medium text-gray-900 truncate">{profile.full_name}</p>
-            <p className="text-xs text-gray-500">{roleLabels[profile.role] || profile.role}</p>
-            {profile.tenant?.name && (
-              <p className="text-xs text-gray-400 truncate">{profile.tenant.name}</p>
-            )}
+        <div className="pt-[10px] border-t border-ink-100">
+          <div className="flex items-center gap-[10px] px-[10px] py-[10px]">
+            <div className="w-7 h-7 rounded-full bg-violet-500 text-white flex items-center justify-center text-[11px] font-semibold">
+              {initials}
+            </div>
+            <div className="min-w-0">
+              <p className="text-[12px] font-semibold text-ink-900 truncate">{profile.full_name}</p>
+              <p className="text-[10px] text-ink-500">{roleLabels[profile.role] || profile.role}</p>
+            </div>
           </div>
           <button
             onClick={handleSignOut}
             disabled={signingOut}
-            className="flex items-center gap-2 px-3 py-2 w-full text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-[10px] px-[10px] py-2 w-full text-[13px] text-danger-500 hover:bg-danger-50 rounded-lg transition-colors duration-[120ms] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {signingOut ? <Loader2 size={18} className="animate-spin" /> : <LogOut size={18} />}
+            {signingOut ? <Loader2 size={16} className="animate-spin" /> : <LogOut size={16} strokeWidth={1.75} />}
             {signingOut ? 'Saindo...' : 'Sair'}
           </button>
         </div>
@@ -120,8 +154,8 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="animate-spin text-blue-600" size={40} />
+      <div className="min-h-screen flex items-center justify-center bg-ink-75">
+        <Loader2 className="animate-spin text-violet-500" size={40} />
       </div>
     );
   }
@@ -134,9 +168,9 @@ export default function App() {
         path="*"
         element={
           <ProtectedRoute>
-            <div className="flex min-h-screen bg-gray-50">
+            <div className="flex min-h-screen bg-ink-75">
               <Sidebar />
-              <main className="flex-1 overflow-hidden">
+              <main className="flex-1 overflow-hidden min-w-0">
                 <Routes>
                   <Route path="/" element={<Navigate to="/kanban" replace />} />
                   <Route path="/kanban" element={<KanbanPage />} />

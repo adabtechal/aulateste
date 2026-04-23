@@ -127,12 +127,12 @@ export default function UsersPage() {
   if (!canManageUsers) {
     return (
       <div className="min-h-screen p-6">
-        <div className="mx-auto max-w-3xl rounded-[28px] border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 p-8 shadow-sm">
-          <div className="mb-6 inline-flex rounded-full bg-amber-100 p-3 text-amber-700">
+        <div className="mx-auto max-w-3xl rounded-xl border border-warning-100 bg-gradient-to-br from-warning-50 via-white to-coral-50 p-8 shadow-sm">
+          <div className="mb-6 inline-flex rounded-full bg-warning-100 p-3 text-warning-700">
             <LockKeyhole size={22} />
           </div>
-          <h2 className="text-2xl font-semibold text-slate-900">Acesso restrito</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+          <h2 className="text-2xl font-semibold text-ink-900">Acesso restrito</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-ink-600">
             A gestão de usuários fica disponível apenas para perfis com permissão administrativa.
             Se você precisa cadastrar pessoas na sua operação, solicite acesso ao administrador da tenant.
           </p>
@@ -142,19 +142,19 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.12),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(14,165,233,0.14),_transparent_24%),linear-gradient(180deg,_#f8fbff_0%,_#eef4ff_100%)] p-6">
+    <div className="min-h-screen bg-ink-75 p-6">
       <div className="mx-auto max-w-7xl space-y-6">
-        <section className="overflow-hidden rounded-[32px] border border-sky-100 bg-slate-950 text-white shadow-[0_20px_80px_rgba(15,23,42,0.18)]">
+        <section className="overflow-hidden rounded-xl border border-violet-100 bg-ink-950 text-white shadow-[0_20px_80px_rgba(15,23,42,0.18)]">
           <div className="grid gap-6 px-8 py-8 lg:grid-cols-[1.4fr_0.8fr]">
             <div>
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs uppercase tracking-[0.24em] text-sky-100">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs uppercase tracking-[0.24em] text-violet-100">
                 <ShieldCheck size={14} />
                 Controle de Acesso
               </div>
               <h1 className="max-w-2xl text-3xl font-semibold leading-tight">
                 Crie usuários com a estrutura de tenant correta desde o primeiro acesso.
               </h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-ink-300">
                 O fluxo respeita as roles da base: `superadmin` cria tenant com seu administrador,
                 enquanto `tenant_admin` cria usuários somente dentro da própria operação.
               </p>
@@ -165,34 +165,34 @@ export default function UsersPage() {
                 icon={Users}
                 label="Usuários ativos"
                 value={String(activeUsers.length)}
-                accent="bg-sky-500/15 text-sky-200"
+                accent="bg-violet-500/15 text-violet-200"
               />
               <MetricCard
                 icon={Building2}
                 label="Tenants visíveis"
                 value={String(isSuperAdmin ? tenants.length : profile?.tenant?.name ? 1 : 0)}
-                accent="bg-emerald-500/15 text-emerald-200"
+                accent="bg-success-500/15 text-success-100"
               />
               <MetricCard
                 icon={ShieldCheck}
                 label="Seu papel"
                 value={roleLabels[profile?.role] || profile?.role}
-                accent="bg-white/10 text-slate-100"
+                accent="bg-white/10 text-ink-100"
               />
             </div>
           </div>
         </section>
 
         <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-          <section className="rounded-[28px] border border-white/70 bg-white/90 p-6 shadow-[0_18px_60px_rgba(148,163,184,0.18)] backdrop-blur">
+          <section className="rounded-xl border border-white/70 bg-white/90 p-6 shadow-[0_18px_60px_rgba(148,163,184,0.18)] backdrop-blur">
             <div className="mb-6 flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">Novo usuário</p>
-                <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-600">Novo usuário</p>
+                <h2 className="mt-2 text-2xl font-semibold text-ink-900">
                   {requiresTenantCreation ? 'Nova tenant com administrador' : 'Cadastro controlado por role'}
                 </h2>
               </div>
-              <div className="rounded-2xl bg-sky-100 p-3 text-sky-700">
+              <div className="rounded-2xl bg-violet-100 p-3 text-violet-600">
                 <UserPlus size={20} />
               </div>
             </div>
@@ -223,11 +223,11 @@ export default function UsersPage() {
                   placeholder="Mínimo recomendado: 6 caracteres"
                 />
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Perfil</label>
+                  <label className="mb-2 block text-sm font-medium text-ink-700">Perfil</label>
                   <select
                     value={form.role}
                     onChange={(event) => updateField('role', event.target.value)}
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:bg-white"
+                    className="w-full rounded-2xl border border-ink-200 bg-ink-50 px-4 py-3 text-sm text-ink-900 outline-none transition focus:border-violet-500 focus:bg-white"
                   >
                     {availableRoles.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -239,10 +239,10 @@ export default function UsersPage() {
               </div>
 
               {requiresTenantCreation && (
-                <div className="rounded-[24px] border border-emerald-100 bg-emerald-50/70 p-5">
+                <div className="rounded-lg border border-success-100 bg-success-50/70 p-5">
                   <div className="mb-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Tenant vinculada</p>
-                    <p className="mt-2 text-sm text-emerald-900">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-success-700">Tenant vinculada</p>
+                    <p className="mt-2 text-sm text-success-900">
                       Ao criar um `tenant_admin`, a tenant nasce no mesmo fluxo e já fica vinculada ao usuário.
                     </p>
                   </div>
@@ -280,11 +280,11 @@ export default function UsersPage() {
 
               {requiresTenantSelection && isSuperAdmin && (
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Tenant de destino</label>
+                  <label className="mb-2 block text-sm font-medium text-ink-700">Tenant de destino</label>
                   <select
                     value={form.tenantId}
                     onChange={(event) => updateField('tenantId', event.target.value)}
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:bg-white"
+                    className="w-full rounded-2xl border border-ink-200 bg-ink-50 px-4 py-3 text-sm text-ink-900 outline-none transition focus:border-violet-500 focus:bg-white"
                     required
                   >
                     <option value="">Selecione uma tenant</option>
@@ -298,7 +298,7 @@ export default function UsersPage() {
               )}
 
               {isTenantAdmin && (
-                <div className="rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-sky-900">
+                <div className="rounded-2xl border border-violet-100 bg-violet-50 px-4 py-3 text-sm text-violet-900">
                   Novos usuários serão vinculados automaticamente à tenant <strong>{profile?.tenant?.name}</strong>.
                 </div>
               )}
@@ -306,7 +306,7 @@ export default function UsersPage() {
               <button
                 type="submit"
                 disabled={createMut.isPending}
-                className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-2xl bg-ink-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <UserPlus size={16} />
                 {createMut.isPending ? 'Criando...' : requiresTenantCreation ? 'Criar tenant e administrador' : 'Criar usuário'}
@@ -314,47 +314,47 @@ export default function UsersPage() {
             </form>
           </section>
 
-          <section className="rounded-[28px] border border-white/70 bg-white/90 p-6 shadow-[0_18px_60px_rgba(148,163,184,0.18)] backdrop-blur">
+          <section className="rounded-xl border border-white/70 bg-white/90 p-6 shadow-[0_18px_60px_rgba(148,163,184,0.18)] backdrop-blur">
             <div className="mb-6 flex items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Usuários cadastrados</p>
-                <h2 className="mt-2 text-2xl font-semibold text-slate-900">Visão operacional por tenant</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink-500">Usuários cadastrados</p>
+                <h2 className="mt-2 text-2xl font-semibold text-ink-900">Visão operacional por tenant</h2>
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-[24px] border border-slate-100">
-              <table className="min-w-full divide-y divide-slate-100">
-                <thead className="bg-slate-50">
+            <div className="overflow-hidden rounded-lg border border-ink-100">
+              <table className="min-w-full divide-y divide-ink-100">
+                <thead className="bg-ink-50">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Usuário</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Role</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Tenant</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">Usuário</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">Role</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">Tenant</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 bg-white">
+                <tbody className="divide-y divide-ink-100 bg-white">
                   {users.map((user) => (
-                    <tr key={user.id} className="transition hover:bg-slate-50/80">
+                    <tr key={user.id} className="transition hover:bg-ink-50/80">
                       <td className="px-4 py-4">
                         <div>
-                          <p className="text-sm font-medium text-slate-900">{user.full_name}</p>
-                          <p className="text-sm text-slate-500">{user.email}</p>
+                          <p className="text-sm font-medium text-ink-900">{user.full_name}</p>
+                          <p className="text-sm text-ink-500">{user.email}</p>
                         </div>
                       </td>
                       <td className="px-4 py-4">
-                        <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                        <span className="inline-flex rounded-full bg-ink-100 px-3 py-1 text-xs font-medium text-ink-700">
                           {roleLabels[user.role] || user.role}
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-sm text-slate-600">
+                      <td className="px-4 py-4 text-sm text-ink-600">
                         {user.tenant?.name || 'Sem tenant'}
                       </td>
                       <td className="px-4 py-4">
                         <span
                           className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
                             user.is_active
-                              ? 'bg-emerald-100 text-emerald-700'
-                              : 'bg-rose-100 text-rose-700'
+                              ? 'bg-success-100 text-success-700'
+                              : 'bg-danger-100 text-danger-500'
                           }`}
                         >
                           {user.is_active ? 'Ativo' : 'Inativo'}
@@ -365,7 +365,7 @@ export default function UsersPage() {
 
                   {!isLoading && users.length === 0 && (
                     <tr>
-                      <td colSpan={4} className="px-4 py-10 text-center text-sm text-slate-400">
+                      <td colSpan={4} className="px-4 py-10 text-center text-sm text-ink-400">
                         Nenhum usuário encontrado para este escopo.
                       </td>
                     </tr>
@@ -373,7 +373,7 @@ export default function UsersPage() {
 
                   {isLoading && (
                     <tr>
-                      <td colSpan={4} className="px-4 py-10 text-center text-sm text-slate-400">
+                      <td colSpan={4} className="px-4 py-10 text-center text-sm text-ink-400">
                         Carregando usuários...
                       </td>
                     </tr>
@@ -390,11 +390,11 @@ export default function UsersPage() {
 
 function MetricCard({ icon: Icon, label, value, accent }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
       <div className={`mb-3 inline-flex rounded-2xl p-2 ${accent}`}>
         <Icon size={16} />
       </div>
-      <p className="text-xs uppercase tracking-[0.18em] text-slate-400">{label}</p>
+      <p className="text-xs uppercase tracking-[0.18em] text-ink-400">{label}</p>
       <p className="mt-2 text-xl font-semibold text-white">{value}</p>
     </div>
   );
@@ -403,11 +403,11 @@ function MetricCard({ icon: Icon, label, value, accent }) {
 function Field({ label, onChange, ...props }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-700">{label}</label>
+      <label className="mb-2 block text-sm font-medium text-ink-700">{label}</label>
       <input
         {...props}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:bg-white"
+        className="w-full rounded-2xl border border-ink-200 bg-ink-50 px-4 py-3 text-sm text-ink-900 outline-none transition focus:border-violet-500 focus:bg-white"
       />
     </div>
   );

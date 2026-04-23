@@ -13,34 +13,34 @@ export default function LeadForm({ lead, onSubmit, onCancel }) {
   return (
     <form onSubmit={handleSubmit(processSubmit)} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
-        <input {...register('name', { required: 'Nome é obrigatório' })} className="w-full border rounded-lg px-3 py-2 text-sm" />
-        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+        <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Nome *</label>
+        <input {...register('name', { required: 'Nome e obrigatorio' })} className="w-full border border-ink-200 rounded-sm bg-ink-0 px-3 py-[9px] text-[13px] text-ink-900 outline-none transition focus:border-violet-500 focus:shadow-[0_0_0_3px_rgba(90,74,156,0.18)]" />
+        {errors.name && <p className="text-danger-500 text-xs mt-1">{errors.name.message}</p>}
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Telefone *</label>
-        <input {...register('phone', { required: 'Telefone é obrigatório' })} placeholder="5511999999999" className="w-full border rounded-lg px-3 py-2 text-sm" />
-        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+        <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Telefone *</label>
+        <input {...register('phone', { required: 'Telefone e obrigatorio' })} placeholder="5511999999999" className="w-full border border-ink-200 rounded-sm bg-ink-0 px-3 py-[9px] text-[13px] text-ink-900 outline-none transition focus:border-violet-500 focus:shadow-[0_0_0_3px_rgba(90,74,156,0.18)]" />
+        {errors.phone && <p className="text-danger-500 text-xs mt-1">{errors.phone.message}</p>}
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input {...register('email')} type="email" className="w-full border rounded-lg px-3 py-2 text-sm" />
+        <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Email</label>
+        <input {...register('email')} type="email" className="w-full border border-ink-200 rounded-sm bg-ink-0 px-3 py-[9px] text-[13px] text-ink-900 outline-none transition focus:border-violet-500 focus:shadow-[0_0_0_3px_rgba(90,74,156,0.18)]" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Empresa</label>
-        <input {...register('company')} className="w-full border rounded-lg px-3 py-2 text-sm" />
+        <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Empresa</label>
+        <input {...register('company')} className="w-full border border-ink-200 rounded-sm bg-ink-0 px-3 py-[9px] text-[13px] text-ink-900 outline-none transition focus:border-violet-500 focus:shadow-[0_0_0_3px_rgba(90,74,156,0.18)]" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Tags (separadas por vírgula)</label>
-        <input {...register('tags')} placeholder="hot, interessado, vip" className="w-full border rounded-lg px-3 py-2 text-sm" />
+        <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Tags (separadas por virgula)</label>
+        <input {...register('tags')} placeholder="hot, interessado, vip" className="w-full border border-ink-200 rounded-sm bg-ink-0 px-3 py-[9px] text-[13px] text-ink-900 outline-none transition focus:border-violet-500 focus:shadow-[0_0_0_3px_rgba(90,74,156,0.18)]" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Notas</label>
-        <textarea {...register('notes')} rows={3} className="w-full border rounded-lg px-3 py-2 text-sm" />
+        <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Notas</label>
+        <textarea {...register('notes')} rows={3} className="w-full border border-ink-200 rounded-sm bg-ink-0 px-3 py-[9px] text-[13px] text-ink-900 outline-none resize-y transition focus:border-violet-500 focus:shadow-[0_0_0_3px_rgba(90,74,156,0.18)]" />
       </div>
-      <div className="flex justify-end gap-2 pt-2">
-        {onCancel && <button type="button" onClick={onCancel} className="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>}
-        <button type="submit" className="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">{lead ? 'Salvar' : 'Criar Lead'}</button>
+      <div className="flex justify-end gap-3 pt-2">
+        {onCancel && <button type="button" onClick={onCancel} className="px-4 py-[9px] text-[13px] font-medium text-ink-700 bg-ink-0 border border-ink-200 rounded-md hover:bg-ink-75 transition-colors">Cancelar</button>}
+        <button type="submit" className="px-4 py-[9px] text-[13px] font-medium text-white bg-violet-500 rounded-md hover:bg-violet-600 shadow-violet transition-all">{lead ? 'Salvar' : 'Criar lead'}</button>
       </div>
     </form>
   );

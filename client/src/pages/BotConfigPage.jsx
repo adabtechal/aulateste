@@ -214,17 +214,17 @@ export default function BotConfigPage() {
   const lastPublishedRevision = botConfigQuery.data?.config?.lastPublishedFlowRevision || config.lastPublishedFlowRevision;
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(14,165,233,0.16),_transparent_28%),linear-gradient(180deg,_#f8fbff_0%,_#eef4ff_52%,_#f6f8fc_100%)] px-4 py-5 lg:px-6">
+    <div className="min-h-screen bg-ink-75 px-4 py-5 lg:px-6">
       <div className="mx-auto max-w-[1440px] space-y-6">
-        <section className="overflow-hidden rounded-[32px] border border-slate-900/5 bg-slate-950 text-white shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
+        <section className="overflow-hidden rounded-xl border border-ink-900/5 bg-ink-950 text-white shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
           <div className="grid gap-6 px-5 py-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(300px,0.65fr)] lg:px-8 lg:py-8">
             <div className="min-w-0">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-sky-100">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-violet-100">
                 <Bot size={12} />
                 Kestra Agent Control
               </div>
               <h1 className="mt-4 max-w-4xl text-2xl font-semibold leading-tight lg:text-4xl">Central de configuração do agente conversacional por tenant.</h1>
-              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300 lg:text-base">
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-ink-300 lg:text-base">
                 Ajuste identidade, modelo, mensagens e publicação do flow com um layout mais limpo, sem cards comprimidos e sem blocos difíceis de ler.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
@@ -303,14 +303,14 @@ export default function BotConfigPage() {
                 {toolOptions.map((tool) => {
                   const enabled = config.tools?.includes(tool.id);
                   return (
-                    <button key={tool.id} type="button" onClick={() => toggleTool(tool.id)} className={`rounded-[20px] border p-4 text-left transition ${enabled ? 'border-sky-200 bg-sky-50 shadow-[0_12px_30px_rgba(14,165,233,0.10)]' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'}`}>
+                    <button key={tool.id} type="button" onClick={() => toggleTool(tool.id)} className={`rounded-lg border p-4 text-left transition ${enabled ? 'border-violet-200 bg-violet-50 shadow-[0_12px_30px_rgba(14,165,233,0.10)]' : 'border-ink-200 bg-white hover:border-ink-300 hover:bg-ink-50'}`}>
                       <div className="flex items-start gap-3">
-                        <div className={`mt-0.5 rounded-xl p-2 ${enabled ? 'bg-sky-100 text-sky-700' : 'bg-slate-100 text-slate-500'}`}>
+                        <div className={`mt-0.5 rounded-xl p-2 ${enabled ? 'bg-violet-100 text-violet-600' : 'bg-ink-100 text-ink-500'}`}>
                           {enabled ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-semibold text-slate-900">{tool.label}</p>
-                          <p className="mt-1 text-sm leading-6 text-slate-600">{tool.description}</p>
+                          <p className="text-sm font-semibold text-ink-900">{tool.label}</p>
+                          <p className="mt-1 text-sm leading-6 text-ink-600">{tool.description}</p>
                         </div>
                       </div>
                     </button>
@@ -332,10 +332,10 @@ export default function BotConfigPage() {
                 <StatusRow label="Namespace / Flow" value={`${config.namespace} / ${config.flowId}`} />
                 <StatusRow label="Última publicação" value={lastPublishedAt ? `${new Date(lastPublishedAt).toLocaleString('pt-BR')}${lastPublishedRevision ? ` · rev ${lastPublishedRevision}` : ''}` : 'Ainda não publicado'} />
               </div>
-              <button type="button" onClick={() => refetchKestraHealth()} className="mt-4 inline-flex w-full items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-white">
+              <button type="button" onClick={() => refetchKestraHealth()} className="mt-4 inline-flex w-full items-center justify-center rounded-2xl border border-ink-200 bg-ink-50 px-4 py-3 text-sm font-medium text-ink-700 transition hover:border-ink-300 hover:bg-white">
                 Revalidar conexão
               </button>
-              {kestraError?.response?.data?.message && <div className="mt-4 rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm leading-6 text-rose-700">{kestraError.response.data.message}</div>}
+              {kestraError?.response?.data?.message && <div className="mt-4 rounded-2xl border border-danger-100 bg-danger-50 px-4 py-3 text-sm leading-6 text-danger-500">{kestraError.response.data.message}</div>}
             </Panel>
 
             <Panel eyebrow="Resumo" title="Snapshot operacional" icon={Cpu}>
@@ -356,20 +356,20 @@ export default function BotConfigPage() {
               <CodeBlock value={JSON.stringify(executionPayload, null, 2)} onCopy={() => copyText(JSON.stringify(executionPayload, null, 2), 'Payload copiado')} />
             </Panel>
 
-            <div className="rounded-[28px] border border-slate-200/80 bg-white/90 p-4 shadow-[0_18px_60px_rgba(148,163,184,0.12)] backdrop-blur">
+            <div className="rounded-xl border border-ink-200/80 bg-white/90 p-4 shadow-[0_18px_60px_rgba(148,163,184,0.12)] backdrop-blur">
               <div className="mb-4 flex items-center gap-3">
-                <div className="rounded-2xl bg-slate-950 p-2 text-white"><Send size={16} /></div>
+                <div className="rounded-2xl bg-ink-950 p-2 text-white"><Send size={16} /></div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Publicação</p>
-                  <p className="text-sm text-slate-700">Salve primeiro se quiser persistir sem publicar.</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink-500">Publicação</p>
+                  <p className="text-sm text-ink-700">Salve primeiro se quiser persistir sem publicar.</p>
                 </div>
               </div>
               <div className="grid gap-3">
-                <button type="button" onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending || publishMutation.isPending || botConfigQuery.isLoading} className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60">
+                <button type="button" onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending || publishMutation.isPending || botConfigQuery.isLoading} className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-ink-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-60">
                   <Save size={16} />
                   {saveMutation.isPending ? 'Salvando...' : 'Salvar configuração'}
                 </button>
-                <button type="button" onClick={() => publishMutation.mutate()} disabled={publishMutation.isPending || saveMutation.isPending || botConfigQuery.isLoading} className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-3 text-sm font-medium text-sky-800 transition hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-60">
+                <button type="button" onClick={() => publishMutation.mutate()} disabled={publishMutation.isPending || saveMutation.isPending || botConfigQuery.isLoading} className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-violet-200 bg-violet-50 px-5 py-3 text-sm font-medium text-violet-700 transition hover:bg-violet-100 disabled:cursor-not-allowed disabled:opacity-60">
                   <Send size={16} />
                   {publishMutation.isPending ? 'Publicando...' : 'Salvar e publicar no Kestra'}
                 </button>
@@ -384,19 +384,19 @@ export default function BotConfigPage() {
 
 function StateCard({ title, description, footer, icon: Icon = ShieldAlert, tone = 'neutral', children }) {
   const toneClasses = {
-    neutral: 'border-slate-200 bg-white text-slate-900',
-    warning: 'border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 text-slate-900',
-    danger: 'border-rose-200 bg-rose-50 text-rose-950',
+    neutral: 'border-ink-200 bg-white text-ink-900',
+    warning: 'border-warning-100 bg-gradient-to-br from-warning-50 via-white to-coral-50 text-ink-900',
+    danger: 'border-danger-100 bg-danger-50 text-danger-700',
   };
   const iconClasses = {
-    neutral: 'bg-slate-100 text-slate-600',
-    warning: 'bg-amber-100 text-amber-700',
-    danger: 'bg-rose-100 text-rose-700',
+    neutral: 'bg-ink-100 text-ink-600',
+    warning: 'bg-warning-100 text-warning-700',
+    danger: 'bg-danger-100 text-danger-500',
   };
 
   return (
     <div className="min-h-screen px-4 py-6 lg:px-6">
-      <div className={`mx-auto max-w-3xl rounded-[28px] border p-8 shadow-sm ${toneClasses[tone]}`}>
+      <div className={`mx-auto max-w-3xl rounded-xl border p-8 shadow-sm ${toneClasses[tone]}`}>
         <div className={`mb-6 inline-flex rounded-full p-3 ${iconClasses[tone]}`}><Icon size={22} /></div>
         <h2 className="text-2xl font-semibold">{title}</h2>
         {description && <p className="mt-3 text-sm leading-6 opacity-80">{description}</p>}
@@ -409,13 +409,13 @@ function StateCard({ title, description, footer, icon: Icon = ShieldAlert, tone 
 
 function Panel({ eyebrow, title, icon: Icon, children }) {
   return (
-    <section className="min-w-0 rounded-[28px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_60px_rgba(148,163,184,0.16)] backdrop-blur lg:p-6">
+    <section className="min-w-0 rounded-xl border border-white/70 bg-white/90 p-5 shadow-[0_18px_60px_rgba(148,163,184,0.16)] backdrop-blur lg:p-6">
       <div className="mb-5 flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">{eyebrow}</p>
-          <h2 className="mt-2 text-xl font-semibold leading-tight text-slate-950">{title}</h2>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-violet-600">{eyebrow}</p>
+          <h2 className="mt-2 text-xl font-semibold leading-tight text-ink-950">{title}</h2>
         </div>
-        <div className="shrink-0 rounded-2xl bg-sky-100 p-3 text-sky-700"><Icon size={18} /></div>
+        <div className="shrink-0 rounded-2xl bg-violet-100 p-3 text-violet-600"><Icon size={18} /></div>
       </div>
       {children}
     </section>
@@ -423,73 +423,73 @@ function Panel({ eyebrow, title, icon: Icon, children }) {
 }
 
 function HeroBadge({ label, value }) {
-  return <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2"><p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">{label}</p><p className="mt-1 text-sm font-medium text-white">{value}</p></div>;
+  return <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2"><p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-400">{label}</p><p className="mt-1 text-sm font-medium text-white">{value}</p></div>;
 }
 
 function MetricCard({ icon: Icon, label, value, accent }) {
   const accentClasses = {
-    emerald: 'bg-emerald-500/15 text-emerald-200',
-    rose: 'bg-rose-500/15 text-rose-200',
-    sky: 'bg-sky-500/15 text-sky-200',
-    slate: 'bg-white/10 text-slate-100',
+    emerald: 'bg-success-500/15 text-success-100',
+    rose: 'bg-danger-500/15 text-danger-100',
+    sky: 'bg-violet-500/15 text-violet-200',
+    slate: 'bg-white/10 text-ink-100',
   };
   return (
-    <div className="rounded-[24px] border border-white/10 bg-white/5 p-4">
+    <div className="rounded-lg border border-white/10 bg-white/5 p-4">
       <div className={`inline-flex rounded-2xl p-2 ${accentClasses[accent] || accentClasses.slate}`}><Icon size={16} /></div>
-      <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{label}</p>
+      <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-400">{label}</p>
       <p className="mt-2 text-lg font-semibold text-white">{value}</p>
     </div>
   );
 }
 
 function Field({ label, as = 'input', children, onChange, description, ...props }) {
-  const baseClassName = 'w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:bg-white';
+  const baseClassName = 'w-full rounded-2xl border border-ink-200 bg-ink-50 px-4 py-3 text-sm text-ink-900 outline-none transition focus:border-violet-500 focus:bg-white';
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-800">{label}</label>
+      <label className="mb-2 block text-sm font-medium text-ink-800">{label}</label>
       {as === 'textarea' ? <textarea {...props} onChange={(event) => onChange(event.target.value)} className={`${baseClassName} min-h-[128px] resize-y`} /> : as === 'select' ? <select {...props} onChange={(event) => onChange(event.target.value)} className={baseClassName}>{children}</select> : <input {...props} onChange={(event) => onChange(event.target.value)} className={baseClassName} />}
-      {description && <p className="mt-2 text-xs leading-5 text-slate-500">{description}</p>}
+      {description && <p className="mt-2 text-xs leading-5 text-ink-500">{description}</p>}
     </div>
   );
 }
 
 function ToggleField({ label, description, checked, onChange }) {
   return (
-    <button type="button" onClick={() => onChange(!checked)} className={`flex min-h-full flex-col items-start justify-between rounded-[24px] border p-4 text-left transition ${checked ? 'border-emerald-200 bg-emerald-50' : 'border-slate-200 bg-slate-50'}`}>
+    <button type="button" onClick={() => onChange(!checked)} className={`flex min-h-full flex-col items-start justify-between rounded-lg border p-4 text-left transition ${checked ? 'border-success-100 bg-success-50' : 'border-ink-200 bg-ink-50'}`}>
       <div className="flex w-full items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-slate-900">{label}</p>
-        {checked ? <CheckCircle2 className="text-emerald-600" size={18} /> : <XCircle className="text-slate-300" size={18} />}
+        <p className="text-sm font-semibold text-ink-900">{label}</p>
+        {checked ? <CheckCircle2 className="text-success-500" size={18} /> : <XCircle className="text-ink-300" size={18} />}
       </div>
-      <p className="mt-3 text-sm leading-6 text-slate-600">{description}</p>
+      <p className="mt-3 text-sm leading-6 text-ink-600">{description}</p>
     </button>
   );
 }
 
 function InfoCallout({ title, description }) {
-  return <div className="rounded-[24px] border border-amber-100 bg-amber-50/80 px-4 py-4"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">{title}</p><p className="mt-2 text-sm leading-6 text-amber-950">{description}</p></div>;
+  return <div className="rounded-lg border border-warning-100 bg-warning-50/80 px-4 py-4"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-warning-700">{title}</p><p className="mt-2 text-sm leading-6 text-warning-700">{description}</p></div>;
 }
 
 function StatusRow({ label, value, tone = 'neutral' }) {
   const toneClasses = {
-    success: 'border-emerald-100 bg-emerald-50 text-emerald-800',
-    danger: 'border-rose-100 bg-rose-50 text-rose-800',
-    neutral: 'border-slate-200 bg-slate-50 text-slate-700',
+    success: 'border-success-100 bg-success-50 text-emerald-800',
+    danger: 'border-danger-100 bg-danger-50 text-rose-800',
+    neutral: 'border-ink-200 bg-ink-50 text-ink-700',
   };
   return <div className={`rounded-2xl border px-4 py-3 ${toneClasses[tone] || toneClasses.neutral}`}><p className="text-[11px] font-semibold uppercase tracking-[0.18em] opacity-70">{label}</p><p className="mt-1 text-sm leading-6">{value}</p></div>;
 }
 
 function SummaryChip({ label, value }) {
-  return <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"><p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{label}</p><p className="mt-1 text-sm font-medium text-slate-900">{value}</p></div>;
+  return <div className="rounded-2xl border border-ink-200 bg-ink-50 px-4 py-3"><p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-400">{label}</p><p className="mt-1 text-sm font-medium text-ink-900">{value}</p></div>;
 }
 
 function CodeBlock({ value, onCopy }) {
   return (
-    <div className="min-w-0 overflow-hidden rounded-[22px] border border-slate-200 bg-slate-950">
+    <div className="min-w-0 overflow-hidden rounded-lg border border-ink-200 bg-ink-950">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-400">Preview</p>
-        <button type="button" onClick={onCopy} className="rounded-xl border border-white/10 px-3 py-1.5 text-[11px] font-medium text-slate-200 transition hover:border-white/20 hover:bg-white/5">Copiar</button>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-ink-400">Preview</p>
+        <button type="button" onClick={onCopy} className="rounded-xl border border-white/10 px-3 py-1.5 text-[11px] font-medium text-ink-200 transition hover:border-white/20 hover:bg-white/5">Copiar</button>
       </div>
-      <pre className="max-h-[360px] overflow-auto px-4 py-4 text-[12px] leading-6 text-slate-100"><code>{value}</code></pre>
+      <pre className="max-h-[360px] overflow-auto px-4 py-4 text-[12px] leading-6 text-ink-100"><code>{value}</code></pre>
     </div>
   );
 }

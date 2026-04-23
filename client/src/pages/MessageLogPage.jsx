@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Download, Search } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { format } from 'date-fns';
 import * as api from '../services/api';
 
 const directionColors = {
-  outgoing: 'bg-blue-100 text-blue-700',
-  incoming: 'bg-gray-100 text-gray-700',
-  auto: 'bg-green-100 text-green-700',
+  outgoing: 'bg-violet-50 text-violet-700',
+  incoming: 'bg-ink-100 text-ink-700',
+  auto: 'bg-success-50 text-success-700',
 };
 
-const directionLabels = { outgoing: 'Enviada', incoming: 'Recebida', auto: 'Automática' };
+const directionLabels = { outgoing: 'Enviada', incoming: 'Recebida', auto: 'Automatica' };
 
 export default function MessageLogPage() {
   const [page, setPage] = useState(1);
@@ -36,55 +36,58 @@ export default function MessageLogPage() {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900">Message Log</h2>
-        <button onClick={handleExport} className="flex items-center gap-1 px-3 py-2 text-sm text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
-          <Download size={16} /> Exportar CSV
+    <div className="p-8">
+      <div className="flex items-end justify-between mb-7">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-violet-500">Historico</p>
+          <h2 className="text-[22px] font-semibold text-ink-900 tracking-tight">Log de <em className="font-serif font-normal text-violet-600">mensagens</em></h2>
+        </div>
+        <button onClick={handleExport} className="flex items-center gap-[7px] px-[14px] py-2 text-[13px] font-medium text-ink-700 bg-ink-0 border border-ink-200 rounded-md hover:bg-ink-75 transition-colors">
+          <Download size={14} /> Exportar CSV
         </button>
       </div>
 
       <div className="flex gap-3 mb-4">
-        <select value={direction} onChange={e => { setDirection(e.target.value); setPage(1); }} className="border rounded-lg px-3 py-2 text-sm">
-          <option value="">Todas as direções</option>
+        <select value={direction} onChange={e => { setDirection(e.target.value); setPage(1); }} className="border border-ink-200 rounded-sm px-3 py-[9px] text-[13px] bg-ink-0 outline-none focus:border-violet-500">
+          <option value="">Todas as direcoes</option>
           <option value="outgoing">Enviadas</option>
           <option value="incoming">Recebidas</option>
-          <option value="auto">Automáticas</option>
+          <option value="auto">Automaticas</option>
         </select>
-        <select value={type} onChange={e => { setType(e.target.value); setPage(1); }} className="border rounded-lg px-3 py-2 text-sm">
+        <select value={type} onChange={e => { setType(e.target.value); setPage(1); }} className="border border-ink-200 rounded-sm px-3 py-[9px] text-[13px] bg-ink-0 outline-none focus:border-violet-500">
           <option value="">Todos os tipos</option>
           <option value="text">Texto</option>
           <option value="image">Imagem</option>
         </select>
       </div>
 
-      <div className="bg-white border rounded-lg overflow-hidden">
+      <div className="bg-ink-0 border border-ink-150 rounded-lg overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b">
-            <tr>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Data</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Lead</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Direção</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Tipo</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Conteúdo</th>
-              <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
+          <thead>
+            <tr className="bg-ink-50 border-b border-ink-150">
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Data</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Lead</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Direcao</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Tipo</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Conteudo</th>
+              <th className="text-left px-4 py-[11px] text-[10px] font-semibold text-ink-500 uppercase tracking-[0.12em]">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody>
             {messages.map(msg => (
-              <tr key={msg.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-sm text-gray-600">{format(new Date(msg.sent_at), 'dd/MM/yy HH:mm')}</td>
-                <td className="px-4 py-3 text-sm font-medium">{msg.leads?.name || '—'}</td>
-                <td className="px-4 py-3">
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${directionColors[msg.direction]}`}>{directionLabels[msg.direction]}</span>
+              <tr key={msg.id} className="hover:bg-ink-50 border-b border-ink-100 last:border-b-0 transition-colors">
+                <td className="px-4 py-[13px] text-[13px] font-mono text-ink-600">{format(new Date(msg.sent_at), 'dd/MM/yy HH:mm')}</td>
+                <td className="px-4 py-[13px] text-[13px] font-semibold text-ink-800">{msg.leads?.name || '—'}</td>
+                <td className="px-4 py-[13px]">
+                  <span className={`text-[10px] font-semibold uppercase tracking-[0.04em] px-[9px] py-[3px] rounded-full ${directionColors[msg.direction]}`}>{directionLabels[msg.direction]}</span>
                 </td>
-                <td className="px-4 py-3 text-xs text-gray-500">{msg.message_type}</td>
-                <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">{msg.content || '—'}</td>
-                <td className="px-4 py-3 text-xs text-gray-500">{msg.status}</td>
+                <td className="px-4 py-[13px] text-xs text-ink-500">{msg.message_type}</td>
+                <td className="px-4 py-[13px] text-[13px] text-ink-600 max-w-xs truncate">{msg.content || '—'}</td>
+                <td className="px-4 py-[13px] text-xs text-ink-500">{msg.status}</td>
               </tr>
             ))}
-            {isLoading && <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">Carregando...</td></tr>}
-            {!isLoading && messages.length === 0 && <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">Nenhuma mensagem encontrada</td></tr>}
+            {isLoading && <tr><td colSpan={6} className="px-4 py-8 text-center text-ink-400 text-[13px]">Carregando...</td></tr>}
+            {!isLoading && messages.length === 0 && <tr><td colSpan={6} className="px-4 py-12 text-center text-ink-400 text-[13px]">Nenhuma mensagem encontrada</td></tr>}
           </tbody>
         </table>
       </div>
@@ -92,7 +95,7 @@ export default function MessageLogPage() {
       {pagination && pagination.totalPages > 1 && (
         <div className="flex justify-center gap-1 mt-4">
           {Array.from({ length: Math.min(pagination.totalPages, 10) }, (_, i) => (
-            <button key={i} onClick={() => setPage(i + 1)} className={`px-3 py-1 text-sm rounded ${page === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{i + 1}</button>
+            <button key={i} onClick={() => setPage(i + 1)} className={`px-3 py-1 text-[13px] rounded-md transition-colors ${page === i + 1 ? 'bg-violet-500 text-white shadow-violet' : 'bg-ink-0 border border-ink-200 hover:bg-ink-75'}`}>{i + 1}</button>
           ))}
         </div>
       )}

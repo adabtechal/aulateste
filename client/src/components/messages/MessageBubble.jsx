@@ -1,15 +1,15 @@
 import { format } from 'date-fns';
 
 const directionColors = {
-  outgoing: 'bg-blue-500 text-white',
-  incoming: 'bg-gray-200 text-gray-900',
-  auto: 'bg-green-500 text-white',
+  outgoing: 'bg-violet-500 text-white',
+  incoming: 'bg-ink-100 text-ink-900',
+  auto: 'bg-success-500 text-white',
 };
 
 const directionLabels = {
   outgoing: 'Enviada',
   incoming: 'Recebida',
-  auto: 'Automática',
+  auto: 'Automatica',
 };
 
 export default function MessageBubble({ message }) {
@@ -17,14 +17,14 @@ export default function MessageBubble({ message }) {
 
   return (
     <div className={`flex ${isOutgoing ? 'justify-end' : 'justify-start'} mb-2`}>
-      <div className={`max-w-[70%] rounded-lg px-3 py-2 ${directionColors[message.direction]}`}>
+      <div className={`max-w-[70%] rounded-[11px] px-[14px] py-[10px] ${directionColors[message.direction]}`}>
         {message.media_url && (
-          <img src={message.media_url} alt="" className="rounded mb-1 max-w-full max-h-48 object-cover" />
+          <img src={message.media_url} alt="" className="rounded-lg mb-1 max-w-full max-h-48 object-cover" />
         )}
-        {message.content && <p className="text-sm whitespace-pre-wrap">{message.content}</p>}
+        {message.content && <p className="text-[13px] whitespace-pre-wrap leading-relaxed">{message.content}</p>}
         <div className={`flex items-center gap-2 mt-1 ${isOutgoing ? 'justify-end' : ''}`}>
           <span className="text-[10px] opacity-70">
-            {directionLabels[message.direction]} • {format(new Date(message.sent_at), 'HH:mm')}
+            {directionLabels[message.direction]} · {format(new Date(message.sent_at), 'HH:mm')}
           </span>
         </div>
       </div>

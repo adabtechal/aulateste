@@ -33,17 +33,17 @@ export default function MessageComposer({ leadId }) {
   const isLoading = sendTextMut.isPending || sendMediaMut.isPending;
 
   return (
-    <div className="border-t p-3">
+    <div className="border-t border-ink-150 p-3">
       {mediaMode && (
-        <input value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="URL da imagem..." className="w-full border rounded-lg px-3 py-2 text-sm mb-2" />
+        <input value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="URL da imagem..." className="w-full border border-ink-200 rounded-sm px-3 py-[9px] text-[13px] mb-2 outline-none focus:border-violet-500" />
       )}
       <div className="flex gap-2">
-        <button onClick={() => setMediaMode(!mediaMode)} className={`p-2 rounded-lg ${mediaMode ? 'bg-purple-100 text-purple-600' : 'text-gray-400 hover:bg-gray-100'}`}>
-          <Image size={20} />
+        <button onClick={() => setMediaMode(!mediaMode)} className={`p-2 rounded-lg transition-colors ${mediaMode ? 'bg-violet-50 text-violet-600' : 'text-ink-400 hover:bg-ink-75'}`}>
+          <Image size={18} />
         </button>
-        <input value={text} onChange={e => setText(e.target.value)} placeholder={mediaMode ? 'Legenda da imagem...' : 'Digite sua mensagem...'} className="flex-1 border rounded-lg px-3 py-2 text-sm" onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()} disabled={isLoading} />
-        <button onClick={handleSend} disabled={isLoading || (!text.trim() && !mediaUrl)} className="p-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50">
-          <Send size={20} />
+        <input value={text} onChange={e => setText(e.target.value)} placeholder={mediaMode ? 'Legenda da imagem...' : 'Digite sua mensagem...'} className="flex-1 border border-ink-200 rounded-sm px-3 py-[9px] text-[13px] outline-none focus:border-violet-500 transition" onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()} disabled={isLoading} />
+        <button onClick={handleSend} disabled={isLoading || (!text.trim() && !mediaUrl)} className="p-2 text-white bg-violet-500 rounded-md hover:bg-violet-600 disabled:opacity-50 transition-all shadow-violet">
+          <Send size={18} />
         </button>
       </div>
     </div>
