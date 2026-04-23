@@ -770,5 +770,251 @@ app.post('/api/webhook/messages', async (req, res) => {
   }
 });
 
+// ─── KESTRA API SERVICE ───
+const kestraApiUrl = process.env.KESTRA_API_URL;
+const kestraUsername = process.env.KESTRA_USERNAME;
+const kestraPassword = process.env.KESTRA_PASSWORD;
+const kestraTenant = process.env.KESTRA_TENANT || 'main';
+
+let kestraClient = null;
+if (kestraApiUrl && kestraUsername && kestraPassword) {
+  kestraClient = axios.create({
+    baseURL: kestraApiUrl.replace(/\/+$/, ''),
+    auth: { username: kestraUsername, password: kestraPassword },
+    timeout: 30000
+  });
+}
+
+async function kestraRequestWithFallback({ method, pathWithTenant, pathWithoutTenant, params, data, headers }) {
+  if (!kestraClient) throw Object.assign(new Error('Kestra API not configured'), { statusCode: 503 });
+  try {
+    const response = await kestraClient.request({ method, url: pathWithTenant, params, data, headers });
+    return response.data;
+  } catch (error) {
+    if (error.response?.status !== 404 || !pathWithoutTenant) throw error;
+    const response = await kestraClient.request({ method, url: pathWithoutTenant, params, data, headers });
+    return response.data;
+  }
+}
+
+function extractFlowIdentity(source = '') {
+  const namespace = source.match(/^\s*namespace:\s*([^\r\n]+)/m)?.[1]?.trim();
+  const id = source.match(/^\s*id:\s*([^\r\n]+)/m)?.[1]?.trim();
+  return namespace && id ? { namespace, id } : null;
+}
+
+// ─── KESTRA ROUTES ───
+app.get('/api/kestra/health', async (req, res) => {
+  try {
+    const data = await kestraRequestWithFallback({
+      method: 'get',
+      pathWithTenant: `/api/v1/${kestraTenant}/flows/search`,
+      pathWithoutTenant: '/api/v1/flows/search',
+      params: { page: 1, size: 1 }
+    });
+    res.json({ connected: true, baseURL: kestraApiUrl, tenant: kestraTenant, authMode: 'basic', sample: data });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ connected: false, error: err.message });
+  }
+});
+
+app.post('/api/kestra/executions/:namespace/:flowId', requireAuth, async (req, res) => {
+  try {
+    const { namespace, flowId } = req.params;
+    const { wait = false, inputs, labels } = req.body || {};
+    const data = await kestraRequestWithFallback({
+      method: 'post',
+      pathWithTenant: `/api/v1/${kestraTenant}/executions/${namespace}/${flowId}`,
+      pathWithoutTenant: `/api/v1/executions/${namespace}/${flowId}`,
+      params: { wait: wait === true || wait === 'true' },
+      data: { ...(inputs ? { inputs } : {}), ...(labels ? { labels } : {}) }
+    });
+    res.status(201).json(data);
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: true, message: err.message });
+  }
+});
+
+app.post('/api/kestra/flows', requireAuth, async (req, res) => {
+  try {
+    const { source } = req.body || {};
+    if (!source || typeof source !== 'string') return res.status(400).json({ error: true, message: 'source is required' });
+
+    let data;
+    try {
+      data = await kestraRequestWithFallback({
+        method: 'post',
+        pathWithTenant: `/api/v1/${kestraTenant}/flows`,
+        pathWithoutTenant: '/api/v1/flows',
+        data: source,
+        headers: { 'Content-Type': 'application/x-yaml' }
+      });
+    } catch (error) {
+      const alreadyExists = error.response?.status === 422 && /already exists/i.test(error.response?.data?.message || '');
+      const identity = extractFlowIdentity(source);
+      if (!alreadyExists || !identity) throw error;
+      data = await kestraRequestWithFallback({
+        method: 'put',
+        pathWithTenant: `/api/v1/${kestraTenant}/flows/${identity.namespace}/${identity.id}`,
+        pathWithoutTenant: `/api/v1/flows/${identity.namespace}/${identity.id}`,
+        data: source,
+        headers: { 'Content-Type': 'application/x-yaml' }
+      });
+    }
+    res.status(201).json(data);
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: true, message: err.message });
+  }
+});
+
+// ─── BOT CONFIG SERVICE ───
+const PROVIDER_TYPE_MAP = {
+  openai: 'io.kestra.plugin.ai.provider.OpenAI',
+  anthropic: 'io.kestra.plugin.ai.provider.Anthropic',
+  mistral: 'io.kestra.plugin.ai.provider.MistralAI',
+  openrouter: 'io.kestra.plugin.ai.provider.OpenRouter',
+};
+const TOOL_IDS = ['web_search', 'flow_call', 'task_run', 'crm_lookup'];
+const BOT_DEFAULT_CONFIG = {
+  enabled: true, agentName: 'Atendimento WhatsApp', namespace: 'company.bot',
+  flowId: 'tenant-conversation-agent', whatsappInstance: '', webhookPath: '/api/webhook/messages',
+  provider: 'openai', providerApiKey: '', model: 'gpt-4.1-mini', temperature: 0.3, maxTokens: 900,
+  maxSequentialToolsInvocations: 6, memoryEnabled: true, memoryKey: 'lead_phone',
+  welcomeMessage: 'Ola! Sou o assistente virtual da operacao.', systemPrompt: 'Voce e o agente conversacional oficial desta tenant.',
+  executionLabels: { channel: 'whatsapp', source: 'leadtrack' },
+  handoffInstructions: 'Quando a conversa indicar urgencia comercial, encaminhe para a equipe.',
+  safetyNotes: 'Nao compartilhar dados internos.', tools: ['web_search', 'flow_call', 'task_run', 'crm_lookup'],
+  lastPublishedAt: null, lastPublishedFlowRevision: null, lastPublishedBy: null,
+};
+
+function normalizeLabels(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return { ...BOT_DEFAULT_CONFIG.executionLabels };
+  return Object.entries(value).reduce((acc, [k, v]) => { if (k && v !== undefined && v !== null && String(v).trim()) acc[k] = String(v).trim(); return acc; }, {});
+}
+function normalizeTools(value) {
+  if (!Array.isArray(value)) return [...BOT_DEFAULT_CONFIG.tools];
+  const unique = Array.from(new Set(value.filter(t => TOOL_IDS.includes(t))));
+  return unique.length > 0 ? unique : [...BOT_DEFAULT_CONFIG.tools];
+}
+function normalizeBotConfig(p = {}) {
+  const provider = PROVIDER_TYPE_MAP[p.provider] ? p.provider : BOT_DEFAULT_CONFIG.provider;
+  return {
+    enabled: p.enabled !== undefined ? Boolean(p.enabled) : BOT_DEFAULT_CONFIG.enabled,
+    agentName: p.agentName?.trim() || BOT_DEFAULT_CONFIG.agentName,
+    namespace: p.namespace?.trim() || BOT_DEFAULT_CONFIG.namespace,
+    flowId: p.flowId?.trim() || BOT_DEFAULT_CONFIG.flowId,
+    whatsappInstance: p.whatsappInstance?.trim() || '', webhookPath: p.webhookPath?.trim() || BOT_DEFAULT_CONFIG.webhookPath,
+    provider, providerApiKey: p.providerApiKey?.trim() || '', model: p.model?.trim() || BOT_DEFAULT_CONFIG.model,
+    temperature: Number.isFinite(Number(p.temperature)) ? Number(p.temperature) : BOT_DEFAULT_CONFIG.temperature,
+    maxTokens: Number.isFinite(Number(p.maxTokens)) ? Number(p.maxTokens) : BOT_DEFAULT_CONFIG.maxTokens,
+    maxSequentialToolsInvocations: Number.isFinite(Number(p.maxSequentialToolsInvocations)) ? Number(p.maxSequentialToolsInvocations) : BOT_DEFAULT_CONFIG.maxSequentialToolsInvocations,
+    memoryEnabled: p.memoryEnabled !== undefined ? Boolean(p.memoryEnabled) : BOT_DEFAULT_CONFIG.memoryEnabled,
+    memoryKey: p.memoryKey?.trim() || BOT_DEFAULT_CONFIG.memoryKey,
+    welcomeMessage: p.welcomeMessage?.trim() || BOT_DEFAULT_CONFIG.welcomeMessage,
+    systemPrompt: p.systemPrompt?.trim() || BOT_DEFAULT_CONFIG.systemPrompt,
+    executionLabels: normalizeLabels(p.executionLabels), handoffInstructions: p.handoffInstructions?.trim() || BOT_DEFAULT_CONFIG.handoffInstructions,
+    safetyNotes: p.safetyNotes?.trim() || BOT_DEFAULT_CONFIG.safetyNotes, tools: normalizeTools(p.tools),
+    lastPublishedAt: p.lastPublishedAt || null, lastPublishedFlowRevision: p.lastPublishedFlowRevision ?? null, lastPublishedBy: p.lastPublishedBy || null,
+  };
+}
+function botConfigToRow(tenantId, config, userId = null) {
+  return {
+    tenant_id: tenantId, enabled: config.enabled, agent_name: config.agentName, namespace: config.namespace,
+    flow_id: config.flowId, whatsapp_instance: config.whatsappInstance || null, webhook_path: config.webhookPath,
+    provider: config.provider, provider_api_key: config.providerApiKey || null, model: config.model,
+    temperature: config.temperature, max_tokens: config.maxTokens, max_sequential_tools_invocations: config.maxSequentialToolsInvocations,
+    memory_enabled: config.memoryEnabled, memory_key: config.memoryKey, welcome_message: config.welcomeMessage,
+    system_prompt: config.systemPrompt, execution_labels: config.executionLabels, handoff_instructions: config.handoffInstructions,
+    safety_notes: config.safetyNotes, tools: config.tools, ...(userId ? { last_published_by: userId } : {}),
+  };
+}
+function botConfigFromRow(row, tenant = null) {
+  if (!row) return null;
+  return normalizeBotConfig({
+    enabled: row.enabled, agentName: row.agent_name, namespace: row.namespace, flowId: row.flow_id,
+    whatsappInstance: row.whatsapp_instance, webhookPath: row.webhook_path, provider: row.provider,
+    providerApiKey: row.provider_api_key, model: row.model, temperature: row.temperature, maxTokens: row.max_tokens,
+    maxSequentialToolsInvocations: row.max_sequential_tools_invocations, memoryEnabled: row.memory_enabled,
+    memoryKey: row.memory_key, welcomeMessage: row.welcome_message, systemPrompt: row.system_prompt,
+    executionLabels: row.execution_labels, handoffInstructions: row.handoff_instructions, safetyNotes: row.safety_notes,
+    tools: row.tools, lastPublishedAt: row.last_published_at, lastPublishedFlowRevision: row.last_published_flow_revision,
+    lastPublishedBy: row.last_published_by, tenant,
+  });
+}
+function buildExecutionPayload(config, tenant) {
+  return { wait: false, inputs: { tenantId: tenant.id, phone: '{{incoming_phone}}', incomingMessage: '{{incoming_message}}' },
+    labels: { tenant: tenant.name, tenantSlug: tenant.slug, whatsappInstance: config.whatsappInstance || 'not-configured', agentEnabled: String(config.enabled), ...config.executionLabels } };
+}
+function buildWebhookTriggerKey(config, tenant) {
+  return `${tenant.slug}-${config.flowId}`.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '');
+}
+function buildKestraFlowYaml(config, tenant) {
+  const providerType = PROVIDER_TYPE_MAP[config.provider] || PROVIDER_TYPE_MAP.openai;
+  const webhookKey = buildWebhookTriggerKey(config, tenant);
+  return `id: ${config.flowId}\nnamespace: ${config.namespace}\n\ninputs:\n  - id: tenantId\n    type: STRING\n  - id: phone\n    type: STRING\n  - id: incomingMessage\n    type: STRING\n\ntriggers:\n  - id: whatsapp_webhook\n    type: io.kestra.plugin.core.trigger.Webhook\n    key: "${webhookKey}"\n\ntasks:\n  - id: tenant_agent\n    type: io.kestra.plugin.ai.agent.AIAgent\n    systemMessage: |\n      ${config.systemPrompt.split('\n').join('\n      ')}\n    prompt: |\n      Tenant: ${tenant.name} (${tenant.slug})\n      Telefone: {{ inputs.phone }}\n      Mensagem recebida: {{ inputs.incomingMessage }}\n    provider:\n      type: ${providerType}\n${config.providerApiKey ? `      apiKey: "${config.providerApiKey}"\n` : ''}      modelName: "${config.model}"\n    configuration:\n      temperature: ${config.temperature}\n      maxToken: ${config.maxTokens}\n    maxSequentialToolsInvocations: ${config.maxSequentialToolsInvocations}\n    tools: []`;
+}
+
+async function resolveTargetTenant(req) {
+  const actor = req.auth.profile;
+  const requestedTenantId = req.query.tenantId || req.body?.tenantId || null;
+  const tenantId = actor.role === 'superadmin' ? requestedTenantId : actor.tenant_id;
+  if (!tenantId) throw Object.assign(new Error('Selecione uma tenant'), { statusCode: 400 });
+  const { data: tenant, error } = await supabase.from('tenants').select('id, name, slug, plan, is_active').eq('id', tenantId).single();
+  if (error || !tenant) throw Object.assign(new Error('Tenant nao encontrada'), { statusCode: 404 });
+  return tenant;
+}
+
+// ─── BOT CONFIG ROUTES ───
+app.get('/api/bot-config', requireAuth, requireRole('superadmin', 'tenant_admin'), async (req, res) => {
+  try {
+    const tenant = await resolveTargetTenant(req);
+    const { data: row } = await supabase.from('tenant_bot_configs').select('*').eq('tenant_id', tenant.id).maybeSingle();
+    const config = row ? botConfigFromRow(row, tenant) : { ...BOT_DEFAULT_CONFIG };
+    res.json({ tenant, config, generated: { flowYaml: buildKestraFlowYaml(config, tenant), executionPayload: buildExecutionPayload(config, tenant) },
+      meta: row ? { lastPublishedAt: row.last_published_at, lastPublishedFlowRevision: row.last_published_flow_revision, lastPublishedBy: row.last_published_by } : null });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({ error: true, message: error.message });
+  }
+});
+
+app.put('/api/bot-config', requireAuth, requireRole('superadmin', 'tenant_admin'), async (req, res) => {
+  try {
+    const tenant = await resolveTargetTenant(req);
+    const config = normalizeBotConfig(req.body?.config || {});
+    const payload = botConfigToRow(tenant.id, config);
+    const { data, error } = await supabase.from('tenant_bot_configs').upsert(payload, { onConflict: 'tenant_id' }).select('*').single();
+    if (error) throw error;
+    res.json({ tenant, config: botConfigFromRow(data, tenant), generated: { flowYaml: buildKestraFlowYaml(config, tenant), executionPayload: buildExecutionPayload(config, tenant) } });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({ error: true, message: error.message });
+  }
+});
+
+app.post('/api/bot-config/publish', requireAuth, requireRole('superadmin', 'tenant_admin'), async (req, res) => {
+  try {
+    const tenant = await resolveTargetTenant(req);
+    const { data: existing } = await supabase.from('tenant_bot_configs').select('*').eq('tenant_id', tenant.id).maybeSingle();
+    const config = normalizeBotConfig(req.body?.config || (existing ? botConfigFromRow(existing, tenant) : BOT_DEFAULT_CONFIG));
+    const source = buildKestraFlowYaml(config, tenant);
+
+    let published;
+    try {
+      published = await kestraRequestWithFallback({ method: 'post', pathWithTenant: `/api/v1/${kestraTenant}/flows`, pathWithoutTenant: '/api/v1/flows', data: source, headers: { 'Content-Type': 'application/x-yaml' } });
+    } catch (error) {
+      const alreadyExists = error.response?.status === 422 && /already exists/i.test(error.response?.data?.message || '');
+      const identity = extractFlowIdentity(source);
+      if (!alreadyExists || !identity) throw error;
+      published = await kestraRequestWithFallback({ method: 'put', pathWithTenant: `/api/v1/${kestraTenant}/flows/${identity.namespace}/${identity.id}`, pathWithoutTenant: `/api/v1/flows/${identity.namespace}/${identity.id}`, data: source, headers: { 'Content-Type': 'application/x-yaml' } });
+    }
+
+    const revision = published?.revision ?? published?.flow?.revision ?? published?.data?.revision ?? null;
+    const { data, error } = await supabase.from('tenant_bot_configs').upsert({ ...botConfigToRow(tenant.id, config, req.auth.user.id), last_published_at: new Date().toISOString(), last_published_flow_revision: revision }, { onConflict: 'tenant_id' }).select('*').single();
+    if (error) throw error;
+    res.json({ tenant, config: botConfigFromRow(data, tenant), generated: { flowYaml: source, executionPayload: buildExecutionPayload(config, tenant) }, published });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({ error: true, message: error.message });
+  }
+});
+
 // Export handler
 module.exports.handler = serverless(app);
