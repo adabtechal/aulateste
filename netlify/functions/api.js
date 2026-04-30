@@ -1089,6 +1089,99 @@ app.get('/api/scheduling/bookings/by-phone/:phone', requireAuth, async (req, res
   } catch (err) { res.status(500).json({ error: true, message: err.message }); }
 });
 
+// ─── TAGS ───
+app.get('/api/tags', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('tags').select('*').order('name');
+    if (error) throw error;
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.post('/api/tags', requireAuth, async (req, res) => {
+  try {
+    const { name, color } = req.body;
+    if (!name) return res.status(400).json({ message: 'Nome é obrigatório' });
+    const { data, error } = await supabase.from('tags').insert({ name: name.trim().toLowerCase(), color: color || '#5a4a9c' }).select().single();
+    if (error) {
+      if (error.code === '23505') return res.status(409).json({ message: 'Tag já existe' });
+      throw error;
+    }
+    res.status(201).json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.put('/api/tags/:id', requireAuth, async (req, res) => {
+  try {
+    const { name, color } = req.body;
+    const update = {};
+    if (name) update.name = name.trim().toLowerCase();
+    if (color) update.color = color;
+    const { data, error } = await supabase.from('tags').update(update).eq('id', req.params.id).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.delete('/api/tags/:id', requireAuth, async (req, res) => {
+  try {
+    const { error } = await supabase.from('tags').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+// ─── INBOX ───
+app.get('/api/inbox', requireAuth, async (req, res) => {
+  try {
+    const { search } = req.query;
+    let leadsQuery = supabase.from('leads').select('id, name, phone, email, company, tags, current_stage_id, created_at, kanban_stages(name, color)');
+    if (search) leadsQuery = leadsQuery.or(`name.ilike.%${search}%,phone.ilike.%${search}%`);
+
+    const { data: leads, error: leadsError } = await leadsQuery;
+    if (leadsError) throw leadsError;
+    if (!leads.length) return res.json([]);
+
+    const leadIds = leads.map(l => l.id);
+    const { data: lastMessages, error: msgError } = await supabase.from('message_log').select('lead_id, content, direction, message_type, sent_at').in('lead_id', leadIds).order('sent_at', { ascending: false });
+    if (msgError) throw msgError;
+
+    const leadMsgMap = {};
+    for (const msg of lastMessages) {
+      if (!leadMsgMap[msg.lead_id]) leadMsgMap[msg.lead_id] = { lastMessage: msg.direction !== 'internal' ? msg : null, unread: 0, totalMessages: 0 };
+      if (!leadMsgMap[msg.lead_id].lastMessage && msg.direction !== 'internal') leadMsgMap[msg.lead_id].lastMessage = msg;
+      leadMsgMap[msg.lead_id].totalMessages++;
+      if (msg.direction === 'internal') continue;
+      if (msg.direction === 'incoming' && !leadMsgMap[msg.lead_id]._sawOutgoing) leadMsgMap[msg.lead_id].unread++;
+      if (msg.direction === 'outgoing') leadMsgMap[msg.lead_id]._sawOutgoing = true;
+    }
+
+    const conversations = leads.map(lead => {
+      const msgData = leadMsgMap[lead.id];
+      return { ...lead, last_message: msgData?.lastMessage || null, unread_count: msgData?.unread || 0, total_messages: msgData?.totalMessages || 0, last_activity: msgData?.lastMessage?.sent_at || lead.created_at };
+    });
+
+    conversations.sort((a, b) => {
+      if (a.last_message && !b.last_message) return -1;
+      if (!a.last_message && b.last_message) return 1;
+      return new Date(b.last_activity) - new Date(a.last_activity);
+    });
+
+    res.json(conversations);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+// ─── INTERNAL NOTES ───
+app.post('/api/messages/internal-note', requireAuth, async (req, res) => {
+  try {
+    const { leadId, content } = req.body;
+    if (!leadId || !content) return res.status(400).json({ error: true, message: 'leadId and content are required' });
+    const { data, error } = await supabase.from('message_log').insert({ lead_id: leadId, direction: 'internal', message_type: 'text', content, status: 'sent' }).select().single();
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
 // Tenant slug for booking link
 app.get('/api/scheduling/tenant-slug', requireAuth, async (req, res) => {
   try {
