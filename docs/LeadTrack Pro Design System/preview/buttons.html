@@ -1,0 +1,252 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body {
+    margin: 0; padding: 28px 32px; background: var(--bg);
+    font-family: var(--font-sans); color: var(--fg);
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .group { display: flex; flex-direction: column; gap: 10px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  h3 {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fg-subtle); margin: 0; font-weight: 600;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  h3 .num { font-family: var(--font-mono); color: var(--violet-500); }
+  h3 .rule { flex: 1; height: 1px; background: var(--border); }
+
+  /* ===== Base ===== */
+  .btn {
+    position: relative; display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px 9px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; letter-spacing: -0.005em;
+    border: 1px solid transparent; cursor: pointer; font-family: inherit;
+    transition: transform 120ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+    user-select: none; white-space: nowrap;
+  }
+  .btn [data-lucide] { width: 14px; height: 14px; stroke-width: 2; }
+  .btn:active { transform: translateY(1px); }
+
+  /* Primary — layered shadow with 2px coral underline accent */
+  .btn-primary {
+    background: var(--violet-500); color: #fff;
+    box-shadow:
+      0 1px 0 rgba(0,0,0,0.06),
+      0 1px 2px rgba(72, 34, 168, 0.25),
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -2px 0 rgba(0,0,0,0.12);
+  }
+  .btn-primary:hover { background: var(--violet-600); box-shadow: 0 2px 8px rgba(109,67,245,0.35), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.14); }
+  .btn-primary:active { box-shadow: inset 0 1px 2px rgba(0,0,0,0.2); }
+
+  /* Secondary — light paper with subtle top highlight */
+  .btn-secondary {
+    background: linear-gradient(180deg, #ffffff, #f6f7fa);
+    color: var(--fg); border-color: var(--border-strong);
+    box-shadow: 0 1px 0 rgba(20,23,31,0.03);
+  }
+  .btn-secondary:hover { background: linear-gradient(180deg, #ffffff, #eef0f4); border-color: #c6cbd4; }
+
+  /* Ghost — underline reveal on hover */
+  .btn-ghost {
+    background: transparent; color: var(--fg-muted);
+    padding: 9px 12px;
+  }
+  .btn-ghost:hover { color: var(--fg); background: var(--ink-75); }
+
+  /* Danger — coral, not red — matches coral accent */
+  .btn-danger {
+    background: var(--coral-500); color: #fff;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 1px 2px rgba(149,42,11,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -2px 0 rgba(0,0,0,0.12);
+  }
+  .btn-danger:hover { background: #d83e0f; }
+
+  /* Success (mark as won) */
+  .btn-success {
+    background: var(--success-500); color: #fff;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 1px 2px rgba(15,111,70,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -2px 0 rgba(0,0,0,0.12);
+  }
+
+  /* Outline-violet — CTAs in panels */
+  .btn-outline {
+    background: var(--violet-50); color: var(--violet-600);
+    border-color: rgba(109,67,245,0.25);
+  }
+  .btn-outline:hover { background: #ece5ff; border-color: rgba(109,67,245,0.45); }
+
+  /* ===== Sizes ===== */
+  .btn-xs { padding: 5px 10px; font-size: 11.5px; border-radius: 6px; }
+  .btn-sm { padding: 7px 12px; font-size: 12px; border-radius: 7px; }
+  .btn-lg { padding: 12px 20px; font-size: 14px; border-radius: 10px; }
+  .btn-xs [data-lucide] { width: 12px; height: 12px; }
+
+  /* ===== Icon only ===== */
+  .btn-icon { padding: 8px; width: 34px; height: 34px; justify-content: center; }
+  .btn-icon [data-lucide] { width: 15px; height: 15px; }
+
+  /* ===== Counter badge inside button ===== */
+  .btn .count {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    background: rgba(255,255,255,0.22); color: inherit;
+    padding: 1px 6px; border-radius: 99px;
+    margin-left: 2px; letter-spacing: 0;
+  }
+  .btn-secondary .count { background: var(--ink-100); color: var(--fg-muted); }
+
+  /* ===== Keyboard shortcut hint ===== */
+  .btn .kbd {
+    font-family: var(--font-mono); font-size: 10px;
+    background: rgba(0,0,0,0.12); color: inherit;
+    padding: 1px 5px; border-radius: 4px; margin-left: 4px;
+    border: 1px solid rgba(0,0,0,0.12); line-height: 1;
+  }
+  .btn-secondary .kbd { background: var(--bg); border-color: var(--border); color: var(--fg-subtle); }
+
+  /* ===== Loading ===== */
+  .btn.loading { color: transparent !important; pointer-events: none; }
+  .btn.loading::after {
+    content: ''; position: absolute;
+    inset: 0; margin: auto;
+    width: 14px; height: 14px; border-radius: 99px;
+    border: 2px solid currentColor; border-top-color: transparent;
+    color: #fff; animation: spin 0.7s linear infinite;
+  }
+  .btn-secondary.loading::after { color: var(--fg-muted); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== Split button (primary + dropdown) ===== */
+  .split { display: inline-flex; }
+  .split .btn-primary { border-top-right-radius: 0; border-bottom-right-radius: 0; padding-right: 12px; }
+  .split .split-chev {
+    background: var(--violet-600); color: #fff;
+    padding: 0 8px; display: grid; place-items: center;
+    border-top-right-radius: 8px; border-bottom-right-radius: 8px;
+    border-left: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 1px 2px rgba(72,34,168,0.25),
+      inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -2px 0 rgba(0,0,0,0.12);
+    cursor: pointer; transition: background 160ms;
+  }
+  .split .split-chev:hover { background: var(--violet-700); }
+  .split .split-chev [data-lucide] { width: 14px; height: 14px; }
+
+  /* ===== FAB / pill CTA — for WhatsApp send ===== */
+  .btn-whatsapp {
+    background: #16a365; color: white;
+    padding: 10px 16px 10px 14px; border-radius: 99px;
+    box-shadow: 0 6px 16px rgba(15,111,70,0.28), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .btn-whatsapp:hover { background: #0f8a53; }
+
+  /* ===== Pill toggle group ===== */
+  .toggle-group {
+    display: inline-flex; padding: 3px;
+    background: var(--ink-75); border-radius: 9px;
+    border: 1px solid var(--border);
+  }
+  .toggle-group button {
+    border: 0; background: transparent; padding: 6px 12px;
+    font-size: 12px; font-weight: 500; color: var(--fg-muted);
+    border-radius: 7px; cursor: pointer; font-family: inherit;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: background 160ms, color 160ms;
+  }
+  .toggle-group button [data-lucide] { width: 13px; height: 13px; }
+  .toggle-group button.on {
+    background: var(--bg-panel); color: var(--fg);
+    box-shadow: 0 1px 0 rgba(20,23,31,0.04), 0 2px 6px rgba(20,23,31,0.06);
+  }
+
+  /* ===== Spec captions ===== */
+  .caption { font-family: var(--font-mono); font-size: 10.5px; color: var(--fg-subtle); }
+  .caption b { color: var(--violet-600); font-weight: 600; }
+</style></head>
+<body>
+
+<!-- 01 Primary actions -->
+<div class="group">
+  <h3><span class="num">01</span><span>Ações primárias</span><span class="rule"></span></h3>
+  <div class="row">
+    <button class="btn btn-primary"><i data-lucide="plus"></i>Novo lead<span class="kbd">N</span></button>
+    <div class="split">
+      <button class="btn btn-primary"><i data-lucide="send"></i>Enviar proposta</button>
+      <div class="split-chev"><i data-lucide="chevron-down"></i></div>
+    </div>
+    <button class="btn btn-success"><i data-lucide="trophy"></i>Marcar como ganho</button>
+    <button class="btn btn-whatsapp"><i data-lucide="message-circle"></i>Responder no WhatsApp</button>
+  </div>
+  <div class="caption">Sombra em camadas: <b>drop</b> + <b>inset-top highlight</b> + <b>inset-bottom press</b>. Pressionar translada 1px.</div>
+</div>
+
+<!-- 02 Secondary & ghost -->
+<div class="group">
+  <h3><span class="num">02</span><span>Secundário · Fantasma · Outline</span><span class="rule"></span></h3>
+  <div class="row">
+    <button class="btn btn-secondary"><i data-lucide="filter"></i>Filtrar<span class="count">3</span></button>
+    <button class="btn btn-secondary"><i data-lucide="download"></i>Exportar CSV</button>
+    <button class="btn btn-outline"><i data-lucide="sparkles"></i>Sugerir próximo passo</button>
+    <button class="btn btn-ghost">Cancelar<span class="kbd">Esc</span></button>
+    <button class="btn btn-danger"><i data-lucide="archive"></i>Arquivar lead</button>
+  </div>
+</div>
+
+<!-- 03 Sizes -->
+<div class="group">
+  <h3><span class="num">03</span><span>Tamanhos</span><span class="rule"></span></h3>
+  <div class="row">
+    <button class="btn btn-primary btn-xs">XS · Ação</button>
+    <button class="btn btn-primary btn-sm">SM · Ação</button>
+    <button class="btn btn-primary">MD · Ação padrão</button>
+    <button class="btn btn-primary btn-lg">LG · Call to action</button>
+  </div>
+  <div class="caption">XS <b>28px</b> · SM <b>30px</b> · MD <b>34px</b> · LG <b>42px</b></div>
+</div>
+
+<!-- 04 Icon-only -->
+<div class="group">
+  <h3><span class="num">04</span><span>Ícone · Toolbar</span><span class="rule"></span></h3>
+  <div class="row">
+    <button class="btn btn-secondary btn-icon" title="Anexar"><i data-lucide="paperclip"></i></button>
+    <button class="btn btn-secondary btn-icon" title="Agenda"><i data-lucide="calendar"></i></button>
+    <button class="btn btn-secondary btn-icon" title="Ligação"><i data-lucide="phone"></i></button>
+    <button class="btn btn-secondary btn-icon" title="Tags"><i data-lucide="tag"></i></button>
+    <button class="btn btn-secondary btn-icon" title="Atribuir"><i data-lucide="user-plus"></i></button>
+    <button class="btn btn-secondary btn-icon" title="Mais"><i data-lucide="more-horizontal"></i></button>
+  </div>
+</div>
+
+<!-- 05 Segmented toggle -->
+<div class="group">
+  <h3><span class="num">05</span><span>Segmentado</span><span class="rule"></span></h3>
+  <div class="row">
+    <div class="toggle-group">
+      <button class="on"><i data-lucide="kanban-square"></i>Quadro</button>
+      <button><i data-lucide="list"></i>Lista</button>
+      <button><i data-lucide="calendar-days"></i>Agenda</button>
+    </div>
+    <div class="toggle-group">
+      <button class="on">Hoje</button>
+      <button>Semana</button>
+      <button>Mês</button>
+      <button>Tri</button>
+    </div>
+  </div>
+</div>
+
+<!-- 06 States -->
+<div class="group">
+  <h3><span class="num">06</span><span>Estados</span><span class="rule"></span></h3>
+  <div class="row">
+    <button class="btn btn-primary"><i data-lucide="save"></i>Default</button>
+    <button class="btn btn-primary loading"><i data-lucide="save"></i>Salvando</button>
+    <button class="btn btn-secondary" disabled style="opacity:0.45;pointer-events:none"><i data-lucide="send"></i>Desabilitado</button>
+    <button class="btn btn-success"><i data-lucide="check"></i>Salvo · agora</button>
+  </div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body></html>

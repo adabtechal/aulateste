@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LeadTrack Pro — Design System v2.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* ========================================
+       DESIGN TOKENS (CSS Custom Properties)
+       ======================================== */
+    :root {
+      /* NEUTRAL — Base quente elegante */
+      --neutral-50:  #FAFAFA;
+      --neutral-100: #F5F5F5;
+      --neutral-200: #E5E5E5;
+      --neutral-300: #D4D4D4;
+      --neutral-400: #A3A3A3;
+      --neutral-500: #737373;
+      --neutral-600: #525252;
+      --neutral-700: #404040;
+      --neutral-800: #262626;
+      --neutral-900: #171717;
+      --neutral-950: #0A0A0A;
+
+      /* ACCENT — Indigo (profissional + moderno) */
+      --accent-50:  #EEF2FF;
+      --accent-100: #E0E7FF;
+      --accent-200: #C7D2FE;
+      --accent-500: #6366F1;
+      --accent-600: #4F46E5;
+      --accent-700: #4338CA;
+      --accent-800: #3730A3;
+
+      /* SEMANTICAS */
+      --success-50:  #F0FDF4;
+      --success-500: #22C55E;
+      --success-600: #16A34A;
+      --warning-50:  #FFFBEB;
+      --warning-500: #F59E0B;
+      --danger-50:   #FEF2F2;
+      --danger-500:  #EF4444;
+      --danger-600:  #DC2626;
+      --info-50:     #EFF6FF;
+      --info-500:    #3B82F6;
+
+      /* TYPOGRAPHY */
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+      /* SPACING */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+
+      /* TRANSITIONS */
+      --transition-fast: 150ms ease;
+      --transition-normal: 200ms ease;
+      --transition-slow: 300ms ease;
+
+      /* RADIUS */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-full: 9999px;
+    }
+
+    /* ========================================
+       RESET & BASE
+       ======================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--neutral-50);
+      color: var(--neutral-800);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========================================
+       DOCUMENT LAYOUT
+       ======================================== */
+    .doc-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .doc-hero {
+      text-align: center;
+      padding: var(--space-16) 0 var(--space-12);
+      border-bottom: 1px solid var(--neutral-200);
+      margin-bottom: var(--space-12);
+    }
+
+    .doc-hero h1 {
+      font-size: clamp(2rem, 3vw, 2.75rem);
+      font-weight: 700;
+      color: var(--neutral-900);
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-3);
+    }
+
+    .doc-hero .subtitle {
+      font-size: 1.125rem;
+      color: var(--neutral-500);
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    .doc-hero blockquote {
+      margin-top: var(--space-6);
+      font-style: italic;
+      color: var(--neutral-400);
+      font-size: 0.9375rem;
+    }
+
+    .doc-section {
+      margin-bottom: var(--space-16);
+    }
+
+    .doc-section h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--neutral-900);
+      margin-bottom: var(--space-2);
+      letter-spacing: -0.02em;
+    }
+
+    .doc-section .section-desc {
+      color: var(--neutral-500);
+      font-size: 0.9375rem;
+      margin-bottom: var(--space-8);
+    }
+
+    .doc-section h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--neutral-700);
+      margin-bottom: var(--space-4);
+      margin-top: var(--space-8);
+    }
+
+    .doc-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--neutral-400);
+      margin-bottom: var(--space-3);
+    }
+
+    .showcase {
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      margin-bottom: var(--space-6);
+    }
+
+    .showcase-dark {
+      background: var(--neutral-900);
+    }
+
+    .showcase-grid {
+      display: grid;
+      gap: var(--space-6);
+    }
+
+    .showcase-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    /* ========================================
+       NAV (Table of Contents)
+       ======================================== */
+    .doc-nav {
+      position: sticky;
+      top: var(--space-4);
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin-bottom: var(--space-10);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .doc-nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .doc-nav a {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--space-1) var(--space-3);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--neutral-600);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-fast);
+    }
+
+    .doc-nav a:hover {
+      background: var(--accent-50);
+      color: var(--accent-600);
+    }
+
+    /* ========================================
+       REFERENCES SECTION
+       ======================================== */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .ref-card {
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      transition: all var(--transition-fast);
+    }
+
+    .ref-card:hover {
+      border-color: var(--neutral-300);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .ref-card h4 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--neutral-800);
+      margin-bottom: var(--space-2);
+    }
+
+    .ref-card p {
+      font-size: 0.8125rem;
+      color: var(--neutral-500);
+      line-height: 1.5;
+    }
+
+    .ref-tag {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: var(--accent-50);
+      color: var(--accent-600);
+      margin-top: var(--space-3);
+    }
+
+    /* ========================================
+       COLOR PALETTE
+       ======================================== */
+    .color-group {
+      margin-bottom: var(--space-8);
+    }
+
+    .color-group-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--neutral-700);
+      margin-bottom: var(--space-3);
+    }
+
+    .color-row {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .color-swatch {
+      width: 72px;
+      text-align: center;
+    }
+
+    .color-swatch .swatch {
+      width: 72px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(0,0,0,0.06);
+      margin-bottom: var(--space-1);
+    }
+
+    .color-swatch .name {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--neutral-700);
+    }
+
+    .color-swatch .hex {
+      font-size: 0.625rem;
+      color: var(--neutral-400);
+      font-family: var(--font-mono);
+    }
+
+    /* ========================================
+       TYPOGRAPHY SHOWCASE
+       ======================================== */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-6);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--neutral-100);
+    }
+
+    .type-label {
+      width: 140px;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--neutral-400);
+      font-family: var(--font-mono);
+    }
+
+    .type-sample {
+      flex: 1;
+      color: var(--neutral-800);
+    }
+
+    .type-specs {
+      font-size: 0.6875rem;
+      color: var(--neutral-400);
+      font-family: var(--font-mono);
+      flex-shrink: 0;
+    }
+
+    /* ========================================
+       BUTTON COMPONENTS
+       ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--accent-200);
+    }
+
+    .btn-primary {
+      background: var(--accent-600);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--accent-700); }
+    .btn-primary:active { background: var(--accent-800); }
+
+    .btn-secondary {
+      background: white;
+      color: var(--neutral-700);
+      border: 1px solid var(--neutral-200);
+    }
+    .btn-secondary:hover { background: var(--neutral-50); border-color: var(--neutral-300); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--neutral-600);
+    }
+    .btn-ghost:hover { background: var(--neutral-100); color: var(--neutral-800); }
+
+    .btn-danger {
+      background: var(--danger-600);
+      color: white;
+    }
+    .btn-danger:hover { background: #b91c1c; }
+
+    .btn-icon {
+      padding: 8px;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--neutral-500);
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-icon:hover { background: var(--neutral-100); color: var(--neutral-700); }
+
+    .btn-sm {
+      font-size: 0.8125rem;
+      padding: 6px 12px;
+    }
+
+    .btn-lg {
+      font-size: 0.9375rem;
+      padding: 12px 24px;
+    }
+
+    /* ========================================
+       FORM COMPONENTS
+       ======================================== */
+    .form-group {
+      margin-bottom: var(--space-5);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--neutral-700);
+      margin-bottom: var(--space-2);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.875rem;
+      font-family: var(--font-sans);
+      color: var(--neutral-800);
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast);
+      outline: none;
+    }
+
+    .form-input::placeholder {
+      color: var(--neutral-400);
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-500);
+      box-shadow: 0 0 0 3px var(--accent-100);
+    }
+
+    .form-input-error {
+      border-color: var(--danger-500);
+    }
+    .form-input-error:focus {
+      box-shadow: 0 0 0 3px var(--danger-50);
+    }
+
+    .form-error-text {
+      font-size: 0.8125rem;
+      color: var(--danger-500);
+      margin-top: var(--space-1);
+    }
+
+    .form-hint {
+      font-size: 0.8125rem;
+      color: var(--neutral-400);
+      margin-top: var(--space-1);
+    }
+
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a3a3a3' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 40px;
+    }
+
+    /* ========================================
+       CARDS
+       ======================================== */
+    .card {
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+
+    .card-body {
+      padding: var(--space-5);
+    }
+
+    .card-title {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: var(--neutral-800);
+      margin-bottom: var(--space-1);
+    }
+
+    .card-subtitle {
+      font-size: 0.8125rem;
+      color: var(--neutral-500);
+    }
+
+    /* KPI Card */
+    .kpi-card {
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+    }
+
+    .kpi-label {
+      font-size: 0.8125rem;
+      color: var(--neutral-500);
+      margin-bottom: var(--space-1);
+    }
+
+    .kpi-value {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--neutral-900);
+      letter-spacing: -0.02em;
+    }
+
+    .kpi-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: var(--space-2);
+    }
+
+    .kpi-trend.up { color: var(--success-500); }
+    .kpi-trend.down { color: var(--danger-500); }
+
+    /* Kanban Card */
+    .kanban-card {
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      cursor: grab;
+      transition: all var(--transition-fast);
+    }
+
+    .kanban-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-color: var(--neutral-300);
+    }
+
+    .kanban-card-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--neutral-800);
+    }
+
+    .kanban-card-meta {
+      font-size: 0.75rem;
+      color: var(--neutral-500);
+      margin-top: var(--space-1);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .kanban-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--space-3);
+    }
+
+    .kanban-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-full);
+      background: var(--accent-100);
+      color: var(--accent-700);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ========================================
+       BADGES
+       ======================================== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 2px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+    }
+
+    .badge-new { background: var(--accent-50); color: var(--accent-700); border-color: var(--accent-200); }
+    .badge-contact { background: var(--info-50); color: #1d4ed8; border-color: #bfdbfe; }
+    .badge-qualified { background: var(--success-50); color: var(--success-600); border-color: #bbf7d0; }
+    .badge-lost { background: var(--danger-50); color: var(--danger-600); border-color: #fecaca; }
+    .badge-closed { background: var(--neutral-100); color: var(--neutral-700); border-color: var(--neutral-300); }
+    .badge-warning { background: var(--warning-50); color: #b45309; border-color: #fde68a; }
+
+    /* ========================================
+       TABLE
+       ======================================== */
+    .table-container {
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th {
+      background: var(--neutral-50);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--neutral-500);
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      border-bottom: 1px solid var(--neutral-200);
+    }
+
+    .table td {
+      font-size: 0.875rem;
+      color: var(--neutral-700);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--neutral-100);
+    }
+
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .table tr:hover td {
+      background: var(--neutral-50);
+    }
+
+    .table-link {
+      color: var(--accent-600);
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .table-link:hover { color: var(--accent-700); text-decoration: underline; }
+
+    /* ========================================
+       MODAL
+       ======================================== */
+    .modal-overlay {
+      position: relative;
+      background: rgba(23, 23, 23, 0.5);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-xl);
+      padding: var(--space-10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .modal {
+      background: white;
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 480px;
+      animation: scale-in 0.2s ease;
+    }
+
+    .modal-header {
+      padding: var(--space-6) var(--space-6) 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--neutral-900);
+    }
+
+    .modal-body {
+      padding: var(--space-4) var(--space-6);
+    }
+
+    .modal-footer {
+      padding: var(--space-2) var(--space-6) var(--space-6);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+    }
+
+    @keyframes scale-in {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ========================================
+       SIDEBAR PREVIEW
+       ======================================== */
+    .sidebar-preview {
+      background: var(--neutral-900);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+      width: 240px;
+      min-height: 480px;
+    }
+
+    .sidebar-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      padding: var(--space-2) var(--space-3);
+      margin-bottom: var(--space-6);
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-section-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--neutral-500);
+      padding: 0 var(--space-3);
+      margin-top: var(--space-6);
+      margin-bottom: var(--space-2);
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      color: var(--neutral-400);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      margin-bottom: 2px;
+    }
+
+    .sidebar-item:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--neutral-200);
+    }
+
+    .sidebar-item.active {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-weight: 500;
+    }
+
+    .sidebar-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.7;
+    }
+
+    .sidebar-item.active .sidebar-icon { opacity: 1; }
+
+    /* ========================================
+       TOPBAR PREVIEW
+       ======================================== */
+    .topbar-preview {
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-xl);
+      padding: 0 var(--space-5);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .topbar-brand {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--neutral-900);
+      letter-spacing: -0.02em;
+    }
+
+    .topbar-breadcrumb {
+      font-size: 0.8125rem;
+      color: var(--neutral-400);
+    }
+
+    .topbar-search {
+      background: var(--neutral-100);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      font-size: 0.8125rem;
+      color: var(--neutral-400);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: 280px;
+    }
+
+    .topbar-search kbd {
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.6875rem;
+      font-family: var(--font-sans);
+      color: var(--neutral-400);
+      margin-left: auto;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .topbar-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: var(--accent-600);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ========================================
+       KANBAN BOARD PREVIEW
+       ======================================== */
+    .kanban-board {
+      display: flex;
+      gap: var(--space-4);
+      overflow-x: auto;
+      padding: var(--space-2) 0;
+    }
+
+    .kanban-column {
+      min-width: 260px;
+      max-width: 300px;
+      flex-shrink: 0;
+    }
+
+    .kanban-column-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+
+    .kanban-column-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--neutral-700);
+    }
+
+    .kanban-column-count {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      background: var(--neutral-200);
+      color: var(--neutral-600);
+      padding: 1px 8px;
+      border-radius: var(--radius-full);
+    }
+
+    .kanban-column-area {
+      background: var(--neutral-100);
+      border-radius: var(--radius-lg);
+      padding: var(--space-3);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      min-height: 200px;
+    }
+
+    /* ========================================
+       TOAST
+       ======================================== */
+    .toast {
+      background: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      padding: var(--space-3) var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      max-width: 380px;
+    }
+
+    .toast-icon { flex-shrink: 0; }
+    .toast-text { font-size: 0.875rem; color: var(--neutral-700); }
+
+    /* ========================================
+       EMPTY STATE
+       ======================================== */
+    .empty-state {
+      text-align: center;
+      padding: var(--space-16) var(--space-6);
+    }
+
+    .empty-state-icon {
+      width: 48px;
+      height: 48px;
+      color: var(--neutral-300);
+      margin: 0 auto var(--space-4);
+    }
+
+    .empty-state-title {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      color: var(--neutral-700);
+      margin-bottom: var(--space-1);
+    }
+
+    .empty-state-desc {
+      font-size: 0.875rem;
+      color: var(--neutral-500);
+      max-width: 360px;
+      margin: 0 auto var(--space-5);
+    }
+
+    /* ========================================
+       SKELETON
+       ======================================== */
+    .skeleton {
+      background: var(--neutral-200);
+      border-radius: var(--radius-md);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ========================================
+       LAYOUT PREVIEW
+       ======================================== */
+    .layout-preview {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      min-height: 600px;
+    }
+
+    .layout-sidebar {
+      background: var(--neutral-900);
+      padding: var(--space-5);
+    }
+
+    .layout-main {
+      background: var(--neutral-50);
+      padding: var(--space-6);
+    }
+
+    /* ========================================
+       COMPARISON TABLE
+       ======================================== */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    .comparison-before, .comparison-after {
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+    }
+
+    .comparison-before {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+    }
+
+    .comparison-after {
+      background: var(--success-50);
+      border: 1px solid #bbf7d0;
+    }
+
+    .comparison-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-4);
+    }
+
+    .comparison-before .comparison-label { color: var(--danger-500); }
+    .comparison-after .comparison-label { color: var(--success-600); }
+
+    .comparison-list {
+      list-style: none;
+      font-size: 0.8125rem;
+      color: var(--neutral-700);
+    }
+
+    .comparison-list li {
+      padding: var(--space-1) 0;
+    }
+
+    /* ========================================
+       REFERENCES FOOTER
+       ======================================== */
+    .sources {
+      background: var(--neutral-100);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      margin-top: var(--space-8);
+    }
+
+    .sources h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--neutral-700);
+      margin-bottom: var(--space-3);
+    }
+
+    .sources a {
+      font-size: 0.8125rem;
+      color: var(--accent-600);
+      text-decoration: none;
+    }
+    .sources a:hover { text-decoration: underline; }
+
+    .sources ul {
+      list-style: none;
+    }
+    .sources li {
+      padding: var(--space-1) 0;
+    }
+
+    /* SVG icons inline */
+    .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<div class="doc-container">
+
+  <!-- ======== HERO ======== -->
+  <div class="doc-hero">
+    <h1>LeadTrack Pro</h1>
+    <p class="subtitle">Design System v2.0 — Clean, moderno e profissional.<br/>Inspirado nos melhores CRMs do mercado.</p>
+    <blockquote>"Design is not just what it looks like. Design is how it works." — Steve Jobs</blockquote>
+  </div>
+
+  <!-- ======== NAV ======== -->
+  <nav class="doc-nav">
+    <ul>
+      <li><a href="#references">Referencias</a></li>
+      <li><a href="#colors">Cores</a></li>
+      <li><a href="#typography">Tipografia</a></li>
+      <li><a href="#buttons">Botoes</a></li>
+      <li><a href="#forms">Formularios</a></li>
+      <li><a href="#cards">Cards</a></li>
+      <li><a href="#badges">Badges</a></li>
+      <li><a href="#table">Tabela</a></li>
+      <li><a href="#sidebar">Sidebar</a></li>
+      <li><a href="#topbar">Top Bar</a></li>
+      <li><a href="#kanban">Kanban</a></li>
+      <li><a href="#modal">Modal</a></li>
+      <li><a href="#toast">Toast</a></li>
+      <li><a href="#empty">Empty State</a></li>
+      <li><a href="#skeleton">Skeleton</a></li>
+      <li><a href="#layout">Layout Completo</a></li>
+      <li><a href="#comparison">Antes vs Depois</a></li>
+    </ul>
+  </nav>
+
+  <!-- ======== REFERENCES ======== -->
+  <section class="doc-section" id="references">
+    <h2>Referencias & Inspiracoes</h2>
+    <p class="section-desc">CRMs e dashboards que definem o padrao de excelencia em UX/UI para 2026.</p>
+
+    <div class="ref-grid">
+      <div class="ref-card">
+        <h4>Pipedrive</h4>
+        <p>Pipeline visual limpo com cards minimalistas. Drag-and-drop fluido. Cada card carrega apenas o essencial: notas, lembretes, emails. Zero clutter — abriu a app e seus deals ja estao la.</p>
+        <span class="ref-tag">Kanban + Cards</span>
+      </div>
+
+      <div class="ref-card">
+        <h4>HubSpot</h4>
+        <p>Interface adaptativa por role — pipeline para vendas, analytics para marketing. Navegacao unificada e consistente entre todos os modulos. Design system maduro e escalavel.</p>
+        <span class="ref-tag">Navigation + Roles</span>
+      </div>
+
+      <div class="ref-card">
+        <h4>Close.com</h4>
+        <p>Foco em comunicacao: timeline de atividades integrada, botoes de acao contextuais. Tabelas limpas com filtros inteligentes. Feito para quem vive no telefone e no email.</p>
+        <span class="ref-tag">Tables + Communication</span>
+      </div>
+
+      <div class="ref-card">
+        <h4>Linear</h4>
+        <p>Referencia #1 em minimalismo SaaS. Command palette (Cmd+K), keyboard-first, zero decoracao. Cada elemento justifica sua existencia. "Minimal chrome, maximum focus."</p>
+        <span class="ref-tag">Minimalism + Keyboard</span>
+      </div>
+
+      <div class="ref-card">
+        <h4>Vercel Dashboard</h4>
+        <p>"Right data, zero noise." Metricas claras, layout espacoso, tipografia forte. Strategic minimalism levado ao extremo — cada elemento ganha seu lugar por merito.</p>
+        <span class="ref-tag">Metrics + Clarity</span>
+      </div>
+
+      <div class="ref-card">
+        <h4>Notion</h4>
+        <p>AI integrada ao fluxo natural, nao como feature separada. Interface que respira com generoso whitespace. Progressive disclosure elegante. Calm design exemplar.</p>
+        <span class="ref-tag">AI Integration + Calm</span>
+      </div>
+    </div>
+
+    <h3>7 Tendencias 2026 Aplicadas</h3>
+    <div class="ref-grid">
+      <div class="ref-card">
+        <h4>1. Calm Design</h4>
+        <p>Mostrar apenas metricas essenciais por padrao. Detalhes avancados sob demanda. Reduzir carga cognitiva sem perder funcionalidade.</p>
+      </div>
+      <div class="ref-card">
+        <h4>2. Strategic Minimalism</h4>
+        <p>1 CTA principal por tela. Zero elementos decorativos. Cada pixel justifica sua existencia movendo o usuario ao objetivo.</p>
+      </div>
+      <div class="ref-card">
+        <h4>3. AI como Infraestrutura</h4>
+        <p>Bot/IA integrados no fluxo natural. Sem badge "AI" chamativo. Sugestoes aparecem contextualmente, nao como feature separada.</p>
+      </div>
+      <div class="ref-card">
+        <h4>4. Progressive Disclosure</h4>
+        <p>Configuracoes avancadas escondidas. Onboarding revela complexidade gradualmente. Empty states ensinam a proxima acao.</p>
+      </div>
+      <div class="ref-card">
+        <h4>5. Fluid Typography</h4>
+        <p>clamp() para tipografia responsiva sem media queries. Texto que escala suavemente do mobile ao desktop.</p>
+      </div>
+      <div class="ref-card">
+        <h4>6. Motion com Proposito</h4>
+        <p>Animacoes apenas para feedback de estado. Skeleton loading no lugar de spinners. Respeitar prefers-reduced-motion.</p>
+      </div>
+      <div class="ref-card">
+        <h4>7. Emotional B2B</h4>
+        <p>Micro-celebracoes ao completar tarefas. Copy humanizada em empty states. Personalidade sutil que cria conexao.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== COLORS ======== -->
+  <section class="doc-section" id="colors">
+    <h2>Paleta de Cores</h2>
+    <p class="section-desc">Neutro elegante + accent unico (Indigo). Inspiracao Apple: fundos quentes, cor accent consistente, alto contraste.</p>
+
+    <div class="showcase">
+      <div class="color-group">
+        <div class="color-group-title">Neutral</div>
+        <div class="color-row">
+          <div class="color-swatch"><div class="swatch" style="background:#FAFAFA"></div><div class="name">50</div><div class="hex">#FAFAFA</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#F5F5F5"></div><div class="name">100</div><div class="hex">#F5F5F5</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#E5E5E5"></div><div class="name">200</div><div class="hex">#E5E5E5</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#D4D4D4"></div><div class="name">300</div><div class="hex">#D4D4D4</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#A3A3A3"></div><div class="name">400</div><div class="hex">#A3A3A3</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#737373"></div><div class="name">500</div><div class="hex">#737373</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#525252"></div><div class="name">600</div><div class="hex">#525252</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#404040"></div><div class="name">700</div><div class="hex">#404040</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#262626"></div><div class="name">800</div><div class="hex">#262626</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#171717"></div><div class="name">900</div><div class="hex">#171717</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#0A0A0A"></div><div class="name">950</div><div class="hex">#0A0A0A</div></div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Accent — Indigo</div>
+        <div class="color-row">
+          <div class="color-swatch"><div class="swatch" style="background:#EEF2FF"></div><div class="name">50</div><div class="hex">#EEF2FF</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#E0E7FF"></div><div class="name">100</div><div class="hex">#E0E7FF</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#C7D2FE"></div><div class="name">200</div><div class="hex">#C7D2FE</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#6366F1"></div><div class="name">500</div><div class="hex">#6366F1</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#4F46E5"></div><div class="name">600</div><div class="hex">#4F46E5</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#4338CA"></div><div class="name">700</div><div class="hex">#4338CA</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#3730A3"></div><div class="name">800</div><div class="hex">#3730A3</div></div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Semanticas</div>
+        <div class="color-row">
+          <div class="color-swatch"><div class="swatch" style="background:#22C55E"></div><div class="name">Success</div><div class="hex">#22C55E</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#F59E0B"></div><div class="name">Warning</div><div class="hex">#F59E0B</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#EF4444"></div><div class="name">Danger</div><div class="hex">#EF4444</div></div>
+          <div class="color-swatch"><div class="swatch" style="background:#3B82F6"></div><div class="name">Info</div><div class="hex">#3B82F6</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== TYPOGRAPHY ======== -->
+  <section class="doc-section" id="typography">
+    <h2>Tipografia</h2>
+    <p class="section-desc">Inter para interface, JetBrains Mono para metricas. Escala fluid com clamp().</p>
+
+    <div class="showcase">
+      <div class="type-row">
+        <div class="type-label">H1 — Page Title</div>
+        <div class="type-sample" style="font-size:1.5rem; font-weight:600; letter-spacing:-0.02em">Leads do Pipeline</div>
+        <div class="type-specs">24px / 600</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">H2 — Section</div>
+        <div class="type-sample" style="font-size:1.25rem; font-weight:600">Resumo Mensal</div>
+        <div class="type-specs">20px / 600</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">H3 — Card Title</div>
+        <div class="type-sample" style="font-size:1.0625rem; font-weight:500">Novos Leads</div>
+        <div class="type-specs">17px / 500</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">Body</div>
+        <div class="type-sample" style="font-size:0.9375rem">Lead adicionado ao pipeline com sucesso.</div>
+        <div class="type-specs">15px / 400</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">Caption</div>
+        <div class="type-sample" style="font-size:0.875rem; color:var(--neutral-500)">Atualizado ha 5 minutos</div>
+        <div class="type-specs">14px / 400</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">Micro</div>
+        <div class="type-sample" style="font-size:0.75rem; font-weight:500; color:var(--neutral-500)">12 LEADS</div>
+        <div class="type-specs">12px / 500</div>
+      </div>
+      <div class="type-row">
+        <div class="type-label">Metric (mono)</div>
+        <div class="type-sample" style="font-family:var(--font-mono); font-size:2rem; font-weight:600; color:var(--neutral-900); letter-spacing:-0.02em">1.247</div>
+        <div class="type-specs">32px / 600 / mono</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== BUTTONS ======== -->
+  <section class="doc-section" id="buttons">
+    <h2>Botoes</h2>
+    <p class="section-desc">Estilo Steve Jobs: limpos, claros, sem duvida do que fazem. Maximo 1 botao primario por secao.</p>
+
+    <div class="showcase">
+      <p class="doc-label">Hierarquia</p>
+      <div class="showcase-row" style="margin-bottom:var(--space-6)">
+        <button class="btn btn-primary">Novo Lead</button>
+        <button class="btn btn-secondary">Cancelar</button>
+        <button class="btn btn-ghost">Ver mais</button>
+        <button class="btn btn-danger">Excluir</button>
+        <button class="btn-icon" title="Configuracoes">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+
+      <p class="doc-label">Tamanhos</p>
+      <div class="showcase-row">
+        <button class="btn btn-primary btn-sm">Pequeno</button>
+        <button class="btn btn-primary">Padrao</button>
+        <button class="btn btn-primary btn-lg">Grande</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FORMS ======== -->
+  <section class="doc-section" id="forms">
+    <h2>Formularios</h2>
+    <p class="section-desc">Inputs limpos com focus rings accent. Labels claros, mensagens de erro inline.</p>
+
+    <div class="showcase" style="max-width:480px">
+      <div class="form-group">
+        <label class="form-label">Nome do Lead</label>
+        <input class="form-input" type="text" placeholder="Ex: Maria Silva"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" value="maria@empresa.com"/>
+        <div class="form-hint">Email principal de contato</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Telefone</label>
+        <input class="form-input form-input-error" type="tel" value="11999"/>
+        <div class="form-error-text">Telefone deve ter pelo menos 10 digitos</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Estagio</label>
+        <select class="form-input">
+          <option>Novo</option>
+          <option>Em Contato</option>
+          <option>Qualificado</option>
+          <option>Proposta</option>
+          <option>Fechado</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Observacoes</label>
+        <textarea class="form-input" rows="3" placeholder="Notas sobre o lead..." style="resize:vertical"></textarea>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:var(--space-3); margin-top:var(--space-6)">
+        <button class="btn btn-secondary">Cancelar</button>
+        <button class="btn btn-primary">Salvar Lead</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== CARDS ======== -->
+  <section class="doc-section" id="cards">
+    <h2>Cards</h2>
+    <p class="section-desc">Cards com bordas sutis e cantos arredondados. Tres variantes: padrao, KPI e kanban.</p>
+
+    <h3>KPI Cards (ref: Vercel Dashboard)</h3>
+    <div class="showcase">
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:var(--space-4)">
+        <div class="kpi-card">
+          <div class="kpi-label">Total de Leads</div>
+          <div class="kpi-value">1.247</div>
+          <div class="kpi-trend up">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            +12.5% vs mes anterior
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Convertidos</div>
+          <div class="kpi-value">89</div>
+          <div class="kpi-trend up">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            +8.3% vs mes anterior
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Taxa de Conversao</div>
+          <div class="kpi-value">7.1%</div>
+          <div class="kpi-trend down">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+            -1.2% vs mes anterior
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Tempo Medio (dias)</div>
+          <div class="kpi-value">4.2</div>
+          <div class="kpi-trend up">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            -0.8 dias (melhor)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Card Padrao</h3>
+    <div class="showcase" style="max-width:400px">
+      <div class="card">
+        <div class="card-body">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-3)">
+            <div>
+              <div class="card-title">Configuracao do Bot</div>
+              <div class="card-subtitle">Ultima atualizacao: hoje as 14:30</div>
+            </div>
+            <span class="badge badge-qualified">Ativo</span>
+          </div>
+          <p style="font-size:0.875rem; color:var(--neutral-600); margin-bottom:var(--space-4)">Bot configurado com Claude API para resposta automatica de leads via WhatsApp.</p>
+          <button class="btn btn-secondary btn-sm">Editar Configuracao</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== BADGES ======== -->
+  <section class="doc-section" id="badges">
+    <h2>Badges & Tags</h2>
+    <p class="section-desc">Status visuais com cores semanticas. Bordas sutis para leveza.</p>
+
+    <div class="showcase">
+      <div class="showcase-row">
+        <span class="badge badge-new">Novo</span>
+        <span class="badge badge-contact">Em Contato</span>
+        <span class="badge badge-qualified">Qualificado</span>
+        <span class="badge badge-warning">Proposta</span>
+        <span class="badge badge-closed">Fechado</span>
+        <span class="badge badge-lost">Perdido</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== TABLE ======== -->
+  <section class="doc-section" id="table">
+    <h2>Tabela</h2>
+    <p class="section-desc">Tabela limpa com container arredondado. Header uppercase e hover sutil. (ref: Close.com)</p>
+
+    <div class="showcase" style="padding:0; overflow:hidden; border-radius:var(--radius-xl)">
+      <div class="table-container" style="border:none">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>Estagio</th>
+              <th>Responsavel</th>
+              <th>Atualizado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="table-link" href="#">Maria Silva</a></td>
+              <td style="font-family:var(--font-mono); font-size:0.8125rem">(11) 99999-1234</td>
+              <td><span class="badge badge-qualified">Qualificado</span></td>
+              <td>Joao</td>
+              <td style="color:var(--neutral-400); font-size:0.8125rem">Ha 2 horas</td>
+            </tr>
+            <tr>
+              <td><a class="table-link" href="#">Carlos Oliveira</a></td>
+              <td style="font-family:var(--font-mono); font-size:0.8125rem">(21) 98888-5678</td>
+              <td><span class="badge badge-contact">Em Contato</span></td>
+              <td>Ana</td>
+              <td style="color:var(--neutral-400); font-size:0.8125rem">Ha 1 dia</td>
+            </tr>
+            <tr>
+              <td><a class="table-link" href="#">Fernanda Costa</a></td>
+              <td style="font-family:var(--font-mono); font-size:0.8125rem">(31) 97777-9012</td>
+              <td><span class="badge badge-new">Novo</span></td>
+              <td>Joao</td>
+              <td style="color:var(--neutral-400); font-size:0.8125rem">Ha 5 min</td>
+            </tr>
+            <tr>
+              <td><a class="table-link" href="#">Roberto Santos</a></td>
+              <td style="font-family:var(--font-mono); font-size:0.8125rem">(41) 96666-3456</td>
+              <td><span class="badge badge-lost">Perdido</span></td>
+              <td>Ana</td>
+              <td style="color:var(--neutral-400); font-size:0.8125rem">Ha 3 dias</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SIDEBAR ======== -->
+  <section class="doc-section" id="sidebar">
+    <h2>Sidebar</h2>
+    <p class="section-desc">Dark minimal inspirado no Linear. Monocromatico, itens com rounded, hover sutil.</p>
+
+    <div class="showcase" style="display:inline-block; padding:0; overflow:hidden">
+      <div class="sidebar-preview">
+        <div class="sidebar-logo">LeadTrack</div>
+
+        <div class="sidebar-item active">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          Leads
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+          Kanban
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Mensagens
+        </div>
+
+        <div class="sidebar-section-label">Configuracoes</div>
+
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          WhatsApp
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Bot / IA
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Usuarios
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== TOPBAR ======== -->
+  <section class="doc-section" id="topbar">
+    <h2>Top Bar</h2>
+    <p class="section-desc">Barra superior com logo, busca global (Cmd+K) e avatar. Sticky, limpa, funcional.</p>
+
+    <div class="topbar-preview">
+      <div class="topbar-left">
+        <span class="topbar-brand">LeadTrack</span>
+        <span class="topbar-breadcrumb">/ Leads / Maria Silva</span>
+      </div>
+      <div class="topbar-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Buscar leads, config...
+        <kbd>Ctrl K</kbd>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-icon" style="color:var(--neutral-400)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+        <div class="topbar-avatar">AT</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== KANBAN ======== -->
+  <section class="doc-section" id="kanban">
+    <h2>Kanban Board</h2>
+    <p class="section-desc">Pipeline visual limpo inspirado no Pipedrive. Cards compactos com informacao essencial.</p>
+
+    <div class="showcase" style="background:var(--neutral-50); overflow-x:auto">
+      <div class="kanban-board">
+        <!-- Column 1 -->
+        <div class="kanban-column">
+          <div class="kanban-column-header">
+            <span class="kanban-column-title">Novo</span>
+            <span class="kanban-column-count">3</span>
+          </div>
+          <div class="kanban-column-area">
+            <div class="kanban-card">
+              <div class="kanban-card-name">Fernanda Costa</div>
+              <div class="kanban-card-meta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+                (31) 97777-9012
+              </div>
+              <div class="kanban-card-footer">
+                <span class="badge badge-new">Novo</span>
+                <div class="kanban-avatar">JA</div>
+              </div>
+            </div>
+            <div class="kanban-card">
+              <div class="kanban-card-name">Pedro Almeida</div>
+              <div class="kanban-card-meta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+                (11) 95555-1234
+              </div>
+              <div class="kanban-card-footer">
+                <span class="badge badge-new">Novo</span>
+                <div class="kanban-avatar">AN</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="kanban-column">
+          <div class="kanban-column-header">
+            <span class="kanban-column-title">Em Contato</span>
+            <span class="kanban-column-count">2</span>
+          </div>
+          <div class="kanban-column-area">
+            <div class="kanban-card">
+              <div class="kanban-card-name">Carlos Oliveira</div>
+              <div class="kanban-card-meta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+                (21) 98888-5678
+              </div>
+              <div class="kanban-card-footer">
+                <span class="badge badge-contact">Em Contato</span>
+                <div class="kanban-avatar">AN</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 3 -->
+        <div class="kanban-column">
+          <div class="kanban-column-header">
+            <span class="kanban-column-title">Qualificado</span>
+            <span class="kanban-column-count">1</span>
+          </div>
+          <div class="kanban-column-area">
+            <div class="kanban-card">
+              <div class="kanban-card-name">Maria Silva</div>
+              <div class="kanban-card-meta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+                (11) 99999-1234
+              </div>
+              <div class="kanban-card-footer">
+                <span class="badge badge-qualified">Qualificado</span>
+                <div class="kanban-avatar">JA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 4 -->
+        <div class="kanban-column">
+          <div class="kanban-column-header">
+            <span class="kanban-column-title">Fechado</span>
+            <span class="kanban-column-count">0</span>
+          </div>
+          <div class="kanban-column-area" style="opacity:0.6">
+            <div class="empty-state" style="padding:var(--space-8)">
+              <svg style="width:32px; height:32px; color:var(--neutral-300); margin:0 auto var(--space-2)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+              <div style="font-size:0.75rem; color:var(--neutral-400)">Nenhum lead fechado</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== MODAL ======== -->
+  <section class="doc-section" id="modal">
+    <h2>Modal</h2>
+    <p class="section-desc">Overlay com backdrop-blur, modal com animacao scale-in. Footer com botoes alinhados a direita.</p>
+
+    <div class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">
+          <div>
+            <div class="modal-title">Novo Lead</div>
+            <div style="font-size:0.8125rem; color:var(--neutral-500); margin-top:2px">Preencha os dados do lead</div>
+          </div>
+          <button class="btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nome</label>
+            <input class="form-input" type="text" placeholder="Nome do lead"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telefone</label>
+            <input class="form-input" type="tel" placeholder="(00) 00000-0000"/>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary">Cancelar</button>
+          <button class="btn btn-primary">Adicionar Lead</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== TOAST ======== -->
+  <section class="doc-section" id="toast">
+    <h2>Toast / Notificacoes</h2>
+    <p class="section-desc">Toasts minimalistas com icone semantico. Slide-in da direita.</p>
+
+    <div class="showcase">
+      <div style="display:flex; flex-direction:column; gap:var(--space-3); max-width:400px">
+        <div class="toast">
+          <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span class="toast-text">Lead salvo com sucesso!</span>
+        </div>
+        <div class="toast">
+          <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <span class="toast-text">Erro ao conectar com WhatsApp</span>
+        </div>
+        <div class="toast">
+          <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span class="toast-text">Mensagem enviada para o lead</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== EMPTY STATE ======== -->
+  <section class="doc-section" id="empty">
+    <h2>Empty State</h2>
+    <p class="section-desc">Estados vazios orientam o usuario para a proxima acao. Icone + titulo + descricao + CTA.</p>
+
+    <div class="showcase">
+      <div class="empty-state">
+        <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        <div class="empty-state-title">Nenhum lead encontrado</div>
+        <div class="empty-state-desc">Comece adicionando seu primeiro lead para acompanhar o pipeline de vendas.</div>
+        <button class="btn btn-primary">+ Novo Lead</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SKELETON ======== -->
+  <section class="doc-section" id="skeleton">
+    <h2>Skeleton Loading</h2>
+    <p class="section-desc">Placeholders animados que simulam o conteudo real. Substitui spinners. (ref: Linear)</p>
+
+    <div class="showcase">
+      <p class="doc-label">KPI Cards Loading</p>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--space-4); margin-bottom:var(--space-8)">
+        <div style="padding:var(--space-5); background:white; border:1px solid var(--neutral-200); border-radius:var(--radius-xl)">
+          <div class="skeleton" style="width:80px; height:12px; margin-bottom:12px"></div>
+          <div class="skeleton" style="width:120px; height:32px; margin-bottom:8px"></div>
+          <div class="skeleton" style="width:100px; height:10px"></div>
+        </div>
+        <div style="padding:var(--space-5); background:white; border:1px solid var(--neutral-200); border-radius:var(--radius-xl)">
+          <div class="skeleton" style="width:80px; height:12px; margin-bottom:12px"></div>
+          <div class="skeleton" style="width:120px; height:32px; margin-bottom:8px"></div>
+          <div class="skeleton" style="width:100px; height:10px"></div>
+        </div>
+        <div style="padding:var(--space-5); background:white; border:1px solid var(--neutral-200); border-radius:var(--radius-xl)">
+          <div class="skeleton" style="width:80px; height:12px; margin-bottom:12px"></div>
+          <div class="skeleton" style="width:120px; height:32px; margin-bottom:8px"></div>
+          <div class="skeleton" style="width:100px; height:10px"></div>
+        </div>
+      </div>
+
+      <p class="doc-label">Table Loading</p>
+      <div style="display:flex; flex-direction:column; gap:var(--space-3)">
+        <div style="display:flex; gap:var(--space-4); align-items:center">
+          <div class="skeleton" style="width:150px; height:14px"></div>
+          <div class="skeleton" style="width:120px; height:14px"></div>
+          <div class="skeleton" style="width:80px; height:22px; border-radius:var(--radius-sm)"></div>
+          <div class="skeleton" style="width:60px; height:14px"></div>
+        </div>
+        <div style="display:flex; gap:var(--space-4); align-items:center">
+          <div class="skeleton" style="width:130px; height:14px"></div>
+          <div class="skeleton" style="width:120px; height:14px"></div>
+          <div class="skeleton" style="width:80px; height:22px; border-radius:var(--radius-sm)"></div>
+          <div class="skeleton" style="width:60px; height:14px"></div>
+        </div>
+        <div style="display:flex; gap:var(--space-4); align-items:center">
+          <div class="skeleton" style="width:160px; height:14px"></div>
+          <div class="skeleton" style="width:120px; height:14px"></div>
+          <div class="skeleton" style="width:80px; height:22px; border-radius:var(--radius-sm)"></div>
+          <div class="skeleton" style="width:60px; height:14px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FULL LAYOUT PREVIEW ======== -->
+  <section class="doc-section" id="layout">
+    <h2>Layout Completo</h2>
+    <p class="section-desc">Preview do layout com sidebar dark + topbar + area de conteudo com KPI cards.</p>
+
+    <div class="layout-preview">
+      <!-- Sidebar -->
+      <div class="layout-sidebar">
+        <div class="sidebar-logo">LeadTrack</div>
+        <div class="sidebar-item active">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          Leads
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+          Kanban
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Mensagens
+        </div>
+        <div class="sidebar-section-label">Config</div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+          WhatsApp
+        </div>
+        <div class="sidebar-item">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15V3a2 2 0 0 1 4 0"/></svg>
+          Bot / IA
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="layout-main">
+        <!-- Topbar inline -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-8)">
+          <div>
+            <h1 style="font-size:1.5rem; font-weight:600; color:var(--neutral-900); letter-spacing:-0.02em">Dashboard</h1>
+            <p style="font-size:0.875rem; color:var(--neutral-500); margin-top:2px">Visao geral do seu pipeline</p>
+          </div>
+          <div style="display:flex; gap:var(--space-3)">
+            <div class="topbar-search" style="width:240px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Buscar...
+              <kbd>Ctrl K</kbd>
+            </div>
+            <button class="btn btn-primary">+ Novo Lead</button>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:var(--space-4); margin-bottom:var(--space-8)">
+          <div class="kpi-card">
+            <div class="kpi-label">Total Leads</div>
+            <div class="kpi-value" style="font-size:1.75rem">1.247</div>
+            <div class="kpi-trend up" style="font-size:0.6875rem">+12.5%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Convertidos</div>
+            <div class="kpi-value" style="font-size:1.75rem">89</div>
+            <div class="kpi-trend up" style="font-size:0.6875rem">+8.3%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Conversao</div>
+            <div class="kpi-value" style="font-size:1.75rem">7.1%</div>
+            <div class="kpi-trend down" style="font-size:0.6875rem">-1.2%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Tempo Medio</div>
+            <div class="kpi-value" style="font-size:1.75rem">4.2d</div>
+            <div class="kpi-trend up" style="font-size:0.6875rem">-0.8 dias</div>
+          </div>
+        </div>
+
+        <!-- Recent Leads Table -->
+        <div class="card">
+          <div class="card-body" style="padding-bottom:0">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-4)">
+              <h3 style="font-size:1.0625rem; font-weight:500; color:var(--neutral-800)">Leads Recentes</h3>
+              <button class="btn btn-ghost btn-sm">Ver todos</button>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Status</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a class="table-link" href="#">Maria Silva</a></td>
+                <td style="font-family:var(--font-mono); font-size:0.8125rem">(11) 99999-1234</td>
+                <td><span class="badge badge-qualified">Qualificado</span></td>
+                <td style="color:var(--neutral-400); font-size:0.8125rem">Ha 2h</td>
+              </tr>
+              <tr>
+                <td><a class="table-link" href="#">Carlos Oliveira</a></td>
+                <td style="font-family:var(--font-mono); font-size:0.8125rem">(21) 98888-5678</td>
+                <td><span class="badge badge-contact">Em Contato</span></td>
+                <td style="color:var(--neutral-400); font-size:0.8125rem">Ha 1d</td>
+              </tr>
+              <tr>
+                <td><a class="table-link" href="#">Fernanda Costa</a></td>
+                <td style="font-family:var(--font-mono); font-size:0.8125rem">(31) 97777-9012</td>
+                <td><span class="badge badge-new">Novo</span></td>
+                <td style="color:var(--neutral-400); font-size:0.8125rem">Ha 5min</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== BEFORE VS AFTER ======== -->
+  <section class="doc-section" id="comparison">
+    <h2>Antes vs Depois</h2>
+    <p class="section-desc">Resumo das mudancas principais do redesign.</p>
+
+    <div class="comparison">
+      <div class="comparison-before">
+        <div class="comparison-label">Antes</div>
+        <ul class="comparison-list">
+          <li>Cores: blue-600 + gray generico</li>
+          <li>Fonte: System default</li>
+          <li>Sidebar: bg-gray-800 basico</li>
+          <li>Botoes: azul generico, tamanhos inconsistentes</li>
+          <li>Cards: bg-white shadow basico</li>
+          <li>Tabelas: sem container, estilo basico</li>
+          <li>Loading: nenhum ou spinner</li>
+          <li>Empty states: nenhum</li>
+          <li>Animacoes: nenhuma</li>
+          <li>Mobile: parcial</li>
+          <li>Aparencia: "cara de IA"</li>
+        </ul>
+      </div>
+      <div class="comparison-after">
+        <div class="comparison-label">Depois</div>
+        <ul class="comparison-list">
+          <li>Cores: Indigo accent + neutral scale quente</li>
+          <li>Fonte: Inter (otimizada para UI)</li>
+          <li>Sidebar: Dark elegant bg-neutral-900</li>
+          <li>Botoes: hierarquia clara, 1 CTA/tela, padding generoso</li>
+          <li>Cards: rounded-xl, border, shadow-sm refinado</li>
+          <li>Tabelas: container rounded-xl, header uppercase</li>
+          <li>Loading: skeleton placeholders</li>
+          <li>Empty: ilustracao + texto + CTA</li>
+          <li>Animacoes: fade-in, scale (com reduced-motion)</li>
+          <li>Mobile: sidebar drawer, tabela como cards</li>
+          <li>Aparencia: profissional, estilo CRM premium</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SOURCES ======== -->
+  <div class="sources">
+    <h3>Fontes & Referencias</h3>
+    <ul>
+      <li><a href="https://muz.li/blog/best-dashboard-design-examples-inspirations-for-2026/" target="_blank">50 Best Dashboard Design Examples 2026 — Muzli</a></li>
+      <li><a href="https://www.saasui.design/blog/7-saas-ui-design-trends-2026" target="_blank">7 SaaS UI Design Trends 2026 — SaaSUI</a></li>
+      <li><a href="https://blog.tubikstudio.com/ui-design-trends-2026/" target="_blank">UI Design Trends 2026 — Tubik Studio</a></li>
+      <li><a href="https://jetbase.io/blog/saas-design-trends-best-practices" target="_blank">SaaS Design Trends 2026 — JetBase</a></li>
+      <li><a href="https://medium.com/@CarlosSmith24/admin-dashboard-ui-ux-best-practices-for-2025-8bdc6090c57d" target="_blank">Dashboard UI/UX Best Practices — Medium</a></li>
+      <li><a href="https://dribbble.com/tags/crm-dashboard" target="_blank">CRM Dashboard Inspiration — Dribbble</a></li>
+    </ul>
+  </div>
+
+  <!-- ======== FOOTER ======== -->
+  <div style="text-align:center; padding:var(--space-12) 0 var(--space-8); color:var(--neutral-400); font-size:0.8125rem">
+    LeadTrack Pro Design System v2.0 — Abril 2026<br/>
+    <span style="font-style:italic">"Simplicidade e a sofisticacao suprema." — Leonardo da Vinci</span>
+  </div>
+
+</div>
+
+</body>
+</html>

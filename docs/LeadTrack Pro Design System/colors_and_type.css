@@ -1,0 +1,276 @@
+/* =============================================================================
+   LeadTrack Pro — Design System Tokens
+   Concept: "Calm Intelligence" — distinctive modern CRM palette.
+   Palette rationale: warmer off-white neutrals, a deep indigo→plum primary
+   (less generic than typical violets), an ochre-sand accent (replaces
+   common coral), sage semantics, and a suite of soft gradient tokens.
+   ============================================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* ================================================================
+     NEUTRALS — Warm paper ink (slight cream cast, not pure grey)
+     ================================================================ */
+  --ink-950: #0d0b13;
+  --ink-900: #1a1823;   /* deep plum-black body text */
+  --ink-800: #262434;
+  --ink-700: #383548;
+  --ink-600: #545168;   /* secondary text */
+  --ink-500: #7a7791;   /* body muted */
+  --ink-400: #9e9bb2;
+  --ink-300: #c4c1d1;   /* placeholder */
+  --ink-200: #dedbe6;
+  --ink-150: #e8e5ee;
+  --ink-100: #f0ede8;   /* warm surface — cream undertone */
+  --ink-75:  #f7f5ef;   /* app bg — warm off-white */
+  --ink-50:  #fbfaf6;   /* paper */
+  --ink-0:   #ffffff;
+
+  /* ================================================================
+     PRIMARY — Indigo → Plum (deeper, richer than common #6d43f5)
+     Anchor: 500 is a muted, premium indigo-violet (oklch-tuned)
+     ================================================================ */
+  --violet-50:  #f3f0fb;
+  --violet-100: #e4deef;
+  --violet-200: #c7bce0;
+  --violet-300: #a294cd;
+  --violet-400: #7a6ab4;
+  --violet-500: #5a4a9c;   /* PRIMARY — deep indigo-plum */
+  --violet-600: #463878;
+  --violet-700: #342a5c;
+  --violet-800: #241d40;
+  --violet-900: #16122a;
+
+  /* ================================================================
+     ACCENT — Ochre Sand (warm, distinctive, not orange/coral)
+     ================================================================ */
+  --coral-50:  #fcf4e6;
+  --coral-100: #f7e6c2;
+  --coral-200: #efd08a;
+  --coral-300: #e5b560;
+  --coral-400: #d99a3c;
+  --coral-500: #c17d24;   /* ACCENT — warm ochre */
+  --coral-600: #9a611a;
+  --coral-700: #6f4612;
+
+  /* ================================================================
+     SEMANTIC — softer, modern hues
+     ================================================================ */
+  --success-50:  #eef6ef;
+  --success-100: #d4e9d7;
+  --success-300: #87c094;
+  --success-500: #4d9768;   /* sage green */
+  --success-700: #2f6847;
+
+  --warning-50:  #fdf3dd;
+  --warning-100: #f8e2a8;
+  --warning-500: #b88514;   /* muted amber */
+  --warning-700: #7c5809;
+
+  --danger-50:  #fbefed;
+  --danger-100: #f3d3cc;
+  --danger-500: #c2553f;   /* terracotta (not flat red) */
+  --danger-700: #81301f;
+
+  --info-50:  #eaf2f5;
+  --info-100: #cbdee5;
+  --info-500: #3a7b93;   /* dusty teal */
+  --info-700: #1e4c5e;
+
+  /* ================================================================
+     KANBAN STAGES — coordinated calm hues
+     ================================================================ */
+  --stage-new:         #5a4a9c;   /* plum */
+  --stage-contact:     #3a7b93;   /* teal */
+  --stage-qualified:   #4d9768;   /* sage */
+  --stage-proposal:    #c17d24;   /* ochre */
+  --stage-negotiation: #c2553f;   /* terracotta */
+  --stage-won:         #2f6847;   /* deep sage */
+  --stage-lost:        #9e9bb2;   /* mauve grey */
+
+  /* ================================================================
+     GRADIENT TOKENS — subtle, modern (use sparingly)
+     ================================================================ */
+  --grad-primary:  linear-gradient(135deg, #5a4a9c 0%, #342a5c 100%);
+  --grad-primary-soft:
+     linear-gradient(135deg, #7a6ab4 0%, #5a4a9c 55%, #463878 100%);
+  --grad-accent:   linear-gradient(135deg, #e5b560 0%, #c17d24 100%);
+  --grad-surface-warm:
+     linear-gradient(180deg, #fbfaf6 0%, #f0ede8 100%);
+  --grad-surface-cool:
+     linear-gradient(180deg, #ffffff 0%, #f7f5ef 100%);
+  --grad-hero:
+     radial-gradient(120% 90% at 15% 0%, rgba(122,106,180,0.18) 0%, rgba(122,106,180,0) 55%),
+     radial-gradient(80% 60% at 100% 100%, rgba(193,125,36,0.12) 0%, rgba(193,125,36,0) 60%),
+     linear-gradient(180deg, #fbfaf6 0%, #f0ede8 100%);
+  --grad-mesh-kpi:
+     radial-gradient(60% 80% at 0% 0%, rgba(90,74,156,0.22) 0%, rgba(90,74,156,0) 60%),
+     radial-gradient(60% 80% at 100% 100%, rgba(58,123,147,0.16) 0%, rgba(58,123,147,0) 60%),
+     linear-gradient(140deg, #342a5c 0%, #1a1823 100%);
+  --grad-stage-won:
+     linear-gradient(135deg, #4d9768 0%, #2f6847 100%);
+  --grad-divider:
+     linear-gradient(90deg, transparent, rgba(26,24,35,0.08) 50%, transparent);
+
+  /* ================================================================
+     SEMANTIC SURFACE / TEXT TOKENS
+     ================================================================ */
+  --bg:          var(--ink-75);
+  --bg-subtle:   var(--ink-100);
+  --bg-muted:    var(--ink-150);
+  --bg-panel:    var(--ink-0);
+  --bg-inverse:  var(--ink-900);
+  --bg-accent:   var(--violet-500);
+  --bg-accent-subtle: var(--violet-50);
+
+  --fg:          var(--ink-900);
+  --fg-muted:    var(--ink-600);
+  --fg-subtle:   var(--ink-500);
+  --fg-disabled: var(--ink-300);
+  --fg-inverse:  var(--ink-0);
+  --fg-accent:   var(--violet-600);
+  --fg-on-accent:var(--ink-0);
+
+  --border:         var(--ink-150);
+  --border-strong:  var(--ink-200);
+  --border-subtle:  var(--ink-100);
+  --border-accent:  var(--violet-500);
+
+  /* ================================================================
+     TYPOGRAPHY
+     ================================================================ */
+  --font-sans:    "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif:   "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono:    "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-xs:    0.75rem;
+  --text-sm:    0.8125rem;
+  --text-base:  0.875rem;
+  --text-md:    0.9375rem;
+  --text-lg:    1.0625rem;
+  --text-xl:    1.25rem;
+  --text-2xl:   1.5rem;
+  --text-3xl:   1.875rem;
+  --text-4xl:   2.375rem;
+  --text-5xl:   3rem;
+  --text-display: 4rem;
+
+  --leading-tight:  1.15;
+  --leading-snug:   1.35;
+  --leading-normal: 1.5;
+  --leading-relaxed:1.65;
+
+  --tracking-tighter: -0.03em;
+  --tracking-tight:   -0.015em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-widest:  0.12em;
+
+  /* ================================================================
+     SPACING / RADII / SHADOWS / MOTION
+     ================================================================ */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* Plum-tinted shadows (warmer than black) */
+  --shadow-xs:  0 1px 2px rgba(26, 24, 35, 0.05);
+  --shadow-sm:  0 1px 3px rgba(26, 24, 35, 0.07), 0 1px 2px rgba(26, 24, 35, 0.04);
+  --shadow-md:  0 4px 14px rgba(26, 24, 35, 0.07), 0 2px 4px rgba(26, 24, 35, 0.04);
+  --shadow-lg:  0 14px 36px rgba(26, 24, 35, 0.10), 0 4px 10px rgba(26, 24, 35, 0.05);
+  --shadow-xl:  0 28px 56px rgba(26, 24, 35, 0.14), 0 10px 20px rgba(26, 24, 35, 0.06);
+  --shadow-violet: 0 10px 28px rgba(90, 74, 156, 0.28);
+  --shadow-inset:  inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+  --ring: 0 0 0 3px rgba(90, 74, 156, 0.24);
+  --ring-danger: 0 0 0 3px rgba(194, 85, 63, 0.22);
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:       120ms;
+  --dur-base:       200ms;
+  --dur-slow:       320ms;
+}
+
+/* =============================================================================
+   BASE
+   ============================================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--fg);
+  background: var(--bg);
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* =============================================================================
+   TYPE RECIPES
+   ============================================================================= */
+.t-display {
+  font-family: var(--font-sans);
+  font-size: var(--text-display);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tighter);
+}
+.t-serif-display {
+  font-family: var(--font-serif);
+  font-size: var(--text-5xl);
+  font-weight: 400;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-style: italic;
+}
+.t-h1 { font-size: var(--text-4xl); font-weight: 700; line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); }
+.t-h2 { font-size: var(--text-3xl); font-weight: 600; line-height: var(--leading-snug); letter-spacing: var(--tracking-tight); }
+.t-h3 { font-size: var(--text-2xl); font-weight: 600; line-height: var(--leading-snug); letter-spacing: var(--tracking-tight); }
+.t-h4 { font-size: var(--text-xl); font-weight: 600; line-height: var(--leading-snug); }
+.t-h5 { font-size: var(--text-lg); font-weight: 600; line-height: var(--leading-snug); }
+
+.t-body    { font-size: var(--text-base); font-weight: 400; line-height: var(--leading-relaxed); color: var(--fg); }
+.t-body-sm { font-size: var(--text-sm);  font-weight: 400; line-height: var(--leading-normal); color: var(--fg); }
+.t-caption { font-size: var(--text-xs);  font-weight: 500; line-height: var(--leading-normal); color: var(--fg-muted); }
+
+.t-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+.t-kbd, .t-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-feature-settings: "zero";
+}
+.t-kpi {
+  font-family: var(--font-sans);
+  font-size: var(--text-4xl);
+  font-weight: 600;
+  letter-spacing: var(--tracking-tighter);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Type — Families</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 22px; background: var(--bg); font-family: var(--font-sans); color: var(--fg); }
+.block { padding: 16px 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-panel); }
+.block + .block { margin-top: 12px; }
+.tag { font-family: var(--font-mono); font-size: 10px; color: var(--fg-subtle); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px; }
+.sans { font-family: var(--font-sans); font-size: 22px; font-weight: 500; letter-spacing: -0.015em; }
+.serif { font-family: var(--font-serif); font-style: italic; font-size: 28px; color: var(--fg); }
+.mono { font-family: var(--font-mono); font-size: 14px; color: var(--fg); letter-spacing: 0; }
+.specimen { color: var(--fg-muted); font-weight: 400; font-size: 13px; margin-top: 4px; font-family: var(--font-mono); }
+</style></head>
+<body>
+<div class="block">
+  <div class="tag">Sans · Geist</div>
+  <div class="sans">ABCDEFGH abcdefgh 0123456789</div>
+  <div class="specimen">300 · 400 · 500 · 600 · 700 · 800 · 900</div>
+</div>
+<div class="block">
+  <div class="tag">Serif · Instrument Serif (italic only)</div>
+  <div class="serif">Calm intelligence for leads.</div>
+  <div class="specimen">400 italic — editorial accents</div>
+</div>
+<div class="block">
+  <div class="tag">Mono · Geist Mono</div>
+  <div class="mono">R$ 12.400,00 · +39.2% · 2026-04-23</div>
+  <div class="specimen">tabular-nums, ss01</div>
+</div>
+</body></html>

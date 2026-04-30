@@ -302,6 +302,36 @@ Deno.serve(async (req) => {
       }
     }
 
+    // 2.5. Dedup extra para mensagens fromMe: o agente Kestra já registra a
+    // resposta no message_log via record_agent_message. Quando a Evolution
+    // dispara o webhook de volta com fromMe=true, precisamos evitar duplicata.
+    // Verifica se já existe uma msg outgoing com o mesmo conteúdo nos últimos 60s.
+    if (fromMe && content) {
+      const sixtySecsAgo = new Date(Date.now() - 60000).toISOString();
+      const { data: recentDup } = await supabase
+        .from("message_log")
+        .select("id")
+        .eq("lead_id", leadId!)
+        .eq("direction", "outgoing")
+        .eq("content", content)
+        .gte("sent_at", sixtySecsAgo)
+        .limit(1)
+        .maybeSingle();
+      if (recentDup) {
+        // Já registrada pelo Kestra — atualiza o whatsapp_message_id para dedup futuro
+        if (waMessageId) {
+          await supabase
+            .from("message_log")
+            .update({ whatsapp_message_id: waMessageId })
+            .eq("id", recentDup.id);
+        }
+        return new Response(
+          JSON.stringify({ received: true, skipped: "agent_duplicate", lead_id: leadId! }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
     // 3. Registra a mensagem no message_log
     // - fromMe=true sem dedup match → mensagem externa (celular/WhatsApp Web do user) → outgoing
     // - fromMe=false → mensagem do contato → incoming

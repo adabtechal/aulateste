@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Table Row</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 22px; background: var(--bg); font-family: var(--font-sans); }
+table { width: 100%; border-collapse: collapse; background: var(--bg-panel); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+th { text-align: left; padding: 10px 16px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-subtle); font-weight: 600; background: var(--ink-50); border-bottom: 1px solid var(--border); }
+td { padding: 12px 16px; font-size: 13px; color: var(--fg); border-bottom: 1px solid var(--border-subtle); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr.active td { background: var(--violet-50); }
+tr.active td:first-child { box-shadow: inset 3px 0 0 var(--violet-500); }
+.name { font-weight: 600; letter-spacing: -0.01em; }
+.phone { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); }
+.badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.04em; }
+.b-q { background: #edfbf3; color: #0f6f46; }
+.b-p { background: #fff7e6; color: #8a5a00; }
+.b-n { background: #f4f1ff; color: #4822a8; }
+.score { font-family: var(--font-mono); font-weight: 600; }
+</style></head>
+<body>
+<table>
+<thead><tr><th>Nome</th><th>Estágio</th><th>Score</th><th>Últ. contato</th></tr></thead>
+<tbody>
+<tr class="active"><td><div class="name">Mariana Costa</div><div class="phone">+55 11 99123-4567</div></td><td><span class="badge b-q">Qualificado</span></td><td class="score" style="color:var(--success-500)">92</td><td>há 2h</td></tr>
+<tr><td><div class="name">Rafael Souza</div><div class="phone">+55 21 98711-2233</div></td><td><span class="badge b-p">Proposta</span></td><td class="score">78</td><td>ontem</td></tr>
+<tr><td><div class="name">Júlia Pereira</div><div class="phone">+55 31 98444-5566</div></td><td><span class="badge b-n">Novo</span></td><td class="score" style="color:var(--fg-muted)">54</td><td>há 3 dias</td></tr>
+</tbody>
+</table>
+</body></html>

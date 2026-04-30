@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Message Bubble</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 22px; background: var(--ink-75); font-family: var(--font-sans); display: flex; flex-direction: column; gap: 10px; max-width: 480px; }
+.msg { max-width: 70%; padding: 10px 14px; border-radius: 16px; font-size: 13px; line-height: 1.5; position: relative; }
+.msg.in { background: var(--bg-panel); border: 1px solid var(--border); color: var(--fg); border-bottom-left-radius: 4px; align-self: flex-start; }
+.msg.out { background: var(--violet-500); color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+.msg.auto { background: var(--violet-50); color: var(--violet-700); border: 1px solid var(--violet-100); align-self: flex-end; border-bottom-right-radius: 4px; }
+.meta { font-size: 10px; color: var(--fg-subtle); padding: 0 4px; font-family: var(--font-mono); }
+.auto-tag { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; margin-bottom: 3px; display: block; }
+</style></head>
+<body>
+<div class="msg in">Olá! Vi o formulário que você preencheu. Consegue me contar um pouco mais sobre o que está procurando?</div>
+<div class="meta" style="align-self:flex-start">Mariana · 14:32</div>
+<div class="msg out">Claro! Estamos buscando uma solução de CRM pra uns 12 vendedores.</div>
+<div class="meta" style="align-self:flex-end">Você · 14:34</div>
+<div class="msg auto"><span class="auto-tag">Auto · Follow-up 24h</span>Só passando pra confirmar se nossa conversa de ontem fez sentido. Fico à disposição!</div>
+<div class="meta" style="align-self:flex-end">Automação · ontem</div>
+</body></html>

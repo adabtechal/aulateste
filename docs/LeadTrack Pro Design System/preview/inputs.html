@@ -1,0 +1,399 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Inputs</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body {
+    margin: 0; padding: 28px 32px; background: var(--bg);
+    font-family: var(--font-sans); color: var(--fg);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px;
+    max-width: 980px;
+  }
+  .span-2 { grid-column: span 2; }
+
+  .group { display: flex; flex-direction: column; gap: 6px; }
+
+  h3 {
+    grid-column: span 2;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fg-subtle); margin: 14px 0 -6px; font-weight: 600;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  h3:first-of-type { margin-top: 0; }
+  h3 .num { font-family: var(--font-mono); color: var(--violet-500); }
+  h3 .rule { flex: 1; height: 1px; background: var(--border); }
+
+  .label {
+    font-size: 11.5px; font-weight: 600; letter-spacing: -0.005em;
+    color: var(--fg); display: flex; align-items: baseline; gap: 8px;
+  }
+  .label .opt { font-weight: 400; color: var(--fg-subtle); font-size: 10.5px; font-family: var(--font-mono); }
+  .label .req { color: var(--coral-500); }
+
+  /* Base field */
+  .field {
+    position: relative; display: flex; align-items: stretch;
+    border-radius: 8px; border: 1px solid var(--border-strong);
+    background: var(--bg-panel);
+    transition: border-color 160ms, box-shadow 160ms;
+    box-shadow: inset 0 1px 0 rgba(20,23,31,0.02);
+  }
+  .field:hover { border-color: #c6cbd4; }
+  .field:focus-within {
+    border-color: var(--violet-500);
+    box-shadow: 0 0 0 3px rgba(109,67,245,0.18);
+  }
+  .field.error { border-color: var(--danger-500); }
+  .field.error:focus-within { box-shadow: 0 0 0 3px rgba(240,78,26,0.18); }
+  .field.success { border-color: var(--success-500); }
+
+  .field input, .field textarea {
+    flex: 1; border: 0; background: transparent; outline: none;
+    font-family: inherit; color: var(--fg); font-size: 13.5px;
+    padding: 10px 12px; min-width: 0; letter-spacing: -0.005em;
+  }
+  .field textarea { resize: vertical; min-height: 96px; line-height: 1.5; }
+  .field input::placeholder, .field textarea::placeholder { color: var(--fg-subtle); }
+
+  /* Leading / trailing adornments */
+  .adorn {
+    display: flex; align-items: center; padding: 0 10px;
+    color: var(--fg-subtle); font-size: 12px; font-family: var(--font-mono);
+  }
+  .adorn [data-lucide] { width: 15px; height: 15px; }
+  .adorn.divide-right { border-right: 1px solid var(--border); }
+  .adorn.divide-left { border-left: 1px solid var(--border); }
+
+  /* Country chip */
+  .country {
+    display: flex; align-items: center; gap: 6px; padding: 0 10px;
+    border-right: 1px solid var(--border);
+    font-size: 12.5px; font-weight: 500; color: var(--fg);
+    cursor: pointer;
+  }
+  .country .flag {
+    width: 18px; height: 13px; border-radius: 2px;
+    background: linear-gradient(#009c3b 33%, #ffdf00 33% 66%, #002776 66%);
+    position: relative; overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  }
+  .country [data-lucide] { width: 12px; height: 12px; color: var(--fg-subtle); }
+
+  /* Currency */
+  .currency-prefix {
+    background: var(--ink-75); border-right: 1px solid var(--border);
+    font-weight: 600; color: var(--fg); font-family: var(--font-mono);
+    padding: 0 12px; display: flex; align-items: center;
+  }
+
+  /* Trailing icon button */
+  .trail-btn {
+    background: transparent; border: 0; color: var(--fg-subtle);
+    cursor: pointer; padding: 0 10px; display: flex; align-items: center;
+    border-left: 1px solid var(--border); font-size: 11px;
+    font-family: var(--font-mono); gap: 4px;
+  }
+  .trail-btn:hover { color: var(--fg); background: var(--ink-50); }
+  .trail-btn [data-lucide] { width: 14px; height: 14px; }
+
+  /* Helper / error text */
+  .help {
+    font-size: 11.5px; color: var(--fg-muted); line-height: 1.4;
+    display: flex; align-items: flex-start; gap: 5px;
+  }
+  .help [data-lucide] { width: 12px; height: 12px; margin-top: 2px; flex-shrink: 0; }
+  .help.error { color: var(--danger-500); }
+  .help.success { color: var(--success-500); }
+  .help .count {
+    margin-left: auto; font-family: var(--font-mono); color: var(--fg-subtle);
+  }
+
+  /* Tag / chip field */
+  .tags-field {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 6px 8px; align-items: center;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--violet-50); color: var(--violet-700);
+    border: 1px solid rgba(109,67,245,0.18);
+    padding: 3px 5px 3px 9px; border-radius: 6px;
+    font-size: 12px; font-weight: 500;
+  }
+  .chip .x { cursor: pointer; width: 14px; height: 14px; border-radius: 3px; display: grid; place-items: center; }
+  .chip .x:hover { background: rgba(109,67,245,0.15); }
+  .chip .x [data-lucide] { width: 11px; height: 11px; }
+  .chip.coral { background: #fff3ef; color: #952a0b; border-color: rgba(240,78,26,0.22); }
+  .chip.coral .x:hover { background: rgba(240,78,26,0.12); }
+  .tags-field input {
+    flex: 1; min-width: 100px; border: 0; outline: none;
+    font-family: inherit; font-size: 13px; color: var(--fg);
+    padding: 3px 2px; background: transparent;
+  }
+
+  /* Assignee avatar chips */
+  .assignee {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--ink-75); border: 1px solid var(--border);
+    padding: 3px 8px 3px 3px; border-radius: 99px;
+    font-size: 12px; font-weight: 500;
+  }
+  .assignee .av {
+    width: 18px; height: 18px; border-radius: 99px;
+    color: white; display: grid; place-items: center;
+    font-size: 9px; font-weight: 700;
+  }
+  .assignee .x { cursor: pointer; color: var(--fg-subtle); display: grid; place-items: center; width: 14px; height: 14px; }
+  .assignee .x [data-lucide] { width: 11px; height: 11px; }
+
+  /* Select (custom look) */
+  .select { cursor: pointer; }
+  .select .val { flex: 1; display: flex; align-items: center; gap: 8px; padding: 10px 12px; font-size: 13.5px; }
+  .select .val .dot { width: 8px; height: 8px; border-radius: 99px; }
+  .select [data-lucide].chev { width: 15px; height: 15px; color: var(--fg-subtle); margin-right: 10px; }
+
+  /* Date/time split */
+  .datetime {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid var(--border-strong); border-radius: 8px;
+    background: var(--bg-panel); overflow: hidden;
+  }
+  .datetime > div {
+    padding: 10px 12px; display: flex; flex-direction: column; gap: 2px;
+    border-right: 1px solid var(--border); position: relative;
+  }
+  .datetime > div:last-child { border-right: 0; }
+  .datetime .micro {
+    font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--fg-subtle);
+  }
+  .datetime .val { font-size: 13.5px; font-variant-numeric: tabular-nums; letter-spacing: -0.005em; }
+  .datetime .val .unit { color: var(--fg-subtle); font-size: 11px; margin-left: 2px; }
+
+  /* Checkbox + radio */
+  .controls { display: flex; flex-direction: column; gap: 10px; }
+  .check {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; transition: background 160ms, border-color 160ms;
+    background: var(--bg-panel);
+  }
+  .check:hover { border-color: var(--border-strong); }
+  .check.on { border-color: var(--violet-500); background: var(--violet-50); }
+  .check .box {
+    width: 16px; height: 16px; border-radius: 4px;
+    border: 1.5px solid var(--border-strong); background: var(--bg-panel);
+    flex-shrink: 0; display: grid; place-items: center; margin-top: 1px;
+    transition: all 160ms;
+  }
+  .check.on .box { background: var(--violet-500); border-color: var(--violet-500); }
+  .check.on .box::after {
+    content: ''; width: 8px; height: 4px;
+    border-left: 2px solid white; border-bottom: 2px solid white;
+    transform: rotate(-45deg) translate(1px, -1px);
+  }
+  .check .box.radio { border-radius: 99px; }
+  .check.on .box.radio::after {
+    border: 0; width: 6px; height: 6px; border-radius: 99px; background: white;
+    transform: none;
+  }
+  .check-body { flex: 1; }
+  .check-title { font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
+  .check-sub { font-size: 11.5px; color: var(--fg-muted); margin-top: 2px; line-height: 1.35; }
+
+  /* Switch */
+  .switch-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; border: 1px solid var(--border);
+    border-radius: 8px; background: var(--bg-panel);
+  }
+  .switch-row .text .title { font-size: 13px; font-weight: 600; }
+  .switch-row .text .sub { font-size: 11.5px; color: var(--fg-muted); margin-top: 2px; }
+  .switch {
+    width: 36px; height: 20px; border-radius: 99px;
+    background: var(--ink-100); position: relative; cursor: pointer;
+    transition: background 200ms;
+  }
+  .switch::after {
+    content: ''; position: absolute; top: 2px; left: 2px;
+    width: 16px; height: 16px; border-radius: 99px;
+    background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    transition: transform 220ms cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .switch.on { background: var(--violet-500); }
+  .switch.on::after { transform: translateX(16px); }
+</style></head>
+<body>
+
+<h3><span class="num">01</span><span>Campos de lead</span><span class="rule"></span></h3>
+
+<!-- Phone with country chip -->
+<div class="group">
+  <label class="label">Telefone<span class="req">*</span><span class="opt">· WhatsApp</span></label>
+  <div class="field">
+    <div class="country"><span class="flag"></span>+55 <i data-lucide="chevron-down"></i></div>
+    <input value="11 99123-4567" />
+    <button class="trail-btn"><i data-lucide="message-circle"></i>Abrir</button>
+  </div>
+  <div class="help success"><i data-lucide="check-circle"></i>Número verificado no WhatsApp há 3 min</div>
+</div>
+
+<!-- Currency -->
+<div class="group">
+  <label class="label">Ticket estimado<span class="opt">BRL</span></label>
+  <div class="field">
+    <span class="currency-prefix">R$</span>
+    <input value="58.000,00" />
+    <span class="adorn divide-left">,00</span>
+  </div>
+  <div class="help"><i data-lucide="info"></i>Mediana do pipeline: R$ 18.400</div>
+</div>
+
+<!-- Email with error -->
+<div class="group">
+  <label class="label">E-mail<span class="req">*</span></label>
+  <div class="field error">
+    <span class="adorn divide-right"><i data-lucide="mail"></i></span>
+    <input value="mariana@" />
+  </div>
+  <div class="help error"><i data-lucide="alert-circle"></i>Domínio incompleto. Ex.: mariana@empresa.com.br</div>
+</div>
+
+<!-- Search (command-style) -->
+<div class="group">
+  <label class="label">Buscar lead</label>
+  <div class="field">
+    <span class="adorn divide-right"><i data-lucide="search"></i></span>
+    <input placeholder="Nome, telefone, e-mail ou CNPJ…" />
+    <span class="adorn divide-left" style="font-size:10.5px;gap:4px">
+      <span style="background:var(--ink-75);border:1px solid var(--border);padding:1px 5px;border-radius:4px">⌘</span>
+      <span style="background:var(--ink-75);border:1px solid var(--border);padding:1px 5px;border-radius:4px">K</span>
+    </span>
+  </div>
+</div>
+
+<h3><span class="num">02</span><span>Seleção & atribuição</span><span class="rule"></span></h3>
+
+<!-- Stage select with color dot -->
+<div class="group">
+  <label class="label">Estágio do pipeline</label>
+  <div class="field select">
+    <div class="val"><span class="dot" style="background:#e09200"></span>Proposta enviada</div>
+    <i data-lucide="chevron-down" class="chev"></i>
+  </div>
+</div>
+
+<!-- Assignee multi -->
+<div class="group">
+  <label class="label">Atribuído a<span class="opt">2 de 4</span></label>
+  <div class="field tags-field">
+    <span class="assignee">
+      <span class="av" style="background:#6d43f5">JP</span>João Pedro
+      <span class="x"><i data-lucide="x"></i></span>
+    </span>
+    <span class="assignee">
+      <span class="av" style="background:#2b6ef0">AM</span>Ana M.
+      <span class="x"><i data-lucide="x"></i></span>
+    </span>
+    <input placeholder="adicionar…" style="min-width:80px" />
+  </div>
+</div>
+
+<!-- Tags -->
+<div class="group span-2">
+  <label class="label">Tags<span class="opt">enter para adicionar</span></label>
+  <div class="field tags-field">
+    <span class="chip">enterprise<span class="x"><i data-lucide="x"></i></span></span>
+    <span class="chip">indicação<span class="x"><i data-lucide="x"></i></span></span>
+    <span class="chip coral">alta-prioridade<span class="x"><i data-lucide="x"></i></span></span>
+    <span class="chip">Q2-2026<span class="x"><i data-lucide="x"></i></span></span>
+    <input placeholder="nova tag…" />
+  </div>
+</div>
+
+<h3><span class="num">03</span><span>Follow-up</span><span class="rule"></span></h3>
+
+<!-- Datetime -->
+<div class="group span-2">
+  <label class="label">Próximo contato<span class="req">*</span></label>
+  <div class="datetime">
+    <div>
+      <span class="micro">Data</span>
+      <span class="val">25 abr 2026<span class="unit"> · sex</span></span>
+    </div>
+    <div>
+      <span class="micro">Horário</span>
+      <span class="val">14:30<span class="unit"> BRT</span></span>
+    </div>
+    <div>
+      <span class="micro">Canal</span>
+      <span class="val" style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:99px;background:#16a365"></span>WhatsApp</span>
+    </div>
+  </div>
+</div>
+
+<!-- Textarea with counter -->
+<div class="group span-2">
+  <label class="label">Nota da conversa<span class="opt">visível ao time</span></label>
+  <div class="field">
+    <textarea>Cliente quer avaliar orçamento até sexta. Chamou atenção para prazo de entrega em maio — precisamos confirmar com o fornecedor antes de mandar proposta final.</textarea>
+  </div>
+  <div class="help"><i data-lucide="lock"></i>Privado à equipe <span class="count">184 / 500</span></div>
+</div>
+
+<h3><span class="num">04</span><span>Controles</span><span class="rule"></span></h3>
+
+<!-- Radio cards -->
+<div class="controls">
+  <label class="label">Motivo da perda</label>
+  <div class="check on">
+    <div class="box radio"></div>
+    <div class="check-body">
+      <div class="check-title">Preço acima do orçamento</div>
+      <div class="check-sub">Cliente sinalizou no último contato via WhatsApp.</div>
+    </div>
+  </div>
+  <div class="check">
+    <div class="box radio"></div>
+    <div class="check-body">
+      <div class="check-title">Escolheu concorrente</div>
+      <div class="check-sub">Registrar nome do concorrente na próxima etapa.</div>
+    </div>
+  </div>
+  <div class="check">
+    <div class="box radio"></div>
+    <div class="check-body">
+      <div class="check-title">Sem retorno &gt; 30 dias</div>
+      <div class="check-sub">Automação fecha o card automaticamente.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Switches + checkboxes -->
+<div class="controls">
+  <label class="label">Preferências do lead</label>
+  <div class="switch-row">
+    <div class="text">
+      <div class="title">Permitir contato aos sábados</div>
+      <div class="sub">Respeita horário comercial 9h–13h.</div>
+    </div>
+    <div class="switch on"></div>
+  </div>
+  <div class="switch-row">
+    <div class="text">
+      <div class="title">Receber campanhas por e-mail</div>
+      <div class="sub">Newsletter mensal e lançamentos.</div>
+    </div>
+    <div class="switch"></div>
+  </div>
+  <div class="check on">
+    <div class="box"></div>
+    <div class="check-body">
+      <div class="check-title">Autoriza envio de proposta no WhatsApp</div>
+      <div class="check-sub">LGPD · consentimento registrado em 03/abr/2026.</div>
+    </div>
+  </div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body></html>

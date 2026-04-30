@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="32" viewBox="0 0 140 32" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8a66ff"></stop>
+      <stop offset="1" stop-color="#6d43f5"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#g)"></rect>
+  <path d="M10 9v14h12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <circle cx="22" cy="9" r="2.5" fill="#ff8e62"></circle>
+  <text x="40" y="22" font-family="Geist, system-ui, sans-serif" font-size="17" font-weight="700" letter-spacing="-0.03em" fill="#ffffff">leadtrack<tspan fill="#ae95ff">.</tspan></text>
+</svg>

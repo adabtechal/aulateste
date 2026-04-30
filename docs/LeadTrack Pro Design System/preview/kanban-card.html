@@ -1,0 +1,51 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kanban Card</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body { margin: 0; padding: 22px; background: var(--ink-75); font-family: var(--font-sans); display: flex; gap: 14px; }
+.card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; width: 260px; display: flex; flex-direction: column; gap: 10px; transition: all 200ms; }
+.card.hot { border-color: var(--coral-200); }
+.card.hot::before { content: ""; display: block; height: 2px; background: var(--coral-500); border-radius: 2px; margin: -14px -14px 0; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+.head { display: flex; justify-content: space-between; align-items: center; }
+.name { font-weight: 600; font-size: 14px; color: var(--fg); letter-spacing: -0.015em; }
+.phone { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); }
+.value { font-family: var(--font-sans); font-size: 20px; font-weight: 600; letter-spacing: -0.015em; color: var(--fg); font-variant-numeric: tabular-nums; }
+.foot { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid var(--border-subtle); }
+.tags { display: flex; gap: 6px; }
+.tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--ink-100); color: var(--fg-muted); font-weight: 500; }
+.meta { font-size: 11px; color: var(--fg-subtle); display: flex; align-items: center; gap: 4px; }
+.meta [data-lucide] { width: 12px; height: 12px; }
+.avatar { width: 20px; height: 20px; border-radius: 99px; background: var(--violet-500); color: white; display: grid; place-items: center; font-size: 10px; font-weight: 600; }
+</style></head>
+<body>
+<div class="card hot">
+  <div class="head">
+    <div>
+      <div class="name">Mariana Costa</div>
+      <div class="phone">+55 11 99123-4567</div>
+    </div>
+    <div class="avatar">M</div>
+  </div>
+  <div class="value">R$ 12.400</div>
+  <div class="foot">
+    <div class="tags"><span class="tag">enterprise</span><span class="tag">inbound</span></div>
+    <div class="meta"><i data-lucide="clock"></i>há 2h</div>
+  </div>
+</div>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">Rafael Souza</div>
+      <div class="phone">+55 21 98711-2233</div>
+    </div>
+    <div class="avatar" style="background:var(--coral-500)">R</div>
+  </div>
+  <div class="value">R$ 4.800</div>
+  <div class="foot">
+    <div class="tags"><span class="tag">referral</span></div>
+    <div class="meta"><i data-lucide="clock"></i>ontem</div>
+  </div>
+</div>
+<script>lucide.createIcons();</script>
+</body></html>

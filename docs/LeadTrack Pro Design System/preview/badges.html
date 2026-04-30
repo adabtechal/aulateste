@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Badges</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 22px; background: var(--bg); font-family: var(--font-sans); display: flex; flex-direction: column; gap: 14px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.dot { width: 6px; height: 6px; border-radius: 99px; }
+h3 { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-subtle); margin: 0; font-weight: 600; }
+.b-new { background: #f4f1ff; color: #4822a8; } .b-new .dot { background: #6d43f5; }
+.b-contact { background: #eef5ff; color: #174497; } .b-contact .dot { background: #2b6ef0; }
+.b-qual { background: #edfbf3; color: #0f6f46; } .b-qual .dot { background: #16a365; }
+.b-prop { background: #fff7e6; color: #8a5a00; } .b-prop .dot { background: #e09200; }
+.b-neg  { background: #fff3ef; color: #952a0b; } .b-neg  .dot { background: #f04e1a; }
+.b-won  { background: #d3f4e0; color: #0f6f46; } .b-won  .dot { background: #0f6f46; }
+.b-lost { background: #eef0f4; color: #474d5d; } .b-lost .dot { background: #8d94a3; }
+.tag { padding: 3px 8px; border-radius: 6px; background: var(--ink-100); color: var(--fg); font-size: 11px; font-weight: 500; }
+.count { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--violet-500); color: white; font-size: 11px; font-weight: 600; font-family: var(--font-mono); }
+</style></head>
+<body>
+<div><h3>Stage badges</h3>
+<div class="row">
+  <span class="badge b-new"><span class="dot"></span>Novo</span>
+  <span class="badge b-contact"><span class="dot"></span>Contato</span>
+  <span class="badge b-qual"><span class="dot"></span>Qualificado</span>
+  <span class="badge b-prop"><span class="dot"></span>Proposta</span>
+  <span class="badge b-neg"><span class="dot"></span>Negociação</span>
+  <span class="badge b-won"><span class="dot"></span>Ganho</span>
+  <span class="badge b-lost"><span class="dot"></span>Perdido</span>
+</div></div>
+<div><h3>Tags & counts</h3>
+<div class="row">
+  <span class="tag">enterprise</span>
+  <span class="tag">inbound</span>
+  <span class="tag">alta-prioridade</span>
+  <span class="count">12</span>
+  <span class="count" style="background:var(--coral-500)">novo</span>
+</div></div>
+</body></html>

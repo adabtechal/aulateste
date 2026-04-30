@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Logo</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 24px; background: var(--bg); display: flex; flex-direction: column; gap: 20px; }
+.row { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.chip { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; display: flex; align-items: center; gap: 12px; }
+.chip.dark { background: var(--ink-950); border-color: var(--ink-800); }
+.mark {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--violet-500), var(--violet-700));
+  display: grid; place-items: center; color: white; font-weight: 800; font-size: 16px;
+  letter-spacing: -0.04em; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.wordmark {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+.wordmark .dot { color: var(--violet-500); }
+.wordmark.inverse { color: var(--fg-inverse); }
+.tagline { font-family: var(--font-serif); font-style: italic; color: var(--fg-muted); font-size: 15px; }
+.tagline.inverse { color: var(--ink-300); }
+</style></head>
+<body>
+<div class="row">
+  <div class="chip">
+    <div class="mark">L</div>
+    <div class="wordmark">leadtrack<span class="dot">.</span></div>
+  </div>
+  <div class="chip dark">
+    <div class="mark">L</div>
+    <div class="wordmark inverse">leadtrack<span class="dot">.</span></div>
+  </div>
+  <div class="chip" style="gap: 16px;">
+    <div class="mark">L</div>
+    <div>
+      <div class="wordmark">leadtrack<span class="dot">.</span></div>
+      <div class="tagline">Calm intelligence for leads.</div>
+    </div>
+  </div>
+</div>
+</body></html>

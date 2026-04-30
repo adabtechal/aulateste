@@ -1,0 +1,82 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Colors — Neutrals</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 24px; background: var(--bg); font-family: var(--font-sans); color: var(--fg); }
+h3 { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-subtle); margin: 0 0 4px; font-weight: 600; display: flex; align-items: baseline; gap: 10px; }
+h3 .num { font-family: var(--font-mono); color: var(--violet-500); }
+.desc { font-size: 12px; color: var(--fg-muted); margin: 0 0 14px; max-width: 580px; line-height: 1.5; }
+.row { display: grid; grid-template-columns: repeat(14, 1fr); gap: 5px; }
+.sw {
+  border-radius: 8px; padding: 9px 8px; aspect-ratio: 0.85/1;
+  display: flex; flex-direction: column; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 9px; color: var(--ink-900);
+  border: 1px solid rgba(26,24,35,0.04);
+}
+.sw.dark { color: rgba(255,255,255,0.9); border-color: transparent; }
+.sw .n { font-weight: 600; font-size: 10px; }
+.hero {
+  padding: 18px 22px; margin-bottom: 22px; border-radius: 14px;
+  background: var(--grad-surface-warm);
+  border: 1px solid var(--border);
+}
+.hero .k { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--violet-500); font-weight: 600; }
+.hero .t { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; margin-top: 4px; }
+.hero .t em { font-family: var(--font-serif); font-weight: 400; font-style: italic; color: var(--violet-600); }
+.hero .d { font-size: 12px; color: var(--fg-muted); max-width: 560px; margin-top: 6px; line-height: 1.5; }
+</style></head>
+<body>
+
+<div class="hero">
+  <div class="k">Neutros</div>
+  <div class="t">Tinta em <em>papel morno</em></div>
+  <div class="d">Neutros com leve sub-tom creme (não cinza puro). O 100/75/50 carrega um amarelo muito discreto que deixa a interface mais acolhedora e menos laboratório-SaaS.</div>
+</div>
+
+<h3><span class="num">01</span><span>Ink scale · 14 passos</span></h3>
+<p class="desc">Base neutra com matiz plum suavíssima. Use <b>0/50/75</b> para superfícies, <b>500/600</b> para texto secundário, <b>900</b> para texto principal.</p>
+<div class="row">
+  <div class="sw" style="background:#ffffff"><span class="n">0</span><span>#fff</span></div>
+  <div class="sw" style="background:#fbfaf6"><span class="n">50</span><span>faf6</span></div>
+  <div class="sw" style="background:#f7f5ef"><span class="n">75</span><span>f5ef</span></div>
+  <div class="sw" style="background:#f0ede8"><span class="n">100</span><span>ede8</span></div>
+  <div class="sw" style="background:#e8e5ee"><span class="n">150</span><span>e5ee</span></div>
+  <div class="sw" style="background:#dedbe6"><span class="n">200</span><span>dbe6</span></div>
+  <div class="sw" style="background:#c4c1d1"><span class="n">300</span><span>c1d1</span></div>
+  <div class="sw dark" style="background:#9e9bb2"><span class="n">400</span><span>9bb2</span></div>
+  <div class="sw dark" style="background:#7a7791"><span class="n">500</span><span>7791</span></div>
+  <div class="sw dark" style="background:#545168"><span class="n">600</span><span>5168</span></div>
+  <div class="sw dark" style="background:#383548"><span class="n">700</span><span>3548</span></div>
+  <div class="sw dark" style="background:#262434"><span class="n">800</span><span>2434</span></div>
+  <div class="sw dark" style="background:#1a1823"><span class="n">900</span><span>1823</span></div>
+  <div class="sw dark" style="background:#0d0b13"><span class="n">950</span><span>0b13</span></div>
+</div>
+
+<div style="margin-top: 28px">
+<h3><span class="num">02</span><span>Superfícies em contexto</span></h3>
+<p class="desc">Como as camadas se comportam juntas.</p>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+  <div style="background:#f7f5ef;border-radius:12px;padding:24px 18px;border:1px solid var(--border)">
+    <div style="font-family:var(--font-mono);font-size:10px;color:var(--fg-subtle);margin-bottom:4px">bg — app</div>
+    <div style="background:#ffffff;border-radius:10px;padding:18px;border:1px solid var(--border);box-shadow:var(--shadow-sm)">
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--fg-subtle);margin-bottom:3px">bg-panel</div>
+      <div style="background:#f0ede8;border-radius:6px;padding:10px;font-family:var(--font-mono);font-size:10px;color:var(--fg-muted)">bg-subtle</div>
+    </div>
+  </div>
+  <div style="background:var(--grad-surface-cool);border-radius:12px;padding:24px 18px;border:1px solid var(--border)">
+    <div style="font-family:var(--font-mono);font-size:10px;color:var(--fg-subtle);margin-bottom:4px">grad-surface-cool</div>
+    <div style="background:white;border-radius:10px;padding:18px;border:1px solid var(--border);box-shadow:var(--shadow-md)">
+      <div style="font-size:13px;font-weight:600;color:var(--fg);letter-spacing:-0.01em">Card sobre degradê</div>
+      <div style="font-size:11px;color:var(--fg-muted);margin-top:3px">Contraste sutil com fundo.</div>
+    </div>
+  </div>
+  <div style="background:var(--grad-mesh-kpi);border-radius:12px;padding:24px 18px;color:white">
+    <div style="font-family:var(--font-mono);font-size:10px;opacity:0.7;margin-bottom:4px">grad-mesh-kpi</div>
+    <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.7;font-weight:600">Pipeline</div>
+    <div style="font-size:28px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums">R$ 482k</div>
+    <div style="font-size:11px;font-family:var(--font-mono);opacity:0.7;margin-top:2px">+8,6% mês</div>
+  </div>
+</div>
+</div>
+
+</body></html>

@@ -1,0 +1,226 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Sidebar</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; padding: 0; background: var(--ink-75); font-family: var(--font-sans); display: flex; color: var(--fg); }
+  .sb {
+    width: 256px; background: var(--ink-0); border-right: 1px solid var(--border);
+    height: 100vh; display: flex; flex-direction: column;
+  }
+
+  /* Workspace switcher */
+  .ws {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; margin: 10px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--bg-panel);
+    cursor: pointer; transition: background 120ms;
+  }
+  .ws:hover { background: var(--ink-50); }
+  .ws-mark {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: linear-gradient(140deg, var(--violet-500), var(--violet-700));
+    display: grid; place-items: center; color: white;
+    font-weight: 700; font-size: 13px; letter-spacing: -0.03em;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+    flex-shrink: 0;
+  }
+  .ws-info { flex: 1; min-width: 0; }
+  .ws-name { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
+  .ws-plan { font-size: 10px; color: var(--fg-subtle); margin-top: 2px; display: flex; align-items: center; gap: 5px; font-family: var(--font-mono); }
+  .ws-plan .plan-dot { width: 5px; height: 5px; border-radius: 99px; background: var(--success-500); }
+  .ws-chev { color: var(--fg-subtle); }
+  .ws-chev [data-lucide] { width: 14px; height: 14px; }
+
+  /* Search */
+  .search { margin: 0 10px 10px; position: relative; }
+  .search input {
+    width: 100%; border: 0; background: var(--ink-75);
+    padding: 8px 36px 8px 32px; border-radius: 8px;
+    font-size: 12px; font-family: inherit; color: var(--fg);
+  }
+  .search input:focus { outline: 1px solid var(--violet-500); background: var(--bg-panel); }
+  .search [data-lucide].ico { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; color: var(--fg-subtle); }
+  .search .kbd {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-mono); font-size: 10px; color: var(--fg-subtle);
+    background: var(--bg-panel); border: 1px solid var(--border);
+    padding: 1px 5px; border-radius: 4px;
+  }
+
+  /* Nav */
+  .nav { padding: 0 10px; display: flex; flex-direction: column; gap: 1px; overflow-y: auto; flex: 1; }
+  .nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 10px; border-radius: 7px;
+    color: var(--fg-muted); text-decoration: none;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+  }
+  .nav a:hover { background: var(--ink-50); color: var(--fg); }
+  .nav a.active { background: var(--violet-50); color: var(--violet-600); font-weight: 600; }
+  .nav a [data-lucide] { width: 15px; height: 15px; stroke-width: 1.75; flex-shrink: 0; }
+  .nav a .meta { margin-left: auto; font-size: 10px; }
+  .count-pill { font-family: var(--font-mono); color: var(--fg-subtle); background: var(--ink-75); padding: 1px 6px; border-radius: 99px; }
+  .nav a.active .count-pill { background: var(--violet-100); color: var(--violet-700); }
+  .count-live { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; color: var(--coral-500); font-family: var(--font-mono); }
+  .count-live .d { width: 5px; height: 5px; border-radius: 99px; background: var(--coral-500); animation: pulse 1.8s infinite; }
+  @keyframes pulse { 0%,100%{ opacity: 1; } 50% { opacity: 0.3; } }
+
+  .section {
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--fg-subtle); font-weight: 600;
+    padding: 18px 10px 6px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .section .add { color: var(--fg-subtle); cursor: pointer; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 4px; }
+  .section .add:hover { background: var(--ink-75); color: var(--fg); }
+  .section .add [data-lucide] { width: 12px; height: 12px; }
+
+  /* Pinned views (saved filters) */
+  .view {
+    display: flex; align-items: center; gap: 9px;
+    padding: 6px 10px; border-radius: 7px;
+    font-size: 12.5px; color: var(--fg-muted); cursor: pointer;
+  }
+  .view:hover { background: var(--ink-50); color: var(--fg); }
+  .view-dot { width: 7px; height: 7px; border-radius: 2px; flex-shrink: 0; }
+  .view .meta { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--fg-subtle); }
+
+  /* Assigned / teammates */
+  .teammate {
+    display: flex; align-items: center; gap: 9px;
+    padding: 5px 10px; border-radius: 7px;
+    font-size: 12.5px; color: var(--fg-muted); cursor: pointer;
+  }
+  .teammate:hover { background: var(--ink-50); color: var(--fg); }
+  .av {
+    width: 18px; height: 18px; border-radius: 99px; color: white;
+    display: grid; place-items: center; font-size: 9px; font-weight: 600;
+    flex-shrink: 0; position: relative;
+  }
+  .av .presence {
+    position: absolute; bottom: -1px; right: -1px;
+    width: 7px; height: 7px; border-radius: 99px;
+    border: 1.5px solid var(--ink-0);
+  }
+  .av .presence.online { background: var(--success-500); }
+  .av .presence.away { background: #e09200; }
+  .teammate .meta { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--fg-subtle); }
+
+  /* Quota meter */
+  .quota {
+    margin: 14px 10px 0; padding: 12px; border-radius: 10px;
+    background: var(--ink-75); border: 1px solid var(--border);
+  }
+  .quota-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .quota-title { font-size: 11px; font-weight: 600; letter-spacing: -0.005em; }
+  .quota-val { font-family: var(--font-mono); font-size: 10px; color: var(--fg-subtle); }
+  .quota-bar { height: 4px; background: var(--ink-100); border-radius: 99px; overflow: hidden; }
+  .quota-fill { height: 100%; width: 74%; background: linear-gradient(90deg, var(--violet-500), var(--coral-500)); border-radius: 99px; }
+  .quota-note { font-size: 10.5px; color: var(--fg-muted); margin-top: 8px; line-height: 1.35; }
+  .quota-note a { color: var(--violet-600); font-weight: 600; text-decoration: none; }
+
+  /* Footer user */
+  .user {
+    margin-top: auto; padding: 10px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .user-av {
+    width: 30px; height: 30px; border-radius: 99px;
+    background: linear-gradient(135deg, #ff8e62, #f04e1a);
+    color: white; display: grid; place-items: center;
+    font-size: 11px; font-weight: 700; letter-spacing: -0.02em;
+    flex-shrink: 0; position: relative;
+  }
+  .user-av .presence { position: absolute; bottom: 0; right: 0; width: 9px; height: 9px; border-radius: 99px; background: var(--success-500); border: 2px solid var(--ink-0); }
+  .user-info { flex: 1; min-width: 0; }
+  .user-name { font-size: 12.5px; font-weight: 600; letter-spacing: -0.005em; line-height: 1.2; }
+  .user-role { font-size: 10.5px; color: var(--fg-subtle); margin-top: 1px; display: flex; align-items: center; gap: 5px; }
+  .user-role .org { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .user-menu { color: var(--fg-subtle); cursor: pointer; padding: 6px; border-radius: 6px; }
+  .user-menu:hover { background: var(--ink-75); color: var(--fg); }
+  .user-menu [data-lucide] { width: 15px; height: 15px; }
+</style></head>
+<body>
+
+<aside class="sb">
+
+  <!-- Workspace switcher -->
+  <div class="ws">
+    <div class="ws-mark">VR</div>
+    <div class="ws-info">
+      <div class="ws-name">Verano Reformas</div>
+      <div class="ws-plan"><span class="plan-dot"></span>Growth · 8/12 seats</div>
+    </div>
+    <div class="ws-chev"><i data-lucide="chevrons-up-down"></i></div>
+  </div>
+
+  <!-- Search -->
+  <div class="search">
+    <i data-lucide="search" class="ico"></i>
+    <input placeholder="Ir para lead, conversa...">
+    <span class="kbd">⌘K</span>
+  </div>
+
+  <nav class="nav">
+    <a><i data-lucide="layout-dashboard"></i>Painel<span class="meta count-pill">hoje</span></a>
+    <a class="active"><i data-lucide="kanban-square"></i>Pipeline<span class="meta count-pill">28 abertos</span></a>
+    <a><i data-lucide="users"></i>Contatos<span class="meta count-pill">1.248</span></a>
+    <a><i data-lucide="message-circle"></i>Caixa WhatsApp<span class="meta count-live"><span class="d"></span>14</span></a>
+    <a><i data-lucide="phone-call"></i>Ligações<span class="meta count-pill">3</span></a>
+    <a><i data-lucide="zap"></i>Automações</a>
+    <a><i data-lucide="bar-chart-3"></i>Relatórios</a>
+
+    <!-- Pinned saved views -->
+    <div class="section">
+      <span>Minhas visões</span>
+      <div class="add" title="Nova visão"><i data-lucide="plus"></i></div>
+    </div>
+    <div class="view"><span class="view-dot" style="background:#f04e1a"></span>Quentes desta semana<span class="meta">7</span></div>
+    <div class="view"><span class="view-dot" style="background:#e09200"></span>Sem resposta &gt; 48h<span class="meta">19</span></div>
+    <div class="view"><span class="view-dot" style="background:#6d43f5"></span>Ticket &gt; R$ 50k<span class="meta">4</span></div>
+    <div class="view"><span class="view-dot" style="background:#2b6ef0"></span>Indicações Q2<span class="meta">22</span></div>
+
+    <!-- Team -->
+    <div class="section">
+      <span>Time de vendas</span>
+      <div class="add"><i data-lucide="user-plus"></i></div>
+    </div>
+    <div class="teammate">
+      <div class="av" style="background:#6d43f5">JP<span class="presence online"></span></div>
+      João Pedro<span class="meta">12</span>
+    </div>
+    <div class="teammate">
+      <div class="av" style="background:#2b6ef0">AM<span class="presence online"></span></div>
+      Ana Moretti<span class="meta">9</span>
+    </div>
+    <div class="teammate">
+      <div class="av" style="background:#16a365">DS<span class="presence away"></span></div>
+      Diego Sato<span class="meta">7</span>
+    </div>
+
+    <!-- Quota -->
+    <div class="quota">
+      <div class="quota-head">
+        <div class="quota-title">Meta de Abril</div>
+        <div class="quota-val">R$ 368k / 500k</div>
+      </div>
+      <div class="quota-bar"><div class="quota-fill"></div></div>
+      <div class="quota-note">Faltam <strong>7 dias</strong> · <a>ver detalhes</a></div>
+    </div>
+  </nav>
+
+  <!-- User footer -->
+  <div class="user">
+    <div class="user-av">JP<span class="presence"></span></div>
+    <div class="user-info">
+      <div class="user-name">João Pedro Moraes</div>
+      <div class="user-role"><span class="org">Admin · Verano</span></div>
+    </div>
+    <div class="user-menu"><i data-lucide="more-horizontal"></i></div>
+  </div>
+
+</aside>
+
+<script>lucide.createIcons();</script>
+</body></html>

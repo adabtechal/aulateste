@@ -1,0 +1,92 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kanban Stage Colors</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 24px; background: var(--bg); font-family: var(--font-sans); color: var(--fg); }
+h3 { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-subtle); margin: 0 0 4px; font-weight: 600; display: flex; align-items: baseline; gap: 10px; }
+h3 .num { font-family: var(--font-mono); color: var(--violet-500); }
+.desc { font-size: 12px; color: var(--fg-muted); margin: 0 0 14px; max-width: 580px; line-height: 1.5; }
+.flow { display: flex; gap: 0; margin-bottom: 22px; }
+.stage-arrow {
+  flex: 1; padding: 12px 18px 12px 24px; color: white; font-size: 12px;
+  font-weight: 600; letter-spacing: -0.005em; position: relative;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%);
+  display: flex; flex-direction: column; justify-content: center; gap: 2px;
+}
+.stage-arrow:first-child { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); padding-left: 18px; }
+.stage-arrow:last-child { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%); }
+.stage-arrow .n { opacity: 0.75; font-size: 10px; font-family: var(--font-mono); font-weight: 500; }
+.row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+.stage {
+  padding: 14px 14px 12px; border-radius: 12px;
+  background: var(--bg-panel); border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; overflow: hidden;
+}
+.stage::before {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--c);
+}
+.stage .bar {
+  height: 36px; border-radius: 7px; background: var(--bg-c);
+  display: flex; align-items: center; padding: 0 10px;
+  font-family: var(--font-mono); font-size: 10px; color: var(--c); font-weight: 600;
+}
+.stage .name { font-size: 13px; font-weight: 600; color: var(--fg); letter-spacing: -0.01em; }
+.stage .meta { font-family: var(--font-mono); font-size: 10px; color: var(--fg-muted); display: flex; justify-content: space-between; }
+</style></head>
+<body>
+
+<h3><span class="num">01</span><span>Fluxo do pipeline · cores alinhadas</span></h3>
+<p class="desc">Paleta coordenada que "conta" a jornada: plum (novo) → teal (contato) → sage (qualificado) → ochre (proposta) → terracota (negociação) → sage-profundo (ganho).</p>
+
+<div class="flow">
+  <div class="stage-arrow" style="background:#5a4a9c"><span class="n">01</span>Novo</div>
+  <div class="stage-arrow" style="background:#3a7b93"><span class="n">02</span>Contato</div>
+  <div class="stage-arrow" style="background:#4d9768"><span class="n">03</span>Qualificado</div>
+  <div class="stage-arrow" style="background:#c17d24"><span class="n">04</span>Proposta</div>
+  <div class="stage-arrow" style="background:#c2553f"><span class="n">05</span>Negociação</div>
+  <div class="stage-arrow" style="background:#2f6847"><span class="n">06</span>Ganho</div>
+</div>
+
+<h3><span class="num">02</span><span>Tokens individuais</span></h3>
+<p class="desc" style="margin-bottom:14px">Cada estágio tem um tom de 500 (barra/ícone) e um tom 50 (fundo de coluna) para hierarquia sem ruído visual.</p>
+
+<div class="row">
+  <div class="stage" style="--c:#5a4a9c;--bg-c:#f3f0fb">
+    <div class="bar">novo</div>
+    <div class="name">Novo</div>
+    <div class="meta"><span>#5a4a9c</span><span>28</span></div>
+  </div>
+  <div class="stage" style="--c:#3a7b93;--bg-c:#eaf2f5">
+    <div class="bar">contato</div>
+    <div class="name">Contato</div>
+    <div class="meta"><span>#3a7b93</span><span>17</span></div>
+  </div>
+  <div class="stage" style="--c:#4d9768;--bg-c:#eef6ef">
+    <div class="bar">qualif.</div>
+    <div class="name">Qualificado</div>
+    <div class="meta"><span>#4d9768</span><span>12</span></div>
+  </div>
+  <div class="stage" style="--c:#c17d24;--bg-c:#fcf4e6">
+    <div class="bar">proposta</div>
+    <div class="name">Proposta</div>
+    <div class="meta"><span>#c17d24</span><span>8</span></div>
+  </div>
+  <div class="stage" style="--c:#c2553f;--bg-c:#fbefed">
+    <div class="bar">negoc.</div>
+    <div class="name">Negociação</div>
+    <div class="meta"><span>#c2553f</span><span>4</span></div>
+  </div>
+  <div class="stage" style="--c:#2f6847;--bg-c:#eef6ef">
+    <div class="bar">ganho</div>
+    <div class="name">Ganho</div>
+    <div class="meta"><span>#2f6847</span><span>11</span></div>
+  </div>
+  <div class="stage" style="--c:#9e9bb2;--bg-c:#f0ede8">
+    <div class="bar">perdido</div>
+    <div class="name">Perdido</div>
+    <div class="meta"><span>#9e9bb2</span><span>6</span></div>
+  </div>
+</div>
+
+</body></html>

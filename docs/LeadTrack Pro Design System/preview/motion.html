@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Motion & Hover</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 22px; background: var(--bg); font-family: var(--font-sans); display: flex; flex-direction: column; gap: 14px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.chip { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 12px; font-family: var(--font-mono); color: var(--fg-muted); }
+code { font-family: var(--font-mono); color: var(--violet-600); background: var(--violet-50); padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+.label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-subtle); font-weight: 600; }
+</style></head>
+<body>
+<div class="label">Easings</div>
+<div class="row">
+  <div class="chip">fast · <code>120ms</code> · hover/focus</div>
+  <div class="chip">base · <code>200ms</code> · state</div>
+  <div class="chip">slow · <code>320ms</code> · enter/exit</div>
+</div>
+<div class="label">Curves</div>
+<div class="row">
+  <div class="chip">out-quart · <code>cubic-bezier(0.25, 1, 0.5, 1)</code></div>
+  <div class="chip">spring · <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code></div>
+</div>
+<div class="label">Hover rules</div>
+<div class="row">
+  <div class="chip">btn: bg → darker, shadow grows</div>
+  <div class="chip">row: bg → ink-75, name → 600</div>
+  <div class="chip">card: shadow sm → md (no move)</div>
+</div>
+</body></html>

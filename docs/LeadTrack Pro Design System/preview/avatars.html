@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Avatars</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { margin: 0; padding: 22px; background: var(--bg); font-family: var(--font-sans); display: flex; gap: 20px; align-items: center; }
+.a { border-radius: 999px; display: grid; place-items: center; color: white; font-weight: 600; letter-spacing: -0.015em; }
+.a.sm { width: 24px; height: 24px; font-size: 10px; }
+.a.md { width: 36px; height: 36px; font-size: 13px; }
+.a.lg { width: 48px; height: 48px; font-size: 17px; }
+.stack { display: flex; }
+.stack .a { border: 2px solid var(--bg); margin-left: -8px; }
+.stack .a:first-child { margin-left: 0; }
+</style></head>
+<body>
+<div class="a sm" style="background:var(--violet-500)">M</div>
+<div class="a md" style="background:var(--coral-500)">R</div>
+<div class="a lg" style="background:var(--ink-700)">JP</div>
+<div class="stack">
+  <div class="a md" style="background:var(--violet-500)">M</div>
+  <div class="a md" style="background:var(--coral-500)">R</div>
+  <div class="a md" style="background:var(--ink-700)">JP</div>
+  <div class="a md" style="background:var(--ink-200); color: var(--fg-muted)">+4</div>
+</div>
+</body></html>
