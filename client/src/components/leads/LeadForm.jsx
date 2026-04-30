@@ -1,12 +1,17 @@
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import TagPicker from '../tags/TagPicker';
 
 export default function LeadForm({ lead, onSubmit, onCancel }) {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: lead || { name: '', phone: '', email: '', company: '', tags: [], notes: '' }
+  const defaultTags = lead?.tags
+    ? (typeof lead.tags === 'string' ? lead.tags.split(',').map(t => t.trim()).filter(Boolean) : lead.tags)
+    : [];
+
+  const { register, handleSubmit, control, formState: { errors } } = useForm({
+    defaultValues: { ...lead, tags: defaultTags } || { name: '', phone: '', email: '', company: '', tags: [], notes: '' }
   });
 
   const processSubmit = (data) => {
-    const tags = typeof data.tags === 'string' ? data.tags.split(',').map(t => t.trim()).filter(Boolean) : data.tags;
+    const tags = Array.isArray(data.tags) ? data.tags : [];
     onSubmit({ ...data, tags });
   };
 
@@ -31,8 +36,14 @@ export default function LeadForm({ lead, onSubmit, onCancel }) {
         <input {...register('company')} className="w-full border border-ink-200 rounded-sm bg-ink-0 px-3 py-[9px] text-[13px] text-ink-900 outline-none transition focus:border-violet-500 focus:shadow-[0_0_0_3px_rgba(90,74,156,0.18)]" />
       </div>
       <div>
-        <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Tags (separadas por virgula)</label>
-        <input {...register('tags')} placeholder="hot, interessado, vip" className="w-full border border-ink-200 rounded-sm bg-ink-0 px-3 py-[9px] text-[13px] text-ink-900 outline-none transition focus:border-violet-500 focus:shadow-[0_0_0_3px_rgba(90,74,156,0.18)]" />
+        <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Tags</label>
+        <Controller
+          name="tags"
+          control={control}
+          render={({ field }) => (
+            <TagPicker value={field.value || []} onChange={field.onChange} />
+          )}
+        />
       </div>
       <div>
         <label className="block text-[13px] font-medium text-ink-700 mb-[5px]">Notas</label>

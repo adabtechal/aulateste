@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import Modal from '../components/ui/Modal';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
 import LeadForm from '../components/leads/LeadForm';
+import { TagPill } from '../components/tags/TagManager';
 import * as api from '../services/api';
 
 export default function LeadsPage() {
@@ -18,6 +19,9 @@ export default function LeadsPage() {
   const [deleteId, setDeleteId] = useState(null);
 
   const { data: stages = [] } = useQuery({ queryKey: ['stages'], queryFn: api.getStages });
+  const { data: allTags = [] } = useQuery({ queryKey: ['tags'], queryFn: api.getTags });
+  const tagColorMap = {};
+  allTags.forEach(t => { tagColorMap[t.name] = t.color; });
   const { data: result, isLoading } = useQuery({
     queryKey: ['leads', { page, search, stage: stageFilter }],
     queryFn: () => api.getLeads({ page, limit: 20, search: search || undefined, stage: stageFilter || undefined })
@@ -86,7 +90,7 @@ export default function LeadsPage() {
                   )}
                 </td>
                 <td className="px-4 py-[13px]">
-                  <div className="flex gap-1">{lead.tags?.map(t => <span key={t} className="text-[9px] font-medium bg-ink-100 text-ink-600 px-[6px] py-[2px] rounded-xs">{t}</span>)}</div>
+                  <div className="flex gap-1">{lead.tags?.map(t => <TagPill key={t} name={t} color={tagColorMap[t] || '#5a4a9c'} size="sm" />)}</div>
                 </td>
                 <td className="px-4 py-[13px]" onClick={e => e.stopPropagation()}>
                   <button onClick={() => setDeleteId(lead.id)} className="text-ink-400 hover:text-danger-500 transition-colors"><Trash2 size={14} /></button>

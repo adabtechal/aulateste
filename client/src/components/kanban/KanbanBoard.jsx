@@ -20,7 +20,7 @@ function customCollision(args) {
   return rectIntersection(args);
 }
 
-export default function KanbanBoard({ stages, leads, onLeadClick }) {
+export default function KanbanBoard({ stages, leads, onLeadClick, tagColors = {} }) {
   const [activeId, setActiveId] = useState(null);
   const queryClient = useQueryClient();
 
@@ -82,13 +82,14 @@ export default function KanbanBoard({ stages, leads, onLeadClick }) {
             stage={stage}
             leads={leadsByStage(stage.id)}
             onLeadClick={onLeadClick}
+            tagColors={tagColors}
           />
         ))}
       </div>
       <DragOverlay dropAnimation={{ duration: 200 }}>
         {activeLead ? (
           <div className="rotate-2 scale-105">
-            <LeadCard lead={activeLead} overlay />
+            <LeadCard lead={activeLead} overlay tagColors={tagColors} />
           </div>
         ) : null}
       </DragOverlay>

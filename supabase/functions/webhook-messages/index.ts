@@ -319,7 +319,29 @@ Deno.serve(async (req) => {
       console.error("Erro ao registrar mensagem:", msgError.message);
     }
 
-    // 4. Dispara o agente SDR no Kestra (fire-and-forget) — depois de gravar
+    // 4. Busca agendamentos futuros do lead (enriquece contexto do agente)
+    let upcomingBookings: Array<{date: string; time: string; service: string}> = [];
+    if (leadId! && tenantId) {
+      const today = new Date().toISOString().split("T")[0];
+      const { data: bookings } = await supabase
+        .from("bookings")
+        .select("booking_date, booking_time, service_interest")
+        .eq("lead_id", leadId!)
+        .eq("status", "confirmed")
+        .gte("booking_date", today)
+        .order("booking_date", { ascending: true })
+        .limit(5);
+
+      if (bookings?.length) {
+        upcomingBookings = bookings.map((b: { booking_date: string; booking_time: string; service_interest: string }) => ({
+          date: b.booking_date,
+          time: b.booking_time.substring(0, 5),
+          service: b.service_interest,
+        }));
+      }
+    }
+
+    // 5. Dispara o agente SDR no Kestra (fire-and-forget) — depois de gravar
     // a msg no log para que o agente eventualmente possa ler o histórico.
     if (shouldTriggerAgent) {
       triggerKestraSdr({
@@ -331,6 +353,7 @@ Deno.serve(async (req) => {
         currentStageName,
         nextStageId: nextStageId ?? "",
         nextStageName,
+        upcomingBookings: JSON.stringify(upcomingBookings),
       }).catch((err) => console.error("[kestra] unhandled:", err));
     }
 

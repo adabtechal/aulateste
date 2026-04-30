@@ -1016,5 +1016,185 @@ app.post('/api/bot-config/publish', requireAuth, requireRole('superadmin', 'tena
   }
 });
 
+// ─── SCHEDULING & BOOKING ───
+
+// Authenticated: availability CRUD
+app.get('/api/scheduling/availability', requireAuth, async (req, res) => {
+  try {
+    const tenantId = req.auth.profile.tenant_id;
+    const { data, error } = await supabase.from('scheduling_availability').select('*').eq('tenant_id', tenantId).order('day_of_week').order('start_time');
+    if (error) throw error;
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.post('/api/scheduling/availability', requireAuth, requireRole('superadmin', 'tenant_admin'), async (req, res) => {
+  try {
+    const tenantId = req.auth.profile.tenant_id;
+    const { day_of_week, start_time, end_time, is_active } = req.body;
+    if (day_of_week == null || !start_time || !end_time) return res.status(400).json({ error: true, message: 'day_of_week, start_time, and end_time are required' });
+    const { data, error } = await supabase.from('scheduling_availability').insert({ tenant_id: tenantId, day_of_week, start_time, end_time, is_active: is_active !== false }).select().single();
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.put('/api/scheduling/availability/:id', requireAuth, requireRole('superadmin', 'tenant_admin'), async (req, res) => {
+  try {
+    const { day_of_week, start_time, end_time, is_active } = req.body;
+    const { data, error } = await supabase.from('scheduling_availability').update({ day_of_week, start_time, end_time, is_active }).eq('id', req.params.id).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.delete('/api/scheduling/availability/:id', requireAuth, requireRole('superadmin', 'tenant_admin'), async (req, res) => {
+  try {
+    const { error } = await supabase.from('scheduling_availability').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.patch('/api/scheduling/availability/:id/toggle', requireAuth, requireRole('superadmin', 'tenant_admin'), async (req, res) => {
+  try {
+    const { data: current } = await supabase.from('scheduling_availability').select('is_active').eq('id', req.params.id).single();
+    const { data, error } = await supabase.from('scheduling_availability').update({ is_active: !current.is_active }).eq('id', req.params.id).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+// Authenticated: bookings list
+app.get('/api/scheduling/bookings', requireAuth, async (req, res) => {
+  try {
+    const tenantId = req.auth.profile.tenant_id;
+    const { page = 1, limit = 20, date, status } = req.query;
+    const offset = (page - 1) * limit;
+    let query = supabase.from('bookings').select('*', { count: 'exact' }).eq('tenant_id', tenantId);
+    if (date) query = query.eq('booking_date', date);
+    if (status) query = query.eq('status', status);
+    const { data, error, count } = await query.order('booking_date', { ascending: false }).order('booking_time').range(offset, offset + Number(limit) - 1);
+    if (error) throw error;
+    res.json({ data, pagination: { page: Number(page), limit: Number(limit), total: count, totalPages: Math.ceil(count / limit) } });
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.get('/api/scheduling/bookings/by-phone/:phone', requireAuth, async (req, res) => {
+  try {
+    const tenantId = req.auth.profile.tenant_id;
+    const { data, error } = await supabase.from('bookings').select('id, client_name, client_phone, service_interest, booking_date, booking_time, status').eq('tenant_id', tenantId).eq('client_phone', req.params.phone).order('booking_date', { ascending: false });
+    if (error) throw error;
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+// Tenant slug for booking link
+app.get('/api/scheduling/tenant-slug', requireAuth, async (req, res) => {
+  try {
+    const tenantId = req.auth.profile.tenant_id;
+    const { data, error } = await supabase.from('tenants').select('slug, name').eq('id', tenantId).single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+// Public: booking endpoints (NO auth)
+app.get('/api/booking/:tenantSlug/availability-month', async (req, res) => {
+  try {
+    const { data: tenant } = await supabase.from('tenants').select('id').eq('slug', req.params.tenantSlug).single();
+    if (!tenant) return res.status(404).json({ error: true, message: 'Tenant not found' });
+    const { data, error } = await supabase.from('scheduling_availability').select('day_of_week').eq('tenant_id', tenant.id).eq('is_active', true);
+    if (error) throw error;
+    res.json({ activeDays: [...new Set(data.map(d => d.day_of_week))] });
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.get('/api/booking/:tenantSlug/availability', async (req, res) => {
+  try {
+    const { date } = req.query;
+    if (!date) return res.status(400).json({ error: true, message: 'date query param required (YYYY-MM-DD)' });
+    const { data: tenant } = await supabase.from('tenants').select('id').eq('slug', req.params.tenantSlug).single();
+    if (!tenant) return res.status(404).json({ error: true, message: 'Tenant not found' });
+
+    const dayOfWeek = new Date(date + 'T12:00:00').getDay();
+    const { data: availability, error: availError } = await supabase.from('scheduling_availability').select('start_time, end_time').eq('tenant_id', tenant.id).eq('day_of_week', dayOfWeek).eq('is_active', true).order('start_time');
+    if (availError) throw availError;
+
+    const allSlots = [];
+    for (const range of availability) {
+      const [startH, startM] = range.start_time.split(':').map(Number);
+      const [endH, endM] = range.end_time.split(':').map(Number);
+      let currentMin = startH * 60 + startM;
+      const endMin = endH * 60 + endM;
+      while (currentMin < endMin) {
+        const h = String(Math.floor(currentMin / 60)).padStart(2, '0');
+        const m = String(currentMin % 60).padStart(2, '0');
+        allSlots.push(`${h}:${m}`);
+        currentMin += 30;
+      }
+    }
+
+    const { data: booked, error: bookedError } = await supabase.from('bookings').select('booking_time').eq('tenant_id', tenant.id).eq('booking_date', date).eq('status', 'confirmed');
+    if (bookedError) throw bookedError;
+    const bookedTimes = new Set(booked.map(b => b.booking_time.substring(0, 5)));
+
+    res.json({ date, slots: allSlots.filter(s => !bookedTimes.has(s)) });
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
+app.post('/api/booking/:tenantSlug/confirm', async (req, res) => {
+  try {
+    const { client_name, client_phone, service_interest, booking_date, booking_time } = req.body;
+    if (!client_name || !client_phone || !service_interest || !booking_date || !booking_time) {
+      return res.status(400).json({ error: true, message: 'All fields required' });
+    }
+    const phoneDigits = client_phone.replace(/\D/g, '');
+    if (phoneDigits.length < 10 || phoneDigits.length > 11) return res.status(400).json({ error: true, message: 'Invalid phone format' });
+
+    const { data: tenant } = await supabase.from('tenants').select('id').eq('slug', req.params.tenantSlug).single();
+    if (!tenant) return res.status(404).json({ error: true, message: 'Tenant not found' });
+
+    const { count } = await supabase.from('bookings').select('id', { count: 'exact', head: true }).eq('tenant_id', tenant.id).eq('booking_date', booking_date).eq('booking_time', booking_time).eq('status', 'confirmed');
+    if (count > 0) return res.status(409).json({ error: true, message: 'Time slot no longer available' });
+
+    const { data: booking, error } = await supabase.from('bookings').insert({ tenant_id: tenant.id, client_name, client_phone: phoneDigits, service_interest, booking_date, booking_time, status: 'confirmed' }).select().single();
+    if (error) throw error;
+
+    // Fire-and-forget: WhatsApp confirmation + lead resolution
+    (async () => {
+      try {
+        // Resolve/create lead
+        let leadId = null;
+        const { data: existingLead } = await supabase.from('leads').select('id').eq('phone', phoneDigits).eq('tenant_id', tenant.id).maybeSingle();
+        if (existingLead) {
+          leadId = existingLead.id;
+        } else {
+          const { data: firstStage } = await supabase.from('kanban_stages').select('id').order('position').limit(1).single();
+          const { data: newLead } = await supabase.from('leads').insert({ name: client_name, phone: phoneDigits, tenant_id: tenant.id, current_stage_id: firstStage?.id, tags: ['agendamento'], notes: 'Lead criado via agendamento publico' }).select('id').single();
+          if (newLead) leadId = newLead.id;
+        }
+        if (leadId) await supabase.from('bookings').update({ lead_id: leadId }).eq('id', booking.id);
+
+        // Send WhatsApp confirmation
+        if (!evolutionClient) return;
+        const { data: inst } = await supabase.from('whatsapp_instances').select('instance_name').eq('tenant_id', tenant.id).limit(1).maybeSingle();
+        if (!inst) return;
+
+        const dateF = new Date(booking_date + 'T12:00:00').toLocaleDateString('pt-BR');
+        const timeF = booking_time.substring(0, 5);
+        const msg = `Ola ${client_name}! ✅\n\nSeu agendamento foi confirmado:\n📋 Servico: ${service_interest}\n📅 Data: ${dateF}\n🕐 Horario: ${timeF}\n\nObrigado pela preferencia!`;
+        const phone = phoneDigits.startsWith('55') ? phoneDigits : '55' + phoneDigits;
+
+        await evolutionClient.post(`/message/sendText/${inst.instance_name}`, { number: phone, text: msg, delay: 1000, linkPreview: false });
+        await supabase.from('message_log').insert({ lead_id: leadId, tenant_id: tenant.id, direction: 'outgoing', message_type: 'text', content: msg, whatsapp_instance: inst.instance_name, status: 'sent' });
+        await supabase.from('bookings').update({ confirmation_sent: true, confirmation_sent_at: new Date().toISOString() }).eq('id', booking.id);
+      } catch (e) { console.error('Booking confirmation error (non-blocking):', e.message); }
+    })();
+
+    res.status(201).json(booking);
+  } catch (err) { res.status(500).json({ error: true, message: err.message }); }
+});
+
 // Export handler
 module.exports.handler = serverless(app);

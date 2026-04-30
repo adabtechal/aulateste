@@ -3,6 +3,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { GripVertical, Clock } from 'lucide-react';
+import { TagPill } from '../tags/TagManager';
 
 function colorInitial(name) {
   const colors = ['var(--color-violet-500,#5a4a9c)', 'var(--color-coral-500,#c17d24)', 'var(--color-ink-700,#383548)', '#3a7b93', '#4d9768'];
@@ -10,7 +11,7 @@ function colorInitial(name) {
   return colors[h % colors.length];
 }
 
-export default function LeadCard({ lead, onClick, overlay }) {
+export default function LeadCard({ lead, onClick, overlay, tagColors = {} }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: lead.id,
     data: { type: 'lead', lead }
@@ -52,7 +53,7 @@ export default function LeadCard({ lead, onClick, overlay }) {
       <div className="flex items-center justify-between mt-[9px] pt-[6px] border-t border-ink-100">
         <div className="flex gap-1">
           {lead.tags?.slice(0, 2).map(tag => (
-            <span key={tag} className="text-[9px] font-medium px-[6px] py-[2px] rounded-xs bg-ink-100 text-ink-600">{tag}</span>
+            <TagPill key={tag} name={tag} color={tagColors[tag] || '#5a4a9c'} size="sm" />
           ))}
         </div>
         {timeInStage && (

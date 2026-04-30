@@ -148,7 +148,7 @@ router.delete('/:id', async (req, res, next) => {
 // PATCH /api/leads/:id/stage — Move lead to stage
 router.patch('/:id/stage', async (req, res, next) => {
   try {
-    const { stageId } = req.body;
+    const { stageId, summary } = req.body;
     if (!stageId) {
       return res.status(400).json({ error: true, message: 'stageId is required' });
     }
@@ -209,6 +209,21 @@ router.patch('/:id/stage', async (req, res, next) => {
         status: 'pending'
       }));
       await supabase.from('scheduled_messages').insert(scheduled);
+    }
+
+    // Create internal note with conversation summary if provided
+    if (summary) {
+      const toStageName = lead.kanban_stages?.name || 'novo estagio';
+      const noteContent = `📋 Resumo do agente (movido para ${toStageName}):\n\n${summary}`;
+      await supabase
+        .from('message_log')
+        .insert({
+          lead_id: req.params.id,
+          direction: 'internal',
+          message_type: 'text',
+          content: noteContent,
+          status: 'delivered'
+        });
     }
 
     res.json({ lead, history_entry: historyEntry });

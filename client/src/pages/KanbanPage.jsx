@@ -22,6 +22,9 @@ export default function KanbanPage() {
   const { data: stages = [] } = useQuery({ queryKey: ['stages'], queryFn: api.getStages });
   const { data: leadsData } = useQuery({ queryKey: ['kanban'], queryFn: () => api.getLeads({ limit: 500 }) });
   const leads = leadsData?.data || [];
+  const { data: allTags = [] } = useQuery({ queryKey: ['tags'], queryFn: api.getTags });
+  const tagColors = {};
+  allTags.forEach(t => { tagColors[t.name] = t.color; });
 
   const createMut = useMutation({
     mutationFn: api.createLead,
@@ -45,7 +48,7 @@ export default function KanbanPage() {
         </div>
       </div>
       <div className="flex-1 overflow-x-auto p-6">
-        <KanbanBoard stages={stages} leads={leads} onLeadClick={(lead) => navigate(`/leads/${lead.id}`)} />
+        <KanbanBoard stages={stages} leads={leads} onLeadClick={(lead) => navigate(`/leads/${lead.id}`)} tagColors={tagColors} />
       </div>
 
       <StageConfigModal open={showConfig} onClose={() => setShowConfig(false)} />

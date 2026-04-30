@@ -1,7 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import LeadCard from './LeadCard';
 
-export default function KanbanColumn({ stage, leads, onLeadClick }) {
+export default function KanbanColumn({ stage, leads, onLeadClick, tagColors = {} }) {
   const { setNodeRef, isOver } = useDroppable({
     id: stage.id,
     data: { type: 'column', stage }
@@ -23,7 +23,7 @@ export default function KanbanColumn({ stage, leads, onLeadClick }) {
         }`}
       >
         {leads.map(lead => (
-          <LeadCard key={lead.id} lead={lead} onClick={onLeadClick} />
+          <LeadCard key={lead.id} lead={lead} onClick={onLeadClick} tagColors={tagColors} />
         ))}
         {leads.length === 0 && (
           <p className="text-xs text-ink-400 text-center py-8">

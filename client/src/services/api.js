@@ -106,6 +106,7 @@ export const getLeadMessages = (leadId) => api.get(`/messages/lead/${leadId}`).t
 export const sendText = (data) => api.post('/messages/send-text', data).then(r => r.data);
 export const sendMedia = (data) => api.post('/messages/send-media', data).then(r => r.data);
 export const exportMessages = (params) => api.get('/messages/export', { params, responseType: 'blob' });
+export const createInternalNote = (data) => api.post('/messages/internal-note', data).then(r => r.data);
 
 // Auto Messages
 export const getAutoMessages = (stageId) => api.get(`/auto-messages/stage/${stageId}`).then(r => r.data);
@@ -113,6 +114,15 @@ export const createAutoMessage = (data) => api.post('/auto-messages', data).then
 export const updateAutoMessage = (id, data) => api.put(`/auto-messages/${id}`, data).then(r => r.data);
 export const deleteAutoMessage = (id) => api.delete(`/auto-messages/${id}`).then(r => r.data);
 export const toggleAutoMessage = (id) => api.patch(`/auto-messages/${id}/toggle`).then(r => r.data);
+
+// Tags
+export const getTags = () => api.get('/tags').then(r => r.data);
+export const createTag = (data) => api.post('/tags', data).then(r => r.data);
+export const updateTag = (id, data) => api.put(`/tags/${id}`, data).then(r => r.data);
+export const deleteTag = (id) => api.delete(`/tags/${id}`).then(r => r.data);
+
+// Inbox
+export const getInbox = (params) => api.get('/inbox', { params }).then(r => r.data);
 
 // Users
 export const getUsers = () => api.get('/users').then(r => r.data);
@@ -122,5 +132,17 @@ export const getKestraHealth = () => api.get('/kestra/health').then(r => r.data)
 export const getBotConfig = (tenantId) => api.get('/bot-config', { params: tenantId ? { tenantId } : undefined }).then(r => r.data);
 export const saveBotConfig = (tenantId, config) => api.put('/bot-config', { ...(tenantId ? { tenantId } : {}), config }).then(r => r.data);
 export const publishBotConfig = (tenantId, config) => api.post('/bot-config/publish', { ...(tenantId ? { tenantId } : {}), config }).then(r => r.data);
+
+// Scheduling Availability
+export const getSchedulingAvailability = () => api.get('/scheduling/availability').then(r => r.data);
+export const createSchedulingSlot = (data) => api.post('/scheduling/availability', data).then(r => r.data);
+export const updateSchedulingSlot = (id, data) => api.put(`/scheduling/availability/${id}`, data).then(r => r.data);
+export const deleteSchedulingSlot = (id) => api.delete(`/scheduling/availability/${id}`).then(r => r.data);
+export const toggleSchedulingSlot = (id) => api.patch(`/scheduling/availability/${id}/toggle`).then(r => r.data);
+
+// Bookings (admin)
+export const getBookings = (params) => api.get('/scheduling/bookings', { params }).then(r => r.data);
+export const getBookingsByPhone = (phone) => api.get(`/scheduling/bookings/by-phone/${phone}`).then(r => r.data);
+export const getTenantSlug = () => api.get('/scheduling/tenant-slug').then(r => r.data);
 
 export default api;

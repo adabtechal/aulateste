@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, MessageSquare, Wifi, LogOut, Loader2, UserPlus, Bot, KanbanSquare } from 'lucide-react';
+import { LayoutDashboard, Users, MessageSquare, Wifi, LogOut, Loader2, UserPlus, Bot, KanbanSquare, Inbox, Tag, Calendar, CalendarCheck } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
@@ -11,6 +11,11 @@ import WhatsAppConfigPage from './pages/WhatsAppConfigPage';
 import MessageLogPage from './pages/MessageLogPage';
 import UsersPage from './pages/UsersPage';
 import BotConfigPage from './pages/BotConfigPage';
+import InboxPage from './pages/InboxPage';
+import TagsPage from './pages/TagsPage';
+import SchedulingConfigPage from './pages/SchedulingConfigPage';
+import SchedulingBookingsPage from './pages/SchedulingBookingsPage';
+import PublicBookingPage from './pages/PublicBookingPage';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -49,16 +54,20 @@ function Sidebar() {
 
   const links = [
     { to: '/kanban', icon: KanbanSquare, label: 'Pipeline', count: null },
+    { to: '/inbox', icon: Inbox, label: 'Inbox', count: null },
     { to: '/leads', icon: Users, label: 'Leads', count: null },
-    { to: '/messages', icon: MessageSquare, label: 'Mensagens', count: null },
+    { to: '/messages', icon: MessageSquare, label: 'Log', count: null },
   ];
 
   const configLinks = [
     { to: '/whatsapp', icon: Wifi, label: 'WhatsApp' },
+    { to: '/tags', icon: Tag, label: 'Tags' },
   ];
 
   if (profile?.role === 'superadmin' || profile?.role === 'tenant_admin') {
     configLinks.push({ to: '/bot-config', icon: Bot, label: 'Automacao' });
+    configLinks.push({ to: '/scheduling-config', icon: Calendar, label: 'Agenda Config' });
+    configLinks.push({ to: '/scheduling', icon: CalendarCheck, label: 'Agendamentos' });
     configLinks.push({ to: '/users', icon: UserPlus, label: 'Usuarios' });
   }
 
@@ -164,6 +173,7 @@ export default function App() {
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/kanban" replace /> : <LoginPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/booking/:tenantSlug" element={<PublicBookingPage />} />
       <Route
         path="*"
         element={
@@ -174,12 +184,16 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<Navigate to="/kanban" replace />} />
                   <Route path="/kanban" element={<KanbanPage />} />
+                  <Route path="/inbox" element={<InboxPage />} />
                   <Route path="/leads" element={<LeadsPage />} />
                   <Route path="/leads/:id" element={<LeadDetailPage />} />
+                  <Route path="/tags" element={<TagsPage />} />
                   <Route path="/messages" element={<MessageLogPage />} />
                   <Route path="/whatsapp" element={<WhatsAppConfigPage />} />
                   <Route path="/bot-config" element={<BotConfigPage />} />
                   <Route path="/users" element={<UsersPage />} />
+                  <Route path="/scheduling-config" element={<SchedulingConfigPage />} />
+                  <Route path="/scheduling" element={<SchedulingBookingsPage />} />
                 </Routes>
               </main>
             </div>

@@ -57,7 +57,7 @@ router.get('/export', async (req, res, next) => {
     const { data, error } = await query.order('sent_at', { ascending: false });
     if (error) throw error;
 
-    const directionLabel = { outgoing: 'Enviada', incoming: 'Recebida', auto: 'Automática' };
+    const directionLabel = { outgoing: 'Enviada', incoming: 'Recebida', auto: 'Automática', internal: 'Nota interna' };
     const csv = [
       'Data,Lead,Telefone,Direção,Tipo,Conteúdo,Status',
       ...data.map(m =>
@@ -112,6 +112,33 @@ router.post('/send-media', async (req, res, next) => {
     }
     const result = await sendMediaMessage(leadId, mediaUrl, caption || '', mimetype);
     res.json({ success: true, result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/messages/internal-note — Create internal note (visible only to users, never sent to client)
+router.post('/internal-note', async (req, res, next) => {
+  try {
+    const { leadId, content } = req.body;
+    if (!leadId || !content) {
+      return res.status(400).json({ error: true, message: 'leadId and content are required' });
+    }
+
+    const { data, error } = await supabase
+      .from('message_log')
+      .insert({
+        lead_id: leadId,
+        direction: 'internal',
+        message_type: 'text',
+        content,
+        status: 'delivered'
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json(data);
   } catch (err) {
     next(err);
   }

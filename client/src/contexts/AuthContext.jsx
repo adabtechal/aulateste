@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext({});
-const AUTH_FALLBACK_TIMEOUT_MS = 15000;
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -28,23 +27,16 @@ export function AuthProvider({ children }) {
     let isMounted = true;
 
     async function syncAuthState(session) {
-      if (!isMounted) {
-        return;
-      }
+      if (!isMounted) return;
 
       if (session?.user) {
         setUser(session.user);
-
         try {
           const prof = await fetchProfile(session.user.id);
-          if (isMounted) {
-            setProfile(prof);
-          }
+          if (isMounted) setProfile(prof);
         } catch (error) {
           console.error('Erro ao sincronizar perfil do usuário:', error);
-          if (isMounted) {
-            setProfile(null);
-          }
+          if (isMounted) setProfile(null);
         }
       } else {
         setUser(null);
@@ -57,10 +49,23 @@ export function AuthProvider({ children }) {
       }
     }
 
-    // Fonte única de verdade: onAuthStateChange dispara INITIAL_SESSION no subscribe
-    // (comportamento oficial do Supabase JS v2). Sem race contra timeout artificial.
+    // 1. Busca sessão inicial via getSession() — não depende do lock do GoTrue
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!initializedRef.current) {
+        syncAuthState(session);
+      }
+    }).catch((err) => {
+      console.error('Erro ao buscar sessão inicial:', err);
+      if (isMounted && !initializedRef.current) {
+        initializedRef.current = true;
+        setLoading(false);
+      }
+    });
+
+    // 2. Listener para mudanças subsequentes (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (event === 'INITIAL_SESSION') return;
         try {
           await syncAuthState(session);
         } catch (error) {
@@ -73,18 +78,8 @@ export function AuthProvider({ children }) {
       }
     );
 
-    // Fallback de segurança: se INITIAL_SESSION não disparar, libera a UI
-    // sem sessão após 15s para não travar em tela de loading indefinidamente.
-    const fallbackTimer = window.setTimeout(() => {
-      if (isMounted && !initializedRef.current) {
-        console.warn('INITIAL_SESSION não disparou em 15s — liberando loading sem sessão.');
-        setLoading(false);
-      }
-    }, AUTH_FALLBACK_TIMEOUT_MS);
-
     return () => {
       isMounted = false;
-      window.clearTimeout(fallbackTimer);
       subscription.unsubscribe();
     };
   }, []);

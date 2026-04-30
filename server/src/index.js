@@ -20,6 +20,10 @@ const webhookRouter = require('./routes/webhook');
 const usersRouter = require('./routes/users');
 const kestraRouter = require('./routes/kestra');
 const botConfigRouter = require('./routes/botConfig');
+const tagsRouter = require('./routes/tags');
+const inboxRouter = require('./routes/inbox');
+const schedulingRouter = require('./routes/scheduling');
+const bookingRouter = require('./routes/booking');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -63,6 +67,10 @@ app.use('/api/webhook', webhookRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/kestra', kestraRouter);
 app.use('/api/bot-config', botConfigRouter);
+app.use('/api/tags', tagsRouter);
+app.use('/api/inbox', inboxRouter);
+app.use('/api/scheduling', schedulingRouter);
+app.use('/api/booking', bookingRouter);
 
 // Error handling
 app.use(errorHandler);
